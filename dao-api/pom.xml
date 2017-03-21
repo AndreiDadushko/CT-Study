@@ -4,7 +4,7 @@
 	
 	
 	<parent>
-		<groupId>com.andreidadushko.ct-study</groupId>
+		<groupId>com.andreidadushko.tomography2017</groupId>
 		<artifactId>parent-project</artifactId>
 		<version>1.0.0</version>
 	</parent>
