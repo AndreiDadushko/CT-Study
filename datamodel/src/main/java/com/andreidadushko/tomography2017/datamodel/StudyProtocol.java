@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class StudyProtocol {
 
-	Integer id;
-	String protocol;
-	Date creationDate;
+	private Integer id;
+	private String protocol;
+	private Date creationDate;
 
 	public Integer getId() {
 		return id;
@@ -30,6 +30,11 @@ public class StudyProtocol {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	@Override
+	public String toString() {
+		return "StudyProtocol [id=" + id + ", protocol=" + protocol + ", creationDate=" + creationDate + "]";
 	}
 
 }

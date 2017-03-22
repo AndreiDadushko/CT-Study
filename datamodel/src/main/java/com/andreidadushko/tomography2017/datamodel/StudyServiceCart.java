@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class StudyServiceCart {
 
-	Integer id;
-	Boolean paid;
-	Date payDate;
-	Integer studyId;
-	Integer serviceId;
+	private Integer id;
+	private Boolean paid;
+	private Date payDate;
+	private Integer studyId;
+	private Integer serviceId;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +48,12 @@ public class StudyServiceCart {
 
 	public void setServiceId(Integer serviceId) {
 		this.serviceId = serviceId;
+	}
+
+	@Override
+	public String toString() {
+		return "StudyServiceCart [id=" + id + ", paid=" + paid + ", payDate=" + payDate + ", studyId=" + studyId
+				+ ", serviceId=" + serviceId + "]";
 	}
 
 }

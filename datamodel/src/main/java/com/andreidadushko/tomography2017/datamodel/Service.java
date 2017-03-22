@@ -4,10 +4,10 @@ package com.andreidadushko.tomography2017.datamodel;
 
 public class Service {
 
-	Integer id;
-	String name;
-	Double price;
-	Integer categorId;
+	private Integer id;
+	private String name;
+	private Double price;
+	private Integer categorId;
 
 	public Integer getId() {
 		return id;
@@ -39,6 +39,11 @@ public class Service {
 
 	public void setCategorId(Integer categorId) {
 		this.categorId = categorId;
+	}
+
+	@Override
+	public String toString() {
+		return "Service [id=" + id + ", name=" + name + ", price=" + price + ", categorId=" + categorId + "]";
 	}
 
 }

@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class Staff {
 
-	Integer id;
-	String department;
-	String position;
-	Date startDate;
-	Date endDate;
-	Integer personId;
+	private Integer id;
+	private String department;
+	private String position;
+	private Date startDate;
+	private Date endDate;
+	private Integer personId;
 
 	public Integer getId() {
 		return id;
@@ -57,6 +57,12 @@ public class Staff {
 
 	public void setPersonId(Integer personId) {
 		this.personId = personId;
+	}
+
+	@Override
+	public String toString() {
+		return "Staff [id=" + id + ", department=" + department + ", position=" + position + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", personId=" + personId + "]";
 	}
 
 }

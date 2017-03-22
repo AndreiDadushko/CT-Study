@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Study {
 
-	Integer id;
-	Date appointmentDate;
-	Boolean permitted;
-	Integer personId;
-	Integer staffId;
+	private Integer id;
+	private Date appointmentDate;
+	private Boolean permitted;
+	private Integer personId;
+	private Integer staffId;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +48,12 @@ public class Study {
 
 	public void setStaffId(Integer staffId) {
 		this.staffId = staffId;
+	}
+
+	@Override
+	public String toString() {
+		return "Study [id=" + id + ", appointmentDate=" + appointmentDate + ", permitted=" + permitted + ", personId="
+				+ personId + ", staffId=" + staffId + "]";
 	}
 
 }

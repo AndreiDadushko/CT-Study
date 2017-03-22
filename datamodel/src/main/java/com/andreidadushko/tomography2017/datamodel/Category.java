@@ -2,9 +2,9 @@ package com.andreidadushko.tomography2017.datamodel;
 
 public class Category {
 
-	Integer id;
-	String name;
-	Integer parentId;
+	private Integer id;
+	private String name;
+	private Integer parentId;
 
 	public Integer getId() {
 		return id;
@@ -28,6 +28,11 @@ public class Category {
 
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", parentId=" + parentId + "]";
 	}
 
 }
