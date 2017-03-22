@@ -36,7 +36,7 @@ public class PersonDaoImpl implements IPersonDao {
 
 	@Override
 	public Person insert(Person person) {
-		final String INSERT_SQL = "INSERT INTO ct_study.person (first_name, middle_name, last_name, birth_date, phone_number, adress, login, password) VALUES (?,?,?,?,?,?,?,?)";
+		final String INSERT_SQL = "INSERT INTO person (first_name, middle_name, last_name, birth_date, phone_number, adress, login, password) VALUES (?,?,?,?,?,?,?,?)";
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -64,7 +64,7 @@ public class PersonDaoImpl implements IPersonDao {
 	@Override
 	public void update(Person person) {
 		
-		final String INSERT_SQL= " UPDATE  ct_study.person SET first_name = ?, middle_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ?, login = ?, password = ? WHERE `id` = ?";
+		final String INSERT_SQL= " UPDATE  person SET first_name = ?, middle_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ?, login = ?, password = ? WHERE `id` = ?";
 		
 		jdbcTemplate.update(INSERT_SQL,new Object[]{person.getFirstName(),person.getMiddleName(),person.getLastName(),person.getBirthDate(),person.getPhoneNumber(),person.getAdress(),person.getLogin(),person.getPassword(),person.getId()});
 	
@@ -79,7 +79,7 @@ public class PersonDaoImpl implements IPersonDao {
 
 	@Override
 	public List<Person> getAll() {
-		List<Person> rs = jdbcTemplate.query("select * from book ", new BeanPropertyRowMapper<Person>(Person.class));
+		List<Person> rs = jdbcTemplate.query("select * from person group by id", new BeanPropertyRowMapper<Person>(Person.class));
 		return rs;
 	}
 
