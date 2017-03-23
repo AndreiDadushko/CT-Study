@@ -67,7 +67,7 @@ public class PersonDaoImpl implements IPersonDao {
 		final String INSERT_SQL= " UPDATE  person SET first_name = ?, middle_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ?, login = ?, password = ? WHERE `id` = ?";
 		
 		jdbcTemplate.update(INSERT_SQL,new Object[]{person.getFirstName(),person.getMiddleName(),person.getLastName(),person.getBirthDate(),person.getPhoneNumber(),person.getAdress(),person.getLogin(),person.getPassword(),person.getId()});
-	
+		
 	}
 
 	@Override

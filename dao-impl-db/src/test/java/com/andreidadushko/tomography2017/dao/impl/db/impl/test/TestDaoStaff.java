@@ -13,7 +13,7 @@ public class TestDaoStaff {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("dao-context.xml");
 
 		IStaffDao service = context.getBean(IStaffDao.class);
-		/*Staff staff = new Staff();
+		Staff staff = new Staff();
 
 		staff.setDepartment("РКД");
 		staff.setPosition("Санитар");
@@ -21,6 +21,12 @@ public class TestDaoStaff {
 		staff.setPersonId(2);
 		
 		Staff f = service.insert(staff);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(f);
 		System.out.println(service.get(f.getId()));
 		
@@ -30,7 +36,7 @@ public class TestDaoStaff {
 		
 		service.update(staff);
 		System.out.println(service.get(f.getId()));
-		service.delete(f.getId());*/
+		//service.delete(f.getId());
 		List<Staff> list = service.getAll();
 
 		for (Staff staff2 : list) {

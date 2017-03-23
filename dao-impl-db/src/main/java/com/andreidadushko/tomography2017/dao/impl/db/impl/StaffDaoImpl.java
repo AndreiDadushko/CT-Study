@@ -2,7 +2,6 @@ package com.andreidadushko.tomography2017.dao.impl.db.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -80,30 +79,7 @@ public class StaffDaoImpl implements IStaffDao {
 	@Override
 	public List<Staff> getAll() {
 		List<Staff> rs = jdbcTemplate.query("select * from staff group by id",
-				new BeanPropertyRowMapper<Staff>(Staff.class) {
-
-					@Override
-					public Staff mapRow(ResultSet arg0, int arg1) throws SQLException {
-						Staff staff = new Staff();
-						staff.setId(arg0.getInt("id"));
-						staff.setDepartment(arg0.getString("department"));
-						staff.setPosition(arg0.getString("position"));
-						try {
-							staff.setStartDate(arg0.getDate("start_date"));
-						} catch ( java.sql.SQLException e) {
-							staff.setStartDate(null);
-						}
-						try {
-							staff.setEndDate(arg0.getDate("end_date"));
-						} catch ( java.sql.SQLException e) {
-							staff.setEndDate(null);
-						}
-
-						staff.setPersonId(arg0.getInt("person_id"));
-						return staff;
-					}
-
-				});
+				new BeanPropertyRowMapper<Staff>(Staff.class));
 		return rs;
 	}
 }
