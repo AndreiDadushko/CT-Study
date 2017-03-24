@@ -78,7 +78,7 @@ public class StaffDaoImpl implements IStaffDao {
 
 	@Override
 	public List<Staff> getAll() {
-		List<Staff> rs = jdbcTemplate.query("select * from staff group by id",
+		List<Staff> rs = jdbcTemplate.query("select * from staff order by id",
 				new BeanPropertyRowMapper<Staff>(Staff.class));
 		return rs;
 	}

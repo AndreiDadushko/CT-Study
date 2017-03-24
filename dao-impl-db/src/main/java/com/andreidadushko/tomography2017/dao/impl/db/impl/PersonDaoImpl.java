@@ -47,11 +47,12 @@ public class PersonDaoImpl implements IPersonDao {
 				ps.setString(1, person.getFirstName());
 				ps.setString(2, person.getMiddleName());
 				ps.setString(3, person.getLastName());
-				ps.setDate(4, new java.sql.Date(person.getBirthDate().getTime()));
+				ps.setDate(4, person.getBirthDate() != null ? new java.sql.Date(person.getBirthDate().getTime()) : null);
 				ps.setString(5, person.getPhoneNumber());
 				ps.setString(6, person.getAdress());
 				ps.setString(7, person.getLogin());
 				ps.setString(8, person.getPassword());
+
 				return ps;
 			}
 		}, keyHolder);
@@ -63,11 +64,14 @@ public class PersonDaoImpl implements IPersonDao {
 
 	@Override
 	public void update(Person person) {
-		
-		final String INSERT_SQL= " UPDATE  person SET first_name = ?, middle_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ?, login = ?, password = ? WHERE `id` = ?";
-		
-		jdbcTemplate.update(INSERT_SQL,new Object[]{person.getFirstName(),person.getMiddleName(),person.getLastName(),person.getBirthDate(),person.getPhoneNumber(),person.getAdress(),person.getLogin(),person.getPassword(),person.getId()});
-		
+
+		final String INSERT_SQL = " UPDATE  person SET first_name = ?, middle_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ?, login = ?, password = ? WHERE id = ?";
+
+		jdbcTemplate.update(INSERT_SQL,
+				new Object[] { person.getFirstName(), person.getMiddleName(), person.getLastName(),
+						person.getBirthDate(), person.getPhoneNumber(), person.getAdress(), person.getLogin(),
+						person.getPassword(), person.getId() });
+
 	}
 
 	@Override
@@ -79,7 +83,8 @@ public class PersonDaoImpl implements IPersonDao {
 
 	@Override
 	public List<Person> getAll() {
-		List<Person> rs = jdbcTemplate.query("select * from person group by id", new BeanPropertyRowMapper<Person>(Person.class));
+		List<Person> rs = jdbcTemplate.query("select * from person order by id",
+				new BeanPropertyRowMapper<Person>(Person.class));
 		return rs;
 	}
 
