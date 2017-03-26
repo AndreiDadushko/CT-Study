@@ -3,7 +3,6 @@ package com.andreidadushko.tomography2017.dao.impl.db.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,27 +45,7 @@ public class StudyServiceCartDaoImpl implements IStudyServiceCartDao {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(INSERT_SQL, new String[] { "id" });
 				ps.setBoolean(1, studyServiceCart.getPaid() != null ? studyServiceCart.getPaid() : false);
-				java.sql.Date g;
-				if (studyServiceCart.getPaid() != null) {
-					if (studyServiceCart.getPaid()) {
-						if (studyServiceCart.getPayDate() == null) {
-							g = new java.sql.Date(new Date().getTime());
-						} else {
-							g = new java.sql.Date(studyServiceCart.getPayDate().getTime());
-						}
-					} else {
-						g = null;
-					}
-				} else
-					g = null;
-				/*
-				 * ps.setDate(2, studyServiceCart.getPaid() != null ?
-				 * studyServiceCart.getPaid() ? studyServiceCart.getPayDate() ==
-				 * null ? new java.sql.Date(new Date().getTime()) : new
-				 * java.sql.Date(studyServiceCart.getPayDate().getTime()) : null
-				 * : null);
-				 */
-				ps.setDate(2, g);
+				ps.setTimestamp(2, studyServiceCart.getPayDate());
 				ps.setInt(3, studyServiceCart.getStudyId());
 				ps.setInt(4, studyServiceCart.getServiceId());
 
@@ -84,21 +63,7 @@ public class StudyServiceCartDaoImpl implements IStudyServiceCartDao {
 
 		final String INSERT_SQL = " UPDATE study_service_cart SET paid=?, pay_date=?, study_id=?,service_id=? WHERE id=?";
 
-		java.sql.Date g;
-		if (studyServiceCart.getPaid() != null) {
-			if (studyServiceCart.getPaid()) {
-				if (studyServiceCart.getPayDate() == null) {
-					g = new java.sql.Date(new Date().getTime());
-				} else {
-					g = new java.sql.Date(studyServiceCart.getPayDate().getTime());
-				}
-			} else {
-				g = null;
-			}
-		} else
-			g = null;
-		
-		jdbcTemplate.update(INSERT_SQL, new Object[] { studyServiceCart.getPaid(), g,
+		jdbcTemplate.update(INSERT_SQL, new Object[] { studyServiceCart.getPaid(), studyServiceCart.getPayDate(),
 				studyServiceCart.getStudyId(), studyServiceCart.getServiceId(), studyServiceCart.getId() });
 
 	}

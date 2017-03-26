@@ -1,12 +1,12 @@
 package com.andreidadushko.tomography2017.datamodel;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class StudyProtocol {
 
 	private Integer id;
 	private String protocol;
-	private Date creationDate;
+	private Timestamp creationDate;
 
 	public Integer getId() {
 		return id;
@@ -24,11 +24,11 @@ public class StudyProtocol {
 		this.protocol = protocol;
 	}
 
-	public Date getCreationDate() {
+	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 

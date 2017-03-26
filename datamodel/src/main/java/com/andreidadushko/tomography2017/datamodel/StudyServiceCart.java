@@ -1,12 +1,12 @@
 package com.andreidadushko.tomography2017.datamodel;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class StudyServiceCart {
 
 	private Integer id;
 	private Boolean paid;
-	private Date payDate;
+	private Timestamp payDate;
 	private Integer studyId;
 	private Integer serviceId;
 
@@ -26,11 +26,11 @@ public class StudyServiceCart {
 		this.paid = paid;
 	}
 
-	public Date getPayDate() {
+	public Timestamp getPayDate() {
 		return payDate;
 	}
 
-	public void setPayDate(Date payDate) {
+	public void setPayDate(Timestamp payDate) {
 		this.payDate = payDate;
 	}
 

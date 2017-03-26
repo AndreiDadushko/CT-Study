@@ -1,5 +1,6 @@
 package com.andreidadushko.tomography2017.dao.impl.db.impl.test;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class TestDaoStaff {
 
 		staff.setDepartment("РКД");
 		staff.setPosition("Санитар");
-		staff.setStartDate(new Date());
+		staff.setStartDate(new Timestamp(new Date().getTime()));
 		staff.setPersonId(2);
 		
 		Staff f = service.insert(staff);
@@ -32,7 +33,7 @@ public class TestDaoStaff {
 		
 		staff.setDepartment("раз");
 		staff.setPosition("два");
-		staff.setEndDate(new Date());
+		staff.setEndDate(new Timestamp(new Date().getTime()));
 		
 		service.update(staff);
 		System.out.println(service.get(f.getId()));

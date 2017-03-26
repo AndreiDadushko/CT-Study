@@ -1,5 +1,6 @@
 package com.andreidadushko.tomography2017.dao.impl.db.impl.test;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class TestDaoStudy {
 		IStudyDao service = context.getBean(IStudyDao.class);
 		Study study = new Study();
 
-		study.setAppointmentDate(new Date());
+		study.setAppointmentDate(new Timestamp(new Date().getTime()));
 		study.setPermitted(false);
 		study.setPersonId(1);
 		study.setStaffId(2);
@@ -30,7 +31,7 @@ public class TestDaoStudy {
 		} catch (InterruptedException e) {			
 			e.printStackTrace();
 		}
-		study.setAppointmentDate(new Date());
+		study.setAppointmentDate(new Timestamp(new Date().getTime()));
 		study.setPermitted(true);
 		study.setPersonId(2);
 		study.setStaffId(2);

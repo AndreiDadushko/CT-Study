@@ -1,11 +1,11 @@
 package com.andreidadushko.tomography2017.datamodel;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Study {
 
 	private Integer id;
-	private Date appointmentDate;
+	private Timestamp appointmentDate;
 	private Boolean permitted;
 	private Integer personId;
 	private Integer staffId;
@@ -18,11 +18,11 @@ public class Study {
 		this.id = id;
 	}
 
-	public Date getAppointmentDate() {
+	public Timestamp getAppointmentDate() {
 		return appointmentDate;
 	}
 
-	public void setAppointmentDate(Date appointmentDate) {
+	public void setAppointmentDate(Timestamp appointmentDate) {
 		this.appointmentDate = appointmentDate;
 	}
 

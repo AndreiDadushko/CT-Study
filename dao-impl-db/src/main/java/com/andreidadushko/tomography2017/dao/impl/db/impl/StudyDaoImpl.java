@@ -19,11 +19,11 @@ import com.andreidadushko.tomography2017.dao.impl.db.IStudyDao;
 import com.andreidadushko.tomography2017.datamodel.Study;
 
 @Repository
-public class StudyDaoImpl implements IStudyDao{
+public class StudyDaoImpl implements IStudyDao {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;
-	
+
 	@Override
 	public Study get(Integer id) {
 		try {
@@ -44,11 +44,11 @@ public class StudyDaoImpl implements IStudyDao{
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(INSERT_SQL, new String[] { "id" });
-				ps.setDate(1, new java.sql.Date(study.getAppointmentDate().getTime()));
+				ps.setTimestamp(1, study.getAppointmentDate());
 				ps.setBoolean(2, study.getPermitted());
 				ps.setInt(3, study.getPersonId());
 				ps.setInt(4, study.getStaffId());
-				
+
 				return ps;
 			}
 		}, keyHolder);
@@ -61,25 +61,27 @@ public class StudyDaoImpl implements IStudyDao{
 	@Override
 	public void update(Study study) {
 
-		final String INSERT_SQL= "UPDATE  study SET  appointment_date = ?, permitted= ?,person_id= ?,staff_id =? WHERE  id = ?";
-		
-		jdbcTemplate.update(INSERT_SQL,new Object[]{study.getAppointmentDate(),study.getPermitted(),study.getPersonId(),study.getStaffId(),study.getId()});
-				
+		final String INSERT_SQL = "UPDATE  study SET  appointment_date = ?, permitted= ?,person_id= ?,staff_id =? WHERE  id = ?";
+
+		jdbcTemplate.update(INSERT_SQL, new Object[] { study.getAppointmentDate(), study.getPermitted(),
+				study.getPersonId(), study.getStaffId(), study.getId() });
+
 	}
 
 	@Override
 	public void delete(Integer id) {
 
 		jdbcTemplate.update("delete from study where id=" + id);
-		
+
 	}
 
 	@Override
 	public List<Study> getAll() {
-		
-		List<Study> rs = jdbcTemplate.query("select * from study order by id", new BeanPropertyRowMapper<Study>(Study.class));
+
+		List<Study> rs = jdbcTemplate.query("select * from study order by id",
+				new BeanPropertyRowMapper<Study>(Study.class));
 		return rs;
-		
+
 	}
 
 }

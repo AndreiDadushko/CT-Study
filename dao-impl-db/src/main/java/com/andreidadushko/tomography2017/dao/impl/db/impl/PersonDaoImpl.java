@@ -47,7 +47,7 @@ public class PersonDaoImpl implements IPersonDao {
 				ps.setString(1, person.getFirstName());
 				ps.setString(2, person.getMiddleName());
 				ps.setString(3, person.getLastName());
-				ps.setDate(4, person.getBirthDate() != null ? new java.sql.Date(person.getBirthDate().getTime()) : null);
+				ps.setTimestamp(4, person.getBirthDate());
 				ps.setString(5, person.getPhoneNumber());
 				ps.setString(6, person.getAdress());
 				ps.setString(7, person.getLogin());
@@ -83,9 +83,11 @@ public class PersonDaoImpl implements IPersonDao {
 
 	@Override
 	public List<Person> getAll() {
+
 		List<Person> rs = jdbcTemplate.query("select * from person order by id",
 				new BeanPropertyRowMapper<Person>(Person.class));
 		return rs;
+
 	}
 
 }

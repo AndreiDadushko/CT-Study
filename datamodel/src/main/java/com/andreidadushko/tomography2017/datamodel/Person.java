@@ -1,13 +1,13 @@
 package com.andreidadushko.tomography2017.datamodel;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Person {
 	private Integer id;
 	private String firstName;
 	private String middleName;
 	private String lastName;
-	private Date birthDate;
+	private Timestamp birthDate;
 	private String phoneNumber;
 	private String adress;
 	private String login;
@@ -45,11 +45,11 @@ public class Person {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthDate() {
+	public Timestamp getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(Timestamp birthDate) {
 		this.birthDate = birthDate;
 	}
 

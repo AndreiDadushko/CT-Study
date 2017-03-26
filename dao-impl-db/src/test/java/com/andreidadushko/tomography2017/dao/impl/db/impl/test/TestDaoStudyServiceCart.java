@@ -1,5 +1,7 @@
 package com.andreidadushko.tomography2017.dao.impl.db.impl.test;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -28,6 +30,7 @@ public class TestDaoStudyServiceCart {
 			e.printStackTrace();
 		}
 		studyServiceCart.setPaid(true);
+		studyServiceCart.setPayDate(new Timestamp(new Date().getTime()));
 		studyServiceCart.setStudyId(2);
 		studyServiceCart.setServiceId(2);
 

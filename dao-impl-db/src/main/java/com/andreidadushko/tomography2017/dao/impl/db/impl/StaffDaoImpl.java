@@ -46,8 +46,8 @@ public class StaffDaoImpl implements IStaffDao {
 				PreparedStatement ps = connection.prepareStatement(INSERT_SQL, new String[] { "id" });
 				ps.setString(1, staff.getDepartment());
 				ps.setString(2, staff.getPosition());
-				ps.setDate(3, staff.getStartDate() != null ? new java.sql.Date(staff.getStartDate().getTime()) : null);
-				ps.setDate(4, staff.getEndDate() != null ? new java.sql.Date(staff.getEndDate().getTime()) : null);
+				ps.setTimestamp(3, staff.getStartDate());
+				ps.setTimestamp(4, staff.getEndDate());
 				ps.setInt(5, staff.getPersonId());
 
 				return ps;
@@ -78,8 +78,10 @@ public class StaffDaoImpl implements IStaffDao {
 
 	@Override
 	public List<Staff> getAll() {
+
 		List<Staff> rs = jdbcTemplate.query("select * from staff order by id",
 				new BeanPropertyRowMapper<Staff>(Staff.class));
 		return rs;
+
 	}
 }
