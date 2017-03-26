@@ -25,9 +25,8 @@ public class PersonServiceImpl implements IPersonService {
 
 	@Override
 	public Person insert(Person person) {
-
+		person.getBirthDate().setNanos(0);
 		return personDao.insert(person);
-
 	}
 
 	@Override
