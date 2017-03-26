@@ -15,28 +15,28 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IServiceDao;
-import com.andreidadushko.tomography2017.datamodel.Service;
+import com.andreidadushko.tomography2017.dao.impl.db.IOfferDao;
+import com.andreidadushko.tomography2017.datamodel.Offer;
 
 @Repository
-public class ServiceDaoImpl implements IServiceDao {
+public class OfferDaoImpl implements IOfferDao {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public Service get(Integer id) {
+	public Offer get(Integer id) {
 		try {
-			return jdbcTemplate.queryForObject("select * from service where id = ? ", new Object[] { id },
-					new BeanPropertyRowMapper<Service>(Service.class));
+			return jdbcTemplate.queryForObject("select * from offer where id = ? ", new Object[] { id },
+					new BeanPropertyRowMapper<Offer>(Offer.class));
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
 
 	@Override
-	public Service insert(Service service) {
-		final String INSERT_SQL = "INSERT INTO service (name, price, categor_id) VALUES (?,?,?)";
+	public Offer insert(Offer offer) {
+		final String INSERT_SQL = "INSERT INTO offer (name, price, categor_id) VALUES (?,?,?)";
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -44,41 +44,41 @@ public class ServiceDaoImpl implements IServiceDao {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(INSERT_SQL, new String[] { "id" });
-				ps.setString(1, service.getName());
-				ps.setDouble(2, service.getPrice());
-				ps.setInt(3, service.getCategorId());
+				ps.setString(1, offer.getName());
+				ps.setDouble(2, offer.getPrice());
+				ps.setInt(3, offer.getCategorId());
 
 				return ps;
 			}
 		}, keyHolder);
 
-		service.setId(keyHolder.getKey().intValue());
+		offer.setId(keyHolder.getKey().intValue());
 
-		return service;
+		return offer;
 	}
 
 	@Override
-	public void update(Service service) {
+	public void update(Offer offer) {
 
-		final String INSERT_SQL = "UPDATE service SET name=?, price=?, categor_id=? WHERE id=?";
+		final String INSERT_SQL = "UPDATE offer SET name=?, price=?, categor_id=? WHERE id=?";
 
 		jdbcTemplate.update(INSERT_SQL,
-				new Object[] { service.getName(), service.getPrice(), service.getCategorId(), service.getId() });
+				new Object[] { offer.getName(), offer.getPrice(), offer.getCategorId(), offer.getId() });
 
 	}
 
 	@Override
 	public void delete(Integer id) {
 
-		jdbcTemplate.update("delete from service where id=" + id);
+		jdbcTemplate.update("delete from offer where id=" + id);
 
 	}
 
 	@Override
-	public List<Service> getAll() {
+	public List<Offer> getAll() {
 
-		List<Service> rs = jdbcTemplate.query("select * from service order by id",
-				new BeanPropertyRowMapper<Service>(Service.class));
+		List<Offer> rs = jdbcTemplate.query("select * from offer order by id",
+				new BeanPropertyRowMapper<Offer>(Offer.class));
 		return rs;
 
 	}

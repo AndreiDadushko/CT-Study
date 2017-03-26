@@ -2,13 +2,13 @@ package com.andreidadushko.tomography2017.datamodel;
 
 import java.sql.Timestamp;
 
-public class StudyServiceCart {
+public class StudyOfferCart {
 
 	private Integer id;
 	private Boolean paid;
 	private Timestamp payDate;
 	private Integer studyId;
-	private Integer serviceId;
+	private Integer offerId;
 
 	public Integer getId() {
 		return id;
@@ -42,18 +42,19 @@ public class StudyServiceCart {
 		this.studyId = studyId;
 	}
 
-	public Integer getServiceId() {
-		return serviceId;
+	
+	public Integer getOfferId() {
+		return offerId;
 	}
 
-	public void setServiceId(Integer serviceId) {
-		this.serviceId = serviceId;
+	public void setOfferId(Integer offerId) {
+		this.offerId = offerId;
 	}
 
 	@Override
 	public String toString() {
-		return "StudyServiceCart [id=" + id + ", paid=" + paid + ", payDate=" + payDate + ", studyId=" + studyId
-				+ ", serviceId=" + serviceId + "]";
-	}
+		return "StudyOfferCart [id=" + id + ", paid=" + paid + ", payDate=" + payDate + ", studyId=" + studyId
+				+ ", offerId=" + offerId + "]";
+	}	
 
 }

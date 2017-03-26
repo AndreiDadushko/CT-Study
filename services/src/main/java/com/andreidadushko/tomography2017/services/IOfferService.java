@@ -4,21 +4,21 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.andreidadushko.tomography2017.datamodel.Service;
+import com.andreidadushko.tomography2017.datamodel.Offer;
 
-public interface IServiceService {
+public interface IOfferService {
 
-	Service get(Integer id);
-
-	@Transactional
-	Service insert(Service service);
+	Offer get(Integer id);
 
 	@Transactional
-	void update(Service service);
+	Offer insert(Offer offer);
+
+	@Transactional
+	void update(Offer offer);
 
 	@Transactional
 	void delete(Integer id);
 
-	List<Service> getAll();
+	List<Offer> getAll();
 
 }

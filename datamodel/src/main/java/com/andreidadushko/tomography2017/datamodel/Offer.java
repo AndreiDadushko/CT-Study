@@ -2,7 +2,7 @@ package com.andreidadushko.tomography2017.datamodel;
 
 
 
-public class Service {
+public class Offer {
 
 	private Integer id;
 	private String name;

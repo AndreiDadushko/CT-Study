@@ -4,22 +4,22 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IServiceDao;
-import com.andreidadushko.tomography2017.datamodel.Service;
+import com.andreidadushko.tomography2017.dao.impl.db.IOfferDao;
+import com.andreidadushko.tomography2017.datamodel.Offer;
 
 public class TestDaoService {
 
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("dao-context.xml");
 
-		IServiceDao service = context.getBean(IServiceDao.class);
-		Service ser = new Service();
+		IOfferDao service = context.getBean(IOfferDao.class);
+		Offer ser = new Offer();
 
 		ser.setName("кт-языка");
 		ser.setPrice(563.511111);
 		ser.setCategorId(1);
 		
-		Service service1  = service.insert(ser);
+		Offer service1  = service.insert(ser);
 		
 		System.out.println(service1);
 		System.out.println(service.get(service1.getId()));
@@ -35,9 +35,9 @@ public class TestDaoService {
 		service.update(ser);
 		System.out.println(service.get(ser.getId()));
 		service.delete(ser.getId());
-		List<Service> list = service.getAll();
+		List<Offer> list = service.getAll();
 
-		for (Service sv : list) {
+		for (Offer sv : list) {
 			System.out.println(sv);
 		}
 
