@@ -90,4 +90,25 @@ public class PersonDaoImpl implements IPersonDao {
 
 	}
 
+	@Override
+	public Person authentication(String login, String password) {
+		try {
+			return jdbcTemplate.queryForObject("select * from person where login = ? and password = ?",
+					new Object[] { login, password }, new BeanPropertyRowMapper<Person>(Person.class));
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean isLoginUnique(String login) {
+		try {
+			jdbcTemplate.queryForObject("select * from person where login = ?", new Object[] { login },
+					new BeanPropertyRowMapper<Person>(Person.class));
+			return false;
+		} catch (EmptyResultDataAccessException e) {
+			return true;
+		}
+	}
+
 }

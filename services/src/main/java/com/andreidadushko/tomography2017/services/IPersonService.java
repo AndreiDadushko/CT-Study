@@ -21,4 +21,7 @@ public interface IPersonService {
 	
 	List<Person> getAll();
 	
+	Person authentication(String login, String password);
+	
+	boolean isLoginUnique(String login);
 }
