@@ -46,9 +46,16 @@ public class PersonServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void getTest() {
+	public void getWithIdTest() {
 		Person person = personService.insert(testData.get(2));
 		Person personFromDB = personService.get(person.getId());
+		Assert.assertTrue("Returned data isn't correct", person.equals(personFromDB));
+	}
+	
+	@Test
+	public void getWithLoginTest() {
+		Person person = personService.insert(testData.get(2));
+		Person personFromDB = personService.get(person.getLogin());
 		Assert.assertTrue("Returned data isn't correct", person.equals(personFromDB));
 	}
 
@@ -98,4 +105,23 @@ public class PersonServiceTest extends AbstractTest {
 		Person personFromDB = personService.get(person.getId());		
 		Assert.assertTrue("Inserted data isn't correct", testData.get(1).equals(personFromDB));
 	}
+	
+	@Test
+	public void deleteTest() {
+		Person person = personService.insert(testData.get(2));
+		personService.delete(person.getId());		
+		Person personFromDB = personService.get(person.getId());		
+		Assert.assertNull("Could not delete data", personFromDB);
+	}
+	
+	@Test
+	public void getAllTest() {		
+		List<Person> persons=personService.getAll();
+		int numberBeforeInsert=persons.size();
+		personService.insert(testData.get(2));
+		persons=personService.getAll();
+		int numberAfterInsert=persons.size();	
+		Assert.assertTrue("Could not get all persons", numberBeforeInsert+1==numberAfterInsert);
+	}
+	
 }

@@ -22,6 +22,14 @@ public class PersonServiceImpl implements IPersonService {
 			return null;
 		return personDao.get(id);
 	}
+	
+	@Override
+	public Person get(String login) {
+		if (login == null)
+			return null;
+		return personDao.get(login);
+
+	}
 
 	@Override
 	public Person insert(Person person) {
@@ -50,14 +58,6 @@ public class PersonServiceImpl implements IPersonService {
 	public List<Person> getAll() {
 
 		return personDao.getAll();
-
-	}
-
-	@Override
-	public Person get(String login) {
-		if (login == null)
-			throw new IllegalArgumentException();
-		return personDao.get(login);
 
 	}
 
