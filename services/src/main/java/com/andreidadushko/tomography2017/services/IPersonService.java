@@ -9,6 +9,8 @@ import com.andreidadushko.tomography2017.datamodel.Person;
 public interface IPersonService {
 
 	Person get(Integer id);
+	
+	Person get(String login);
 
 	@Transactional
 	Person insert(Person person);
@@ -20,8 +22,5 @@ public interface IPersonService {
 	void delete(Integer id);
 	
 	List<Person> getAll();
-	
-	Person authentication(String login, String password);
-	
-	boolean isLoginUnique(String login);
+		
 }

@@ -21,34 +21,22 @@ public class PersonServiceImpl implements IPersonService {
 		if (id == null)
 			return null;
 		return personDao.get(id);
-
 	}
 
 	@Override
 	public Person insert(Person person) {
-		if (person == null)
-			return null; // There is no person to insert
-		if (person.getLogin() == null || person.getPassword() == null)
-			return null; // Person must have login and password
-		if (!isLoginUnique(person.getLogin()))
-			return null; // Login must be unique
-		if (person.getBirthDate() != null)
-			person.getBirthDate().setNanos(0);
-		return personDao.insert(person);
+		if (isValid(person))
+			return personDao.insert(person);
+		else
+			throw new IllegalArgumentException();
 	}
 
 	@Override
 	public void update(Person person) {
-		if (person == null)
-			return; // There is no person to update
-		if (person.getLogin() == null || person.getPassword() == null)
-			return; // Person must have login and password
-		if (!isLoginUnique(person.getLogin()))
-			return; // Login must be unique
-		if (person.getBirthDate() != null)
-			person.getBirthDate().setNanos(0);
-		personDao.update(person);
-
+		if (isValid(person) && person.getId() != null)
+			personDao.update(person);
+		else
+			throw new IllegalArgumentException();
 	}
 
 	@Override
@@ -66,17 +54,21 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	@Override
-	public Person authentication(String login, String password) {
-
-		return personDao.authentication(login, password);
+	public Person get(String login) {
+		if (login == null)
+			throw new IllegalArgumentException();
+		return personDao.get(login);
 
 	}
 
-	@Override
-	public boolean isLoginUnique(String login) {
-
-		return personDao.isLoginUnique(login);
-
+	private boolean isValid(Person person) {
+		if (person == null)
+			return false;
+		if (person.getLogin() == null || person.getPassword() == null)
+			return false;
+		if (person.getBirthDate() != null)
+			person.getBirthDate().setNanos(0);
+		return true;
 	}
 
 }

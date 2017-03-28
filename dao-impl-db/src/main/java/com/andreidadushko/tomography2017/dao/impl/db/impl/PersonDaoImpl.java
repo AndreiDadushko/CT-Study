@@ -33,6 +33,16 @@ public class PersonDaoImpl implements IPersonDao {
 			return null;
 		}
 	}
+	
+	@Override
+	public Person get(String login) {
+		try {
+			return jdbcTemplate.queryForObject("select * from person where login = ?",
+					new Object[] { login }, new BeanPropertyRowMapper<Person>(Person.class));
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 
 	@Override
 	public Person insert(Person person) {
@@ -88,27 +98,6 @@ public class PersonDaoImpl implements IPersonDao {
 				new BeanPropertyRowMapper<Person>(Person.class));
 		return rs;
 
-	}
-
-	@Override
-	public Person authentication(String login, String password) {
-		try {
-			return jdbcTemplate.queryForObject("select * from person where login = ? and password = ?",
-					new Object[] { login, password }, new BeanPropertyRowMapper<Person>(Person.class));
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
-	}
-
-	@Override
-	public boolean isLoginUnique(String login) {
-		try {
-			jdbcTemplate.queryForObject("select * from person where login = ?", new Object[] { login },
-					new BeanPropertyRowMapper<Person>(Person.class));
-			return false;
-		} catch (EmptyResultDataAccessException e) {
-			return true;
-		}
-	}
+	}	
 
 }
