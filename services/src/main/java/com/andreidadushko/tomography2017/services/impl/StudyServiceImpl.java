@@ -18,22 +18,27 @@ public class StudyServiceImpl implements IStudyService {
 
 	@Override
 	public Study get(Integer id) {
-
+		if (id == null)
+			return null;
 		return studyDao.get(id);
 
 	}
 
 	@Override
 	public Study insert(Study study) {
-
-		return studyDao.insert(study);
+		if (isValid(study))
+			return studyDao.insert(study);
+		else
+			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(Study study) {
-
-		studyDao.update(study);
+		if (isValid(study) && study.getId() != null)
+			studyDao.update(study);
+		else
+			throw new IllegalArgumentException();
 
 	}
 
@@ -50,4 +55,14 @@ public class StudyServiceImpl implements IStudyService {
 		return studyDao.getAll();
 	}
 
+	private boolean isValid(Study study) {
+		if (study == null)
+			return false;
+		if (study.getAppointmentDate() == null || study.getPersonId() == null || study.getStaffId() == null)
+			return false;
+		if (study.getPermitted() == null)
+			study.setPermitted(true);
+		study.getAppointmentDate().setNanos(0);
+		return true;
+	}
 }
