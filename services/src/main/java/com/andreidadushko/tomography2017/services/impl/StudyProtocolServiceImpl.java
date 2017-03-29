@@ -18,22 +18,27 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 
 	@Override
 	public StudyProtocol get(Integer id) {
-
+		if (id == null)
+			return null;
 		return studyProtocolDao.get(id);
 
 	}
 
 	@Override
 	public void insert(StudyProtocol studyProtocol) {
-
-		studyProtocolDao.insert(studyProtocol);
+		if (isValid(studyProtocol))
+			studyProtocolDao.insert(studyProtocol);
+		else
+			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(StudyProtocol studyProtocol) {
-
-		studyProtocolDao.update(studyProtocol);
+		if (isValid(studyProtocol))
+			studyProtocolDao.update(studyProtocol);
+		else
+			throw new IllegalArgumentException();
 
 	}
 
@@ -49,6 +54,14 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 
 		return studyProtocolDao.getAll();
 
+	}
+
+	private boolean isValid(StudyProtocol studyProtocol) {
+		if (studyProtocol == null)
+			return false;
+		if (studyProtocol.getProtocol() == null || studyProtocol.getId() == null)
+			return false;
+		return true;
 	}
 
 }

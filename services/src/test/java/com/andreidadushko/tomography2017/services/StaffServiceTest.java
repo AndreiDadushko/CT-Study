@@ -61,7 +61,7 @@ public class StaffServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void getTest() {
+	public void insertGetTest() {
 		Staff staff = staffService.insert(testData.get(2));
 		Staff staffFromDB = staffService.get(staff.getId());
 		Assert.assertTrue("Returned data isn't correct", staff.equals(staffFromDB));
@@ -85,14 +85,7 @@ public class StaffServiceTest extends AbstractTest {
 		staffService.insert(testData.get(2));
 		Assert.fail("Could not insert staff without existing person");	
 	}
-	
-	@Test 
-	public void insertTest() {		
-		Staff staff = staffService.insert(testData.get(2));
-		Staff staffFromDB = staffService.get(staff.getId());
-		Assert.assertTrue("Inserted data isn't correct", staff.equals(staffFromDB));
-	}
-	
+		
 	@Test(expected = IllegalArgumentException.class)
 	public void updateNullTest() {
 		staffService.update(null);

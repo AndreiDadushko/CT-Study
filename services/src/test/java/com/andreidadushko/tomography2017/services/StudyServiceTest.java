@@ -59,6 +59,7 @@ public class StudyServiceTest extends AbstractTest{
 		staff1 = staffService.insert(staff1);
 		
 		testData = new ArrayList<Study>();
+		
 		Study study0=new Study();
 		testData.add(study0);
 		
@@ -78,7 +79,7 @@ public class StudyServiceTest extends AbstractTest{
 	}
 	
 	@Test
-	public void getTest() {
+	public void insertGetTest() {
 		Study study = studyService.insert(testData.get(1));
 		Study studyFromDB = studyService.get(study.getId());
 		Assert.assertTrue("Returned data isn't correct", study.equals(studyFromDB));
@@ -102,14 +103,7 @@ public class StudyServiceTest extends AbstractTest{
 		personService.delete(testData.get(1).getPersonId());
 		studyService.insert(testData.get(1));
 		Assert.fail("Could not insert study without existing person and staff");	
-	}
-	
-	@Test 
-	public void insertTest() {
-		Study study = studyService.insert(testData.get(1));
-		Study studyFromDB = studyService.get(study.getId());
-		Assert.assertTrue("Returned data isn't correct", study.equals(studyFromDB));
-	}
+	}	
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void updateNullTest() {	
