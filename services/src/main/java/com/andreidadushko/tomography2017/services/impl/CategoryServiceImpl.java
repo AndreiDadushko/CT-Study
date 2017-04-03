@@ -1,5 +1,7 @@
 package com.andreidadushko.tomography2017.services.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,4 +53,15 @@ public class CategoryServiceImpl implements ICategoryService{
 		
 	}
 
+	@Override
+	public List<Category> getByParentId(Integer parentId) {
+		List<Category> listFromDB=getAll();
+		List<Category> result= new ArrayList<Category>();
+		for (Iterator<Category> iterator = listFromDB.iterator(); iterator.hasNext();) {
+			Category category = iterator.next();
+			if (category.getId()==parentId) result.add(category);
+		}
+		return result;
+	}
+	
 }

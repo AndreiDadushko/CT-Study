@@ -47,7 +47,7 @@ public class StaffServiceImpl implements IStaffService {
 
 	}
 
-	@Override
+	@Override //УБРАТЬ!
 	public List<Staff> getAll() {
 
 		return staffDao.getAll();

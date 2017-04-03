@@ -16,7 +16,7 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	@Inject
 	private IStudyOfferCartDao studyServiceCartDao;
 
-	@Override
+	@Override//УБРАТЬ!
 	public StudyOfferCart get(Integer id) {
 
 		return studyServiceCartDao.get(id);
@@ -44,7 +44,7 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 	}
 
-	@Override
+	@Override//УБРАТЬ!
 	public List<StudyOfferCart> getAll() {
 
 		return studyServiceCartDao.getAll();

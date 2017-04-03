@@ -49,7 +49,7 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 
 	}
 
-	@Override
+	@Override//УБРАТЬ!
 	public List<StudyProtocol> getAll() {
 
 		return studyProtocolDao.getAll();

@@ -49,7 +49,7 @@ public class StudyServiceImpl implements IStudyService {
 
 	}
 
-	@Override
+	@Override//УБРАТЬ!
 	public List<Study> getAll() {
 
 		return studyDao.getAll();

@@ -77,7 +77,7 @@ public class OfferDaoImpl implements IOfferDao {
 	@Override
 	public List<Offer> getAll() {
 
-		List<Offer> rs = jdbcTemplate.query("select * from offer order by id",
+		List<Offer> rs = jdbcTemplate.query("select * from offer",
 				new BeanPropertyRowMapper<Offer>(Offer.class));
 		return rs;
 

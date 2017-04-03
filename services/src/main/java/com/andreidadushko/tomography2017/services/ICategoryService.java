@@ -21,4 +21,6 @@ public interface ICategoryService {
 
 	List<Category> getAll();
 	
+	List<Category> getByParentId(Integer parentId);
+	
 }
