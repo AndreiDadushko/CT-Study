@@ -13,55 +13,67 @@ import com.andreidadushko.tomography2017.datamodel.Category;
 import com.andreidadushko.tomography2017.services.ICategoryService;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService{
+public class CategoryServiceImpl implements ICategoryService {
 
 	@Inject
 	private ICategoryDao categoryDao;
-	
+
 	@Override
 	public Category get(Integer id) {
-		
+
 		return categoryDao.get(id);
-		
+
 	}
 
 	@Override
 	public Category insert(Category category) {
-		
-		return categoryDao.insert(category);
-		
+		if (isValid(category))
+			return categoryDao.insert(category);
+		else
+			throw new IllegalArgumentException();
+
 	}
 
 	@Override
 	public void update(Category category) {
+		if (isValid(category) && category.getId() != null)
+			categoryDao.update(category);
+		else
+			throw new IllegalArgumentException();
 
-		categoryDao.update(category);
-		
 	}
 
 	@Override
 	public void delete(Integer id) {
 
 		categoryDao.delete(id);
-		
+
 	}
 
 	@Override
 	public List<Category> getAll() {
-		
+
 		return categoryDao.getAll();
-		
+
 	}
 
 	@Override
 	public List<Category> getByParentId(Integer parentId) {
-		List<Category> listFromDB=getAll();
-		List<Category> result= new ArrayList<Category>();
+		List<Category> listFromDB = getAll();
+		List<Category> result = new ArrayList<Category>();
 		for (Iterator<Category> iterator = listFromDB.iterator(); iterator.hasNext();) {
 			Category category = iterator.next();
-			if (category.getId()==parentId) result.add(category);
+			if (category.getParentId() == parentId)
+				result.add(category);
 		}
 		return result;
 	}
-	
+
+	private boolean isValid(Category category) {
+		if (category == null)
+			return false;
+		if (category.getName() == null)
+			return false;
+		return true;
+	}
 }

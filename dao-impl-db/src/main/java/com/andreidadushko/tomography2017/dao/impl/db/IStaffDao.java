@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.andreidadushko.tomography2017.datamodel.Staff;
 
-public interface IStaffDao {
+public interface IStaffDao extends IAbstractDao<Staff>{
 	
 	Staff get(Integer id);
 

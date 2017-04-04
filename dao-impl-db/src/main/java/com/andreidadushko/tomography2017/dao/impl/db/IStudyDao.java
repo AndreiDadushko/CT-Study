@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.andreidadushko.tomography2017.datamodel.Study;
 
-public interface IStudyDao {
+public interface IStudyDao extends IAbstractDao<Study>{
 	
 	Study get(Integer id);
 

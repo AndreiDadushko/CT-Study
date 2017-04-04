@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.andreidadushko.tomography2017.datamodel.StudyProtocol;
 
-public interface IStudyProtocolDao {
+public interface IStudyProtocolDao extends IAbstractDao<StudyProtocol>{
 	
 	StudyProtocol get(Integer id);
 
-	void insert(StudyProtocol studyProtocol);
+	StudyProtocol insert(StudyProtocol studyProtocol);
 
 	void update(StudyProtocol studyProtocol);	
 

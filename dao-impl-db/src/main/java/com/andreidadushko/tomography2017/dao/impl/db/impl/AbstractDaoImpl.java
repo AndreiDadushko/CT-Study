@@ -21,7 +21,7 @@ import com.andreidadushko.tomography2017.dao.impl.db.IAbstractDao;
 public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 
 	@Inject
-	private JdbcTemplate jdbcTemplate;
+	protected JdbcTemplate jdbcTemplate;
 
 	/**
 	 * Возвращает sql запрос для получения всех записей.
@@ -55,7 +55,7 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 	 * Устанавливает аргументы insert запроса в соответствии со значением полей
 	 * объекта object.
 	 */
-	protected abstract void prepareStatementForInsert(PreparedStatement statement, T object);
+	protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws SQLException;
 
 	/**
 	 * Устанавливает аргументы update запроса в соответствии со значением полей
@@ -71,7 +71,7 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 	public T get(Integer id) {
 		String sql = getSelectQuery();
 		try {
-			return jdbcTemplate.queryForObject(sql + "where id = ? ", new Object[] { id },
+			return jdbcTemplate.queryForObject(sql + " where id = ? ", new Object[] { id },
 					new BeanPropertyRowMapper<T>(getClassForMapping()));
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -93,7 +93,6 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 				return ps;
 			}
 		}, keyHolder);
-
 		setIdAfterInsert(keyHolder, object);
 
 		return object;

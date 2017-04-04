@@ -45,8 +45,8 @@ public class CategoryDaoImpl implements ICategoryDao {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(INSERT_SQL, new String[] { "id" });
 				ps.setString(1, category.getName());
-				ps.setInt(2, category.getParentId());
-
+				if(category.getParentId()!=null) ps.setInt(2, category.getParentId());
+				else ps.setNull(2,0);
 				return ps;
 			}
 		}, keyHolder);

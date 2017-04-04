@@ -11,7 +11,7 @@ public interface IStudyProtocolService {
 	StudyProtocol get(Integer id);
 
 	@Transactional
-	void insert(StudyProtocol studyProtocol);
+	StudyProtocol insert(StudyProtocol studyProtocol);
 
 	@Transactional
 	void update(StudyProtocol studyProtocol);	

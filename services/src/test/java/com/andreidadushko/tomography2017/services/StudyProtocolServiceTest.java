@@ -66,10 +66,10 @@ public class StudyProtocolServiceTest extends AbstractTest{
 	
 	@Test
 	public void insertGetTest() {
-		studyProtocolService.insert(testData.get(1));
-		StudyProtocol studyProtocolFromDB=studyProtocolService.get(testData.get(1).getId());
-		testData.get(1).setCreationDate(studyProtocolFromDB.getCreationDate());
-		Assert.assertTrue("Returned data isn't correct", testData.get(1).equals(studyProtocolFromDB));
+		StudyProtocol studyProtocol=studyProtocolService.insert(testData.get(1));
+		StudyProtocol studyProtocolFromDB=studyProtocolService.get(studyProtocol.getId());
+		studyProtocol.setCreationDate(studyProtocolFromDB.getCreationDate());
+		Assert.assertTrue("Returned data isn't correct", studyProtocol.equals(studyProtocolFromDB));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

@@ -25,9 +25,9 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 	}
 
 	@Override
-	public void insert(StudyProtocol studyProtocol) {
+	public StudyProtocol insert(StudyProtocol studyProtocol) {
 		if (isValid(studyProtocol))
-			studyProtocolDao.insert(studyProtocol);
+			return studyProtocolDao.insert(studyProtocol);
 		else
 			throw new IllegalArgumentException();
 
@@ -49,7 +49,7 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 
 	}
 
-	@Override//УБРАТЬ!
+	@Override // УБРАТЬ!
 	public List<StudyProtocol> getAll() {
 
 		return studyProtocolDao.getAll();

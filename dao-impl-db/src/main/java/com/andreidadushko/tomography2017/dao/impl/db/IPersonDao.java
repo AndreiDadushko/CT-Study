@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.andreidadushko.tomography2017.datamodel.Person;
 
-public interface IPersonDao {
+public interface IPersonDao extends IAbstractDao<Person> {
 	
 	Person get(Integer id);
 	

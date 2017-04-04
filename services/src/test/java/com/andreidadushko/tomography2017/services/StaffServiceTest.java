@@ -112,7 +112,7 @@ public class StaffServiceTest extends AbstractTest {
 		Staff staff = staffService.insert(testData.get(2));		
 		staffService.update(testData.get(2));
 		Staff staffFromDB = staffService.get(staff.getId());
-		Assert.assertTrue("Inserted data isn't correct", testData.get(2).equals(staffFromDB));
+		Assert.assertTrue("Updated data isn't correct", testData.get(2).equals(staffFromDB));
 	}
 	
 	@Test
