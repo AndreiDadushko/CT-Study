@@ -20,7 +20,8 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	@Override
 	public Category get(Integer id) {
-
+		if (id == null)
+			return null;
 		return categoryDao.get(id);
 
 	}

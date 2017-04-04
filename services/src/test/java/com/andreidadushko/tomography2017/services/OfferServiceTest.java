@@ -53,7 +53,7 @@ public class OfferServiceTest extends AbstractTest {
 	public void insertEmptyCategoryTest() {
 		Offer offer = new Offer();
 		offerService.insert(offer);
-		Assert.fail("Could not insert emty offer");
+		Assert.fail("Could not insert empty offer");
 	}
 
 	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
@@ -78,7 +78,7 @@ public class OfferServiceTest extends AbstractTest {
 	public void updateEmptyCategoryTest() {
 		Offer offer = new Offer();
 		offerService.update(offer);
-		Assert.fail("Could not update emty offer");
+		Assert.fail("Could not update empty offer");
 	}
 
 	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)

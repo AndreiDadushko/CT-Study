@@ -40,7 +40,7 @@ public class CategoryServiceTest extends AbstractTest {
 	public void insertEmptyCategoryTest() {
 		Category category = new Category();
 		categoryService.insert(category);
-		Assert.fail("Could not insert emty category");
+		Assert.fail("Could not insert empty category");
 	}
 
 	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
@@ -68,7 +68,7 @@ public class CategoryServiceTest extends AbstractTest {
 	public void updateEmptyCategoryTest() {
 		Category category = new Category();
 		categoryService.update(category);
-		Assert.fail("Could not update emty category");
+		Assert.fail("Could not update empty category");
 	}
 
 	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)

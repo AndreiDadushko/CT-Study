@@ -18,7 +18,8 @@ public class OfferServiceImpl implements IOfferService {
 
 	@Override
 	public Offer get(Integer id) {
-
+		if (id == null)
+			return null;
 		return offerDao.get(id);
 
 	}

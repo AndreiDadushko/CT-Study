@@ -1,7 +1,5 @@
 package com.andreidadushko.tomography2017.services.impl;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -16,24 +14,29 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	@Inject
 	private IStudyOfferCartDao studyServiceCartDao;
 
-	@Override//УБРАТЬ!
+	@Override
 	public StudyOfferCart get(Integer id) {
-
+		if (id == null)
+			return null;
 		return studyServiceCartDao.get(id);
 
 	}
 
 	@Override
 	public StudyOfferCart insert(StudyOfferCart studyServiceCart) {
-
-		return studyServiceCartDao.insert(studyServiceCart);
+		if (isValid(studyServiceCart))
+			return studyServiceCartDao.insert(studyServiceCart);
+		else
+			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(StudyOfferCart studyServiceCart) {
-
-		studyServiceCartDao.update(studyServiceCart);
+		if (isValid(studyServiceCart) && studyServiceCart.getId() != null)
+			studyServiceCartDao.update(studyServiceCart);
+		else
+			throw new IllegalArgumentException();
 
 	}
 
@@ -44,11 +47,16 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 	}
 
-	@Override//УБРАТЬ!
-	public List<StudyOfferCart> getAll() {
-
-		return studyServiceCartDao.getAll();
-
+	private boolean isValid(StudyOfferCart studyOfferCart) {
+		if (studyOfferCart == null)
+			return false;
+		if (studyOfferCart.getPaid() == null || studyOfferCart.getStudyId() == null
+				|| studyOfferCart.getOfferId() == null)
+			return false;
+		if (studyOfferCart.getPaid() == null)
+			studyOfferCart.setPaid(false);
+		if (studyOfferCart.getPayDate() != null)
+			studyOfferCart.getPayDate().setNanos(0);
+		return true;
 	}
-
 }

@@ -94,7 +94,7 @@ public class StudyServiceTest extends AbstractTest{
 	@Test (expected = IllegalArgumentException.class)
 	public void insertEmptyStudyTest() {	
 		studyService.insert(testData.get(0));
-		Assert.fail("Could not insert emty study");	
+		Assert.fail("Could not insert empty study");	
 	}
 	
 	@Test (expected = org.springframework.dao.DataIntegrityViolationException.class)
@@ -116,7 +116,7 @@ public class StudyServiceTest extends AbstractTest{
 		Study study = studyService.insert(testData.get(1));
 		testData.get(0).setId(study.getId());
 		studyService.update(testData.get(0));
-		Assert.fail("Could not insert emty study");	
+		Assert.fail("Could not insert empty study");	
 	}
 	
 	@Test (expected = org.springframework.dao.DataIntegrityViolationException.class)

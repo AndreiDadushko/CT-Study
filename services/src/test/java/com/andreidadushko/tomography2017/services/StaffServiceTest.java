@@ -76,7 +76,7 @@ public class StaffServiceTest extends AbstractTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void insertEmptyStaffTest() {		
 		staffService.insert(testData.get(0));
-		Assert.fail("Could not insert emty staff");	
+		Assert.fail("Could not insert empty staff");	
 	}
 		
 	@Test (expected = org.springframework.dao.DataIntegrityViolationException.class)
@@ -95,7 +95,7 @@ public class StaffServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void updateEmptyStaffTest() {
 		staffService.update(testData.get(0));
-		Assert.fail("Could not update emty staff");	
+		Assert.fail("Could not update empty staff");	
 	}
 	
 	@Test (expected = org.springframework.dao.DataIntegrityViolationException.class)
