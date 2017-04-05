@@ -59,4 +59,10 @@ public class StudyOfferCartForList {
 		this.payDate = payDate;
 	}
 
+	@Override
+	public String toString() {
+		return "StudyOfferCartForList [id=" + id + ", category=" + category + ", offer=" + offer + ", price=" + price
+				+ ", paid=" + paid + ", payDate=" + payDate + "]";
+	}
+
 }

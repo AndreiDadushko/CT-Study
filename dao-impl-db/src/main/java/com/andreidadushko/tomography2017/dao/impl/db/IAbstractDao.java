@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface IAbstractDao<T> {
 
-	public T get(Integer id);
+	T get(Integer id);
 
-	public T insert(T object);
+	T insert(T object);
 
-	public void update(T object);
+	void update(T object);
 
-	public void delete(Integer id);
+	void delete(Integer id);
 
-	public List<T> getAll();
+	List<T> getAll();
 
 }

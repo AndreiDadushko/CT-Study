@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStudyDao;
+import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyForList;
 import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.services.IStudyService;
 
@@ -53,6 +54,18 @@ public class StudyServiceImpl implements IStudyService {
 	public List<Study> getAll() {
 
 		return studyDao.getAll();
+	}
+
+	@Override
+	public List<StudyForList> getAllStudyForList() {
+
+		return studyDao.getAllStudyForList();
+	}
+
+	@Override
+	public List<StudyForList> getStudyForListByPersonId(Integer personId) {
+
+		return studyDao.getStudyForListByPersonId(personId);
 	}
 
 	private boolean isValid(Study study) {

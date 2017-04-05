@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
+import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StaffForList;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 import com.andreidadushko.tomography2017.services.IStaffService;
 
@@ -51,6 +52,12 @@ public class StaffServiceImpl implements IStaffService {
 	public List<Staff> getAll() {
 
 		return staffDao.getAll();
+	}
+
+	@Override
+	public List<StaffForList> getAllStaffForList() {
+		
+		return staffDao.getAllStaffForList();
 	}
 
 	private boolean isValid(Staff staff) {

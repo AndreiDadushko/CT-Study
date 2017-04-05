@@ -20,5 +20,7 @@ public interface IOfferService {
 	void delete(Integer id);
 
 	List<Offer> getAll();
+	
+	List<Offer> getByCategoryId(Integer categoryId);
 
 }

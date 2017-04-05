@@ -86,4 +86,12 @@ public class StudyForList {
 		this.doctorLastName = doctorLastName;
 	}
 
+	@Override
+	public String toString() {
+		return "StudyForList [id=" + id + ", appointmentDate=" + appointmentDate + ", permitted=" + permitted
+				+ ", patientFirstName=" + patientFirstName + ", patientMiddleName=" + patientMiddleName
+				+ ", patientLastName=" + patientLastName + ", doctorFirstName=" + doctorFirstName
+				+ ", doctorMiddleName=" + doctorMiddleName + ", doctorLastName=" + doctorLastName + "]";
+	}
+	
 }

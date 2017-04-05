@@ -1,5 +1,7 @@
 package com.andreidadushko.tomography2017.services.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,6 +56,18 @@ public class OfferServiceImpl implements IOfferService {
 
 		return offerDao.getAll();
 
+	}
+
+	@Override
+	public List<Offer> getByCategoryId(Integer categoryId) {
+		List<Offer> listFromDB = getAll();
+		List<Offer> result = new ArrayList<Offer>();
+		for (Iterator<Offer> iterator = listFromDB.iterator(); iterator.hasNext();) {
+			Offer offer = iterator.next();
+			if (offer.getCategorId() == categoryId)
+				result.add(offer);
+		}
+		return result;
 	}
 
 	private boolean isValid(Offer offer) {

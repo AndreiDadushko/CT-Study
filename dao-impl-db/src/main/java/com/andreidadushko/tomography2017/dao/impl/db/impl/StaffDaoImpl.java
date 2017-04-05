@@ -2,11 +2,14 @@ package com.andreidadushko.tomography2017.dao.impl.db.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
+import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StaffForList;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 
 @Repository
@@ -32,6 +35,10 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 		return "DELETE FROM staff WHERE id=";
 	}
 
+	public String getQueryStaffForList() {
+		return " SELECT s.id, p.last_name, p.first_name, p.middle_name, s.department, s.position, s.start_date, s.end_date FROM staff s LEFT JOIN person p ON s.person_id = p.id ";
+	}
+
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Staff staff) throws SQLException {
 		ps.setString(1, staff.getDepartment());
@@ -55,6 +62,13 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 	@Override
 	protected void setIdAfterInsert(KeyHolder keyHolder, Staff staff) {
 		staff.setId(keyHolder.getKey().intValue());
+	}
+
+	@Override
+	public List<StaffForList> getAllStaffForList() {
+		String sql = getQueryStaffForList();
+		List<StaffForList> rs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<StaffForList>(StaffForList.class));
+		return rs;
 	}
 
 }

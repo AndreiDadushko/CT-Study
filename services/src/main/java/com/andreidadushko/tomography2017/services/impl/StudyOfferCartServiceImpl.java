@@ -1,10 +1,13 @@
 package com.andreidadushko.tomography2017.services.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStudyOfferCartDao;
+import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyOfferCartForList;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 import com.andreidadushko.tomography2017.services.IStudyOfferCartService;
 
@@ -45,6 +48,13 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 		studyServiceCartDao.delete(id);
 
+	}
+	
+	@Override
+	public List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId) {
+	
+		return studyServiceCartDao.getStudyOfferCartByStudyId(studyId);
+		
 	}
 
 	private boolean isValid(StudyOfferCart studyOfferCart) {

@@ -77,4 +77,11 @@ public class StaffForList {
 		this.endDate = endDate;
 	}
 
+	@Override
+	public String toString() {
+		return "StaffForList [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
+				+ lastName + ", department=" + department + ", position=" + position + ", startDate=" + startDate
+				+ ", endDate=" + endDate + "]";
+	}
+
 }
