@@ -64,7 +64,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		List<Category> result = new ArrayList<Category>();
 		for (Iterator<Category> iterator = listFromDB.iterator(); iterator.hasNext();) {
 			Category category = iterator.next();
-			if (category.getParentId() == parentId)
+			if (parentId.equals(category.getParentId()))
 				result.add(category);
 		}
 		return result;

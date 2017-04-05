@@ -64,7 +64,7 @@ public class OfferServiceImpl implements IOfferService {
 		List<Offer> result = new ArrayList<Offer>();
 		for (Iterator<Offer> iterator = listFromDB.iterator(); iterator.hasNext();) {
 			Offer offer = iterator.next();
-			if (offer.getCategorId() == categoryId)
+			if (categoryId.equals(offer.getCategorId()))
 				result.add(offer);
 		}
 		return result;

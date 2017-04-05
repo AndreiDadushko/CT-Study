@@ -149,9 +149,7 @@ public class CategoryServiceTest extends AbstractTest {
 		category2.setName("test category222");
 		category2.setParentId(category.getId());
 		category2 = categoryService.insert(category2);
-		
 		List<Category> categoris = categoryService.getByParentId(category.getId());
-		System.out.println(categoris);
 		Assert.assertTrue("Could not get all subcategories", categoris.size()==2);
 	}
 
