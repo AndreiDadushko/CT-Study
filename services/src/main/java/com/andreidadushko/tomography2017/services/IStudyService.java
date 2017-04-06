@@ -15,15 +15,13 @@ public interface IStudyService {
 	Study insert(Study study);
 
 	@Transactional
-	void update(Study study);	
+	void update(Study study);
 
 	@Transactional
 	void delete(Integer id);
-	
-	List<Study> getAll();
-	
+
 	List<StudyForList> getAllStudyForList();
-	
+
 	List<StudyForList> getStudyForListByPersonId(Integer personId);
-	
+
 }

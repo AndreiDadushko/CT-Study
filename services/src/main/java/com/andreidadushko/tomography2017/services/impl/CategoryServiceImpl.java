@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.ICategoryDao;
@@ -15,11 +17,14 @@ import com.andreidadushko.tomography2017.services.ICategoryService;
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
 	@Inject
 	private ICategoryDao categoryDao;
 
 	@Override
 	public Category get(Integer id) {
+		LOGGER.info("Get category with id = " + id);
 		if (id == null)
 			return null;
 		return categoryDao.get(id);
@@ -28,18 +33,21 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	@Override
 	public Category insert(Category category) {
-		if (isValid(category))
-			return categoryDao.insert(category);
-		else
+		if (isValid(category)) {
+			categoryDao.insert(category);
+			LOGGER.info("Insert category with id = " + category.getId());
+			return category;
+		} else
 			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(Category category) {
-		if (isValid(category) && category.getId() != null)
+		if (isValid(category) && category.getId() != null) {
 			categoryDao.update(category);
-		else
+			LOGGER.info("Update category with id = " + category.getId());
+		} else
 			throw new IllegalArgumentException();
 
 	}
@@ -48,13 +56,14 @@ public class CategoryServiceImpl implements ICategoryService {
 	public void delete(Integer id) {
 
 		categoryDao.delete(id);
-
+		LOGGER.info("Delete category with id = " + id);
 	}
 
 	@Override
 	public List<Category> getAll() {
-
-		return categoryDao.getAll();
+		List<Category> list = categoryDao.getAll();
+		LOGGER.info("Get list of all categories");
+		return list;
 
 	}
 
@@ -67,6 +76,7 @@ public class CategoryServiceImpl implements ICategoryService {
 			if (parentId.equals(category.getParentId()))
 				result.add(category);
 		}
+		LOGGER.info("Get list of all categories with parent id = " + parentId);
 		return result;
 	}
 

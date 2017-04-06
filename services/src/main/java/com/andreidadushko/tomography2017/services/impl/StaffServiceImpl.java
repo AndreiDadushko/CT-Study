@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
@@ -14,30 +16,36 @@ import com.andreidadushko.tomography2017.services.IStaffService;
 @Service
 public class StaffServiceImpl implements IStaffService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(StaffServiceImpl.class);
+
 	@Inject
 	private IStaffDao staffDao;
 
 	@Override
 	public Staff get(Integer id) {
+		LOGGER.info("Get staff with id = " + id);
 		if (id == null)
-			return null;
+			return null;		
 		return staffDao.get(id);
 
 	}
 
 	@Override
 	public Staff insert(Staff staff) {
-		if (isValid(staff))
-			return staffDao.insert(staff);
-		else
+		if (isValid(staff)) {
+			staffDao.insert(staff);
+			LOGGER.info("Insert staff with id = " + staff.getId());
+			return staff;
+		} else
 			throw new IllegalArgumentException();
 	}
 
 	@Override
 	public void update(Staff staff) {
-		if (isValid(staff) && staff.getId() != null)
+		if (isValid(staff) && staff.getId() != null) {
 			staffDao.update(staff);
-		else
+			LOGGER.info("Update staff with id = " + staff.getId());
+		} else
 			throw new IllegalArgumentException();
 	}
 
@@ -45,19 +53,14 @@ public class StaffServiceImpl implements IStaffService {
 	public void delete(Integer id) {
 
 		staffDao.delete(id);
-
-	}
-
-	@Override //УБРАТЬ!
-	public List<Staff> getAll() {
-
-		return staffDao.getAll();
+		LOGGER.info("Delete staff with id = " + id);
 	}
 
 	@Override
 	public List<StaffForList> getAllStaffForList() {
-		
-		return staffDao.getAllStaffForList();
+		List<StaffForList> list=staffDao.getAllStaffForList();
+		LOGGER.info("Get list of all staff for list");
+		return list;
 	}
 
 	private boolean isValid(Staff staff) {

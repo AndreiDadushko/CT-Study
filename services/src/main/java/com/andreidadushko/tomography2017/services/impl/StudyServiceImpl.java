@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStudyDao;
@@ -14,11 +16,14 @@ import com.andreidadushko.tomography2017.services.IStudyService;
 @Service
 public class StudyServiceImpl implements IStudyService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudyServiceImpl.class);
+
 	@Inject
 	private IStudyDao studyDao;
 
 	@Override
 	public Study get(Integer id) {
+		LOGGER.info("Get study with id = " + id);
 		if (id == null)
 			return null;
 		return studyDao.get(id);
@@ -27,18 +32,21 @@ public class StudyServiceImpl implements IStudyService {
 
 	@Override
 	public Study insert(Study study) {
-		if (isValid(study))
-			return studyDao.insert(study);
-		else
+		if (isValid(study)) {
+			studyDao.insert(study);
+			LOGGER.info("Insert study with id = " + study.getId());
+			return study;
+		} else
 			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(Study study) {
-		if (isValid(study) && study.getId() != null)
+		if (isValid(study) && study.getId() != null) {
 			studyDao.update(study);
-		else
+			LOGGER.info("Update study with id = " + study.getId());
+		} else
 			throw new IllegalArgumentException();
 
 	}
@@ -47,25 +55,21 @@ public class StudyServiceImpl implements IStudyService {
 	public void delete(Integer id) {
 
 		studyDao.delete(id);
-
-	}
-
-	@Override//УБРАТЬ!
-	public List<Study> getAll() {
-
-		return studyDao.getAll();
+		LOGGER.info("Delete study with id = " + id);
 	}
 
 	@Override
 	public List<StudyForList> getAllStudyForList() {
-
-		return studyDao.getAllStudyForList();
+		List<StudyForList> list = studyDao.getAllStudyForList();
+		LOGGER.info("Get list of all study for list");
+		return list;
 	}
 
 	@Override
 	public List<StudyForList> getStudyForListByPersonId(Integer personId) {
-
-		return studyDao.getStudyForListByPersonId(personId);
+		List<StudyForList> list = studyDao.getStudyForListByPersonId(personId);
+		LOGGER.info("Get list of all study for list with person id = " + personId);
+		return list;
 	}
 
 	private boolean isValid(Study study) {

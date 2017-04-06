@@ -19,8 +19,6 @@ public interface IStaffService {
 
 	@Transactional
 	void delete(Integer id);
-
-	List<Staff> getAll();
 	
 	List<StaffForList> getAllStaffForList();
 	

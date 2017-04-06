@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStudyOfferCartDao;
@@ -14,31 +16,37 @@ import com.andreidadushko.tomography2017.services.IStudyOfferCartService;
 @Service
 public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudyOfferCartServiceImpl.class);
+
 	@Inject
-	private IStudyOfferCartDao studyServiceCartDao;
+	private IStudyOfferCartDao studyOfferCartDao;
 
 	@Override
 	public StudyOfferCart get(Integer id) {
+		LOGGER.info("Get studyOfferCart with id = " + id);
 		if (id == null)
 			return null;
-		return studyServiceCartDao.get(id);
+		return studyOfferCartDao.get(id);
 
 	}
 
 	@Override
-	public StudyOfferCart insert(StudyOfferCart studyServiceCart) {
-		if (isValid(studyServiceCart))
-			return studyServiceCartDao.insert(studyServiceCart);
-		else
+	public StudyOfferCart insert(StudyOfferCart studyOfferCart) {
+		if (isValid(studyOfferCart)) {
+			studyOfferCartDao.insert(studyOfferCart);
+			LOGGER.info("Insert studyOfferCart with id = " + studyOfferCart.getId());
+			return studyOfferCart;
+		} else
 			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(StudyOfferCart studyServiceCart) {
-		if (isValid(studyServiceCart) && studyServiceCart.getId() != null)
-			studyServiceCartDao.update(studyServiceCart);
-		else
+		if (isValid(studyServiceCart) && studyServiceCart.getId() != null) {
+			studyOfferCartDao.update(studyServiceCart);
+			LOGGER.info("Update studyServiceCart with id = " + studyServiceCart.getId());
+		} else
 			throw new IllegalArgumentException();
 
 	}
@@ -46,15 +54,16 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	@Override
 	public void delete(Integer id) {
 
-		studyServiceCartDao.delete(id);
-
+		studyOfferCartDao.delete(id);
+		LOGGER.info("Delete studyServiceCart with id = " + id);
 	}
-	
+
 	@Override
 	public List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId) {
-	
-		return studyServiceCartDao.getStudyOfferCartByStudyId(studyId);
-		
+		List<StudyOfferCartForList> list = studyOfferCartDao.getStudyOfferCartByStudyId(studyId);
+		LOGGER.info("Get list of all studyOfferCartDao");
+		return list;
+
 	}
 
 	private boolean isValid(StudyOfferCart studyOfferCart) {

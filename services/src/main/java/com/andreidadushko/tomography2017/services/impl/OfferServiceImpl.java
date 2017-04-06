@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IOfferDao;
@@ -15,11 +17,14 @@ import com.andreidadushko.tomography2017.services.IOfferService;
 @Service
 public class OfferServiceImpl implements IOfferService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(OfferServiceImpl.class);
+
 	@Inject
 	private IOfferDao offerDao;
 
 	@Override
 	public Offer get(Integer id) {
+		LOGGER.info("Get offer with id = " + id);
 		if (id == null)
 			return null;
 		return offerDao.get(id);
@@ -28,18 +33,21 @@ public class OfferServiceImpl implements IOfferService {
 
 	@Override
 	public Offer insert(Offer offer) {
-		if (isValid(offer))
-			return offerDao.insert(offer);
-		else
+		if (isValid(offer)) {
+			offerDao.insert(offer);
+			LOGGER.info("Insert offer with id = " + offer.getId());
+			return offer;
+		} else
 			throw new IllegalArgumentException();
 
 	}
 
 	@Override
 	public void update(Offer offer) {
-		if (isValid(offer) && offer.getId() != null)
+		if (isValid(offer) && offer.getId() != null) {
 			offerDao.update(offer);
-		else
+			LOGGER.info("Update offer with id = " + offer.getId());
+		} else
 			throw new IllegalArgumentException();
 
 	}
@@ -48,13 +56,14 @@ public class OfferServiceImpl implements IOfferService {
 	public void delete(Integer id) {
 
 		offerDao.delete(id);
-
+		LOGGER.info("Delete offer with id = " + id);
 	}
 
 	@Override
 	public List<Offer> getAll() {
-
-		return offerDao.getAll();
+		List<Offer> list = offerDao.getAll();
+		LOGGER.info("Get list of all offers");
+		return list;
 
 	}
 
@@ -67,6 +76,7 @@ public class OfferServiceImpl implements IOfferService {
 			if (categoryId.equals(offer.getCategorId()))
 				result.add(offer);
 		}
+		LOGGER.info("Get list of all offers with category id = " + categoryId);
 		return result;
 	}
 

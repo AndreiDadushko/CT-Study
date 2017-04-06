@@ -123,7 +123,7 @@ public class StaffServiceTest extends AbstractTest {
 		Assert.assertNull("Could not delete data", staffFromDB);
 	}
 	
-	@Test
+	/*@Test
 	public void getAllTest() {		
 		List<Staff> staff=staffService.getAll();
 		int numberBeforeInsert=staff.size();
@@ -131,6 +131,6 @@ public class StaffServiceTest extends AbstractTest {
 		staff=staffService.getAll();
 		int numberAfterInsert=staff.size();	
 		Assert.assertTrue("Could not get all staff", numberBeforeInsert+1==numberAfterInsert);
-	}
+	}*/
 
 }

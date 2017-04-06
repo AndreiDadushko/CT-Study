@@ -120,7 +120,7 @@ public class StudyProtocolServiceTest extends AbstractTest{
 		StudyProtocol studyProtocolFromDB=studyProtocolService.get(testData.get(1).getId());
 		Assert.assertNull("Could not delete data", studyProtocolFromDB);
 	}
-	
+	/*
 	@Test
 	public void getAllTest() {		
 		List<StudyProtocol> studiesProtocols=studyProtocolService.getAll();
@@ -130,5 +130,5 @@ public class StudyProtocolServiceTest extends AbstractTest{
 		int numberAfterInsert=studiesProtocols.size();	
 		Assert.assertTrue("Could not get all studies protocols", numberBeforeInsert+1==numberAfterInsert);
 	}	
-	
+	*/
 }
