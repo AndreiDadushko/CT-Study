@@ -9,4 +9,5 @@ public interface IStaffDao extends IAbstractDao<Staff>{
 	
 	List<StaffForList> getAllStaffForList();
 	
+	List<String> getPositionsByLogin(String login);
 }

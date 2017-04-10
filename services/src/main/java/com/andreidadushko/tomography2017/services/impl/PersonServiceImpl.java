@@ -24,16 +24,19 @@ public class PersonServiceImpl implements IPersonService {
 	public Person get(Integer id) {
 		LOGGER.info("Get person with id = " + id);
 		if (id == null)
-			return null;		
+			return null;
 		return personDao.get(id);
 	}
 
 	@Override
-	public Person get(String login) {
-		if (login == null)
-			return null;
-		LOGGER.info("Get person with login = " + login);
-		return personDao.get(login);
+	public Boolean validateUserPassword(String login, String password) {
+		if (login == null || password == null)
+			return false;
+		Person person = personDao.get(login);
+		if (password.equals(person.getPassword()))
+			return true;
+		else
+			return false;
 	}
 
 	@Override

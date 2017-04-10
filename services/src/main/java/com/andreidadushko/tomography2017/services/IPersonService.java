@@ -10,7 +10,7 @@ public interface IPersonService {
 
 	Person get(Integer id);
 	
-	Person get(String login);
+	Boolean validateUserPassword(String login, String password);
 
 	@Transactional
 	Person insert(Person person);

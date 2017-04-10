@@ -52,12 +52,12 @@ public class PersonServiceTest extends AbstractTest {
 		Assert.assertTrue("Returned data isn't correct", person.equals(personFromDB));
 	}
 	
-	@Test
+	/*@Test
 	public void getWithLoginTest() {
 		Person person = personService.insert(testData.get(2));
 		Person personFromDB = personService.get(person.getLogin());
 		Assert.assertTrue("Returned data isn't correct", person.equals(personFromDB));
-	}
+	}*/
 
 	@Test(expected = IllegalArgumentException.class)
 	public void insertNullTest() {		
