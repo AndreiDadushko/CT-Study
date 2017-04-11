@@ -124,6 +124,12 @@ public class PersonDaoImpl extends AbstractDaoImpl<Person> implements IPersonDao
 				whereCause.append(sqlParts.get(i));
 			}
 		}
+		if(personFilter.getSort()!=null && personFilter.getSort().getColumn()!=null){
+			whereCause.append(" ORDER BY "+personFilter.getSort().getColumn());
+			if(personFilter.getSort().getOrder()!=null){
+				whereCause.append(" "+personFilter.getSort().getOrder()); //ASC DESC
+			}
+		}
 		objects.add(offset);
 		objects.add(limit);
 		List<Person> rs = jdbcTemplate.query(sql + whereCause + " LIMIT ?,?", objects.toArray(),

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
 import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StaffForList;
+import com.andreidadushko.tomography2017.dao.impl.db.filters.StaffFilter;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 import com.andreidadushko.tomography2017.services.IStaffService;
 
@@ -57,9 +58,16 @@ public class StaffServiceImpl implements IStaffService {
 	}
 
 	@Override
-	public List<StaffForList> getAllStaffForList() {
-		List<StaffForList> list = staffDao.getAllStaffForList();
-		LOGGER.info("Get list of all staff for list");
+	public List<StaffForList> getWithPagination(int offset, int limit) {
+		List<StaffForList> list = staffDao.getWithPagination(offset, limit);
+		LOGGER.info("Get list of staff with offset = {}, limit = {}", offset, limit);
+		return list;
+	}
+
+	@Override
+	public List<StaffForList> getWithPagination(int offset, int limit, StaffFilter staffFilter) {
+		List<StaffForList> list = staffDao.getWithPagination(offset, limit,staffFilter);
+		LOGGER.info("Get list of staff with offset = {}, limit = {} and filter = ", offset, limit,staffFilter);
 		return list;
 	}
 
@@ -69,7 +77,7 @@ public class StaffServiceImpl implements IStaffService {
 		LOGGER.info("Get list of positions by login");
 		return list;
 	}
-
+	
 	private boolean isValid(Staff staff) {
 		if (staff == null)
 			return false;

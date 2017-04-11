@@ -3,6 +3,7 @@ package com.andreidadushko.tomography2017.dao.impl.db.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
 import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StaffForList;
+import com.andreidadushko.tomography2017.dao.impl.db.filters.StaffFilter;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 
 @Repository
@@ -71,17 +73,11 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 	}
 
 	@Override
-	public List<StaffForList> getAllStaffForList() {
-		String sql = getQueryStaffForList();
-		List<StaffForList> rs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<StaffForList>(StaffForList.class));
-		return rs;
-	}
-
-	@Override
 	public List<String> getPositionsByLogin(String login) {
 		String sql = getQueryPositionsByLogin();
 		List<String> rs = jdbcTemplate.query(sql, new Object[] { login }, new PositionsByLoginMapper());
-		//List<String> rss = jdbcTemplate.queryForList(sql,new Object[] { login }, String.class); //ПРОВЕРИТЬ!!!
+		// List<String> rss = jdbcTemplate.queryForList(sql,new Object[] { login
+		// }, String.class); //ПРОВЕРИТЬ!!!
 		return rs;
 	}
 
@@ -92,5 +88,83 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 			return rs.getString("position");
 		}
 	}
-	
+
+	@Override
+	public List<StaffForList> getWithPagination(int offset, int limit) {
+		String sql = getSelectQuery();
+		List<StaffForList> rs = jdbcTemplate.query(sql + " LIMIT ?,?", new Object[] { offset, limit },
+				new BeanPropertyRowMapper<StaffForList>(StaffForList.class));
+		return rs;
+	}
+
+	@Override
+	public List<StaffForList> getWithPagination(int offset, int limit, StaffFilter staffFilter) {
+		String sql = getQueryStaffForList();
+		StringBuilder whereCause = new StringBuilder();
+		List<Object> objects = new ArrayList<Object>();
+		List<String> sqlParts = new ArrayList<String>();
+		if (staffFilter != null) {
+			if (staffFilter.getFirstName() != null) {
+				sqlParts.add("first_name = ?");
+				objects.add(staffFilter.getFirstName());
+			}
+			if (staffFilter.getLastName() != null) {
+				sqlParts.add("last_name = ?");
+				objects.add(staffFilter.getLastName());
+			}
+			if (staffFilter.getMiddleName() != null) {
+				sqlParts.add("middle_name = ?");
+				objects.add(staffFilter.getMiddleName());
+			}
+			if (staffFilter.getDepartment() != null) {
+				sqlParts.add("department = ?");
+				objects.add(staffFilter.getDepartment());
+			}
+			if (staffFilter.getPosition() != null) {
+				sqlParts.add("position = ?");
+				objects.add(staffFilter.getPosition());
+			}
+			if (staffFilter.getStartFrom() != null) {
+				sqlParts.add("start_date > ?");
+				objects.add(staffFilter.getStartFrom());
+			}
+			if (staffFilter.getStartTo() != null) {
+				sqlParts.add("start_date < ?");
+				objects.add(staffFilter.getStartTo());
+			}
+			if (staffFilter.getEndFrom() != null) {
+				sqlParts.add("end_date > ?");
+				objects.add(staffFilter.getEndFrom());
+			}
+			if (staffFilter.getEndTo() != null) {
+				sqlParts.add("end_date < ?");
+				objects.add(staffFilter.getEndTo());
+			}
+		}
+		if (!sqlParts.isEmpty()) {
+			whereCause.append(" WHERE ");
+			for (int i = 0; i < sqlParts.size(); i++) {
+				if (i != 0)
+					whereCause.append(" AND ");
+				whereCause.append(sqlParts.get(i));
+			}
+		}
+		if(staffFilter.getSort()!=null && staffFilter.getSort().getColumn()!=null){
+			whereCause.append(" ORDER BY "+staffFilter.getSort().getColumn());
+			if(staffFilter.getSort().getOrder()!=null){
+				whereCause.append(" "+staffFilter.getSort().getOrder()); //ASC DESC
+			}
+		}
+		objects.add(offset);
+		objects.add(limit);
+		List<StaffForList> rs = jdbcTemplate.query(sql + whereCause + " LIMIT ?,?", objects.toArray(),
+				new BeanPropertyRowMapper<StaffForList>(StaffForList.class));
+		return rs;
+	}
+
+	@Override
+	public List<Staff> getAll() {
+		throw new UnsupportedOperationException();
+	}
+
 }

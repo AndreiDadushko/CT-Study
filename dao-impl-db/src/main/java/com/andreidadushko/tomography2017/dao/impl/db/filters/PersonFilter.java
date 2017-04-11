@@ -12,6 +12,8 @@ public class PersonFilter {
 	private Timestamp from;
 	private Timestamp to;
 
+	private SortData sort;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -60,10 +62,18 @@ public class PersonFilter {
 		this.to = to;
 	}
 
+	public SortData getSort() {
+		return sort;
+	}
+
+	public void setSort(SortData sort) {
+		this.sort = sort;
+	}
+
 	@Override
 	public String toString() {
 		return "PersonFilter [firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
-				+ ", adress=" + adress + ", from=" + from + ", to=" + to + "]";
+				+ ", adress=" + adress + ", from=" + from + ", to=" + to + ", sort=" + sort + "]";
 	}
 
 }
