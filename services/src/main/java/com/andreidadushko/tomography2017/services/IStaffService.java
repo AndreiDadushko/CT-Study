@@ -22,4 +22,6 @@ public interface IStaffService {
 	
 	List<StaffForList> getAllStaffForList();
 	
+	List<String> getPositionsByLogin(String login);
+	
 }

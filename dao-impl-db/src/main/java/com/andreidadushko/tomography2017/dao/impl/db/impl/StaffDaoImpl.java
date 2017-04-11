@@ -81,7 +81,7 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 	public List<String> getPositionsByLogin(String login) {
 		String sql = getQueryPositionsByLogin();
 		List<String> rs = jdbcTemplate.query(sql, new Object[] { login }, new PositionsByLoginMapper());
-		//List<String> rss = jdbcTemplate.queryForList(sql, String.class); ПРОВЕРИТЬ!!!
+		//List<String> rss = jdbcTemplate.queryForList(sql,new Object[] { login }, String.class); //ПРОВЕРИТЬ!!!
 		return rs;
 	}
 
@@ -92,5 +92,5 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 			return rs.getString("position");
 		}
 	}
-
+	
 }

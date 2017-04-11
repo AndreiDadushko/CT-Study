@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IPersonDao;
+import com.andreidadushko.tomography2017.dao.impl.db.filters.PersonFilter;
 import com.andreidadushko.tomography2017.datamodel.Person;
 import com.andreidadushko.tomography2017.services.IPersonService;
 
@@ -65,11 +66,17 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	@Override
-	public List<Person> getAll() {
-		List<Person> persons = personDao.getAll();
-		LOGGER.info("Get list of all persons");
+	public List<Person> getWithPagination(int offset, int limit) {
+		List<Person> persons = personDao.getWithPagination(offset, limit);
+		LOGGER.info("Get list of persons with offset = {}, limit = {}", offset, limit);
 		return persons;
+	}
 
+	@Override
+	public List<Person> getWithPagination(int offset, int limit, PersonFilter personFilter) {
+		List<Person> persons = personDao.getWithPagination(offset, limit, personFilter);
+		LOGGER.info("Get list of persons with offset = {}, limit = {} and filter = ", offset, limit, personFilter);
+		return persons;
 	}
 
 	private boolean isValid(Person person) {

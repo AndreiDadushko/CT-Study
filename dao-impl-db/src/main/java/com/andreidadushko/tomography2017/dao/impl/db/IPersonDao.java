@@ -1,9 +1,15 @@
 package com.andreidadushko.tomography2017.dao.impl.db;
 
+import java.util.List;
+
+import com.andreidadushko.tomography2017.dao.impl.db.filters.PersonFilter;
 import com.andreidadushko.tomography2017.datamodel.Person;
 
 public interface IPersonDao extends IAbstractDao<Person> {
 
 	Person get(String login);
-		
+
+	List<Person> getWithPagination(int offset, int limit);
+
+	List<Person> getWithPagination(int offset, int limit, PersonFilter personFilter);
 }

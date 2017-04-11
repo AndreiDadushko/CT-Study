@@ -25,7 +25,7 @@ public class StaffServiceImpl implements IStaffService {
 	public Staff get(Integer id) {
 		LOGGER.info("Get staff with id = " + id);
 		if (id == null)
-			return null;		
+			return null;
 		return staffDao.get(id);
 
 	}
@@ -58,8 +58,15 @@ public class StaffServiceImpl implements IStaffService {
 
 	@Override
 	public List<StaffForList> getAllStaffForList() {
-		List<StaffForList> list=staffDao.getAllStaffForList();
+		List<StaffForList> list = staffDao.getAllStaffForList();
 		LOGGER.info("Get list of all staff for list");
+		return list;
+	}
+
+	@Override
+	public List<String> getPositionsByLogin(String login) {
+		List<String> list = staffDao.getPositionsByLogin(login);
+		LOGGER.info("Get list of positions by login");
 		return list;
 	}
 
