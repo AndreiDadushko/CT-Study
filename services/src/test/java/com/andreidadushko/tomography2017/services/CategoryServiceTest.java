@@ -118,7 +118,7 @@ public class CategoryServiceTest extends AbstractTest {
 		Category categoryFromDB = categoryService.get(category.getId());
 		Assert.assertNull("Could not delete data", categoryFromDB);
 	}
-
+/*
 	@Test
 	public void getAllTest() {
 		List<Category> categories = categoryService.getAll();
@@ -131,7 +131,7 @@ public class CategoryServiceTest extends AbstractTest {
 		categories = categoryService.getAll();
 		int numberAfterInsert = categories.size();
 		Assert.assertTrue("Could not get all categories", numberBeforeInsert + 1 == numberAfterInsert);
-	}
+	}*/
 	
 	@Test
 	public void getByParentIdTest() {

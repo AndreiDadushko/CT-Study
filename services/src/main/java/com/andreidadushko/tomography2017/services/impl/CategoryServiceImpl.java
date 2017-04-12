@@ -60,20 +60,21 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public List<Category> getAll() {
-		List<Category> list = categoryDao.getAll();
-		LOGGER.info("Get list of all categories");
-		return list;
+	public List<Category> getRootCategories() {
 
+		return getByParentId(null);
 	}
 
 	@Override
 	public List<Category> getByParentId(Integer parentId) {
-		List<Category> listFromDB = getAll();
+		List<Category> listFromDB = categoryDao.getAll();
 		List<Category> result = new ArrayList<Category>();
 		for (Iterator<Category> iterator = listFromDB.iterator(); iterator.hasNext();) {
 			Category category = iterator.next();
-			if (parentId.equals(category.getParentId()))
+			if (parentId == null) {
+				if (category.getParentId() == null)
+					result.add(category);
+			} else if (parentId.equals(category.getParentId()))
 				result.add(category);
 		}
 		LOGGER.info("Get list of all categories with parent id = " + parentId);

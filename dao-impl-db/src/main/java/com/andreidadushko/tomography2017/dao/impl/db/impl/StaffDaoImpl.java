@@ -91,7 +91,7 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 
 	@Override
 	public List<StaffForList> getWithPagination(int offset, int limit) {
-		String sql = getSelectQuery();
+		String sql = getQueryStaffForList();
 		List<StaffForList> rs = jdbcTemplate.query(sql + " LIMIT ?,?", new Object[] { offset, limit },
 				new BeanPropertyRowMapper<StaffForList>(StaffForList.class));
 		return rs;

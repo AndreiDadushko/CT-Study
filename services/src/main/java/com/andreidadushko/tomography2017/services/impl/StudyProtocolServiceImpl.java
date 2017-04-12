@@ -54,6 +54,13 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 		studyProtocolDao.delete(id);
 		LOGGER.info("Delete study protocol with id = " + id);
 	}
+	
+	@Override
+	public void massDelete(Integer[] idArray) {
+
+		studyProtocolDao.massDelete(idArray);
+		LOGGER.info("Delete study protocol with id = " + idArray);
+	}
 
 	private boolean isValid(StudyProtocol studyProtocol) {
 		if (studyProtocol == null)

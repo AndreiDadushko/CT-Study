@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStudyOfferCartDao;
 import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyOfferCartForList;
+import com.andreidadushko.tomography2017.datamodel.Offer;
+import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 import com.andreidadushko.tomography2017.services.IStudyOfferCartService;
 
@@ -23,11 +25,11 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 	@Override
 	public StudyOfferCart get(Integer id) {
+
 		LOGGER.info("Get studyOfferCart with id = " + id);
 		if (id == null)
 			return null;
 		return studyOfferCartDao.get(id);
-
 	}
 
 	@Override
@@ -42,10 +44,10 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	}
 
 	@Override
-	public void update(StudyOfferCart studyServiceCart) {
-		if (isValid(studyServiceCart) && studyServiceCart.getId() != null) {
-			studyOfferCartDao.update(studyServiceCart);
-			LOGGER.info("Update studyServiceCart with id = " + studyServiceCart.getId());
+	public void update(StudyOfferCart studyOfferCart) {
+		if (isValid(studyOfferCart) && studyOfferCart.getId() != null) {
+			studyOfferCartDao.update(studyOfferCart);
+			LOGGER.info("Update studyOfferCart with id = " + studyOfferCart.getId());
 		} else
 			throw new IllegalArgumentException();
 
@@ -55,15 +57,37 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	public void delete(Integer id) {
 
 		studyOfferCartDao.delete(id);
-		LOGGER.info("Delete studyServiceCart with id = " + id);
+		LOGGER.info("Delete studyOfferCart with id = " + id);
 	}
 
 	@Override
 	public List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId) {
-		List<StudyOfferCartForList> list = studyOfferCartDao.getStudyOfferCartByStudyId(studyId);
-		LOGGER.info("Get list of all studyOfferCartDao");
-		return list;
 
+		List<StudyOfferCartForList> list = studyOfferCartDao.getStudyOfferCartByStudyId(studyId);
+		LOGGER.info("Get list of all studyOfferCart");
+		return list;
+	}
+
+	@Override
+	public void massDelete(Integer[] studyIdArray) {
+
+		studyOfferCartDao.massDelete(studyIdArray);
+		LOGGER.info("Delete studyOfferCart with study id = " + studyIdArray);
+	}
+
+	@Override
+	public void massInsert(Study study, List<Offer> offer) {
+		if (study != null && offer != null) {
+			int studyId = study.getId();
+			for (int i = 0; i < offer.size(); i++) {
+				if (offer.get(i) != null) {
+					StudyOfferCart studyOfferCart = new StudyOfferCart();
+					studyOfferCart.setStudyId(studyId);
+					studyOfferCart.setOfferId(offer.get(i).getId());
+					insert(studyOfferCart);
+				}
+			}
+		}
 	}
 
 	private boolean isValid(StudyOfferCart studyOfferCart) {

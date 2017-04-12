@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyForList;
+import com.andreidadushko.tomography2017.dao.impl.db.filters.StudyFilter;
 import com.andreidadushko.tomography2017.datamodel.Study;
 
 public interface IStudyService {
@@ -19,9 +20,13 @@ public interface IStudyService {
 
 	@Transactional
 	void delete(Integer id);
-
-	List<StudyForList> getAllStudyForList();
+	
+	void massDelete(Integer)
 
 	List<StudyForList> getStudyForListByPersonId(Integer personId);
+
+	List<StudyForList> getWithPagination(int offset, int limit);
+
+	List<StudyForList> getWithPagination(int offset, int limit, StudyFilter studyFilter);
 
 }

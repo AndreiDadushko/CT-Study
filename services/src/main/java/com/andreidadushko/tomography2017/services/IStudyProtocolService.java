@@ -17,4 +17,6 @@ public interface IStudyProtocolService {
 	@Transactional
 	void delete(Integer id);
 
+	@Transactional
+	void massDelete(Integer[] idArray);
 }

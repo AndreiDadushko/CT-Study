@@ -71,4 +71,22 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 		return rs;
 	}
 
+	@Override
+	public void massDelete(Integer[] studyIdArray) {
+		String sql = "DELETE FROM study_offer_cart WHERE study_id = ";
+		StringBuilder whereCause = null;
+		if (studyIdArray != null && studyIdArray.length != 0) {
+			whereCause = new StringBuilder();
+			for (int i = 0; i < studyIdArray.length; i++) {
+				if (i != 0) {
+					whereCause.append(" OR ");
+					whereCause.append(" study_id = " + studyIdArray[i]);
+				} else
+					whereCause.append(studyIdArray[i]);
+			}
+		}
+		jdbcTemplate.update(sql + whereCause); // попробовать передать Object[]
+												// и null вместо него
+	}
+
 }

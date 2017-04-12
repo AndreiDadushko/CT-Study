@@ -18,8 +18,8 @@ public interface ICategoryService {
 
 	@Transactional
 	void delete(Integer id);
-
-	List<Category> getAll();
+	
+	List<Category> getRootCategories();
 	
 	List<Category> getByParentId(Integer parentId);
 	

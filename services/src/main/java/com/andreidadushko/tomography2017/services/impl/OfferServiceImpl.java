@@ -61,10 +61,10 @@ public class OfferServiceImpl implements IOfferService {
 
 	@Override
 	public List<Offer> getAll() {
+
 		List<Offer> list = offerDao.getAll();
 		LOGGER.info("Get list of all offers");
 		return list;
-
 	}
 
 	@Override
@@ -73,7 +73,10 @@ public class OfferServiceImpl implements IOfferService {
 		List<Offer> result = new ArrayList<Offer>();
 		for (Iterator<Offer> iterator = listFromDB.iterator(); iterator.hasNext();) {
 			Offer offer = iterator.next();
-			if (categoryId.equals(offer.getCategorId()))
+			if (categoryId == null) {
+				if (offer.getCategorId() == null)
+					result.add(offer);
+			} else if (categoryId.equals(offer.getCategorId()))
 				result.add(offer);
 		}
 		LOGGER.info("Get list of all offers with category id = " + categoryId);

@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.impl.db.IStudyDao;
 import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyForList;
+import com.andreidadushko.tomography2017.dao.impl.db.filters.StudyFilter;
 import com.andreidadushko.tomography2017.datamodel.Study;
+import com.andreidadushko.tomography2017.services.IStudyOfferCartService;
+import com.andreidadushko.tomography2017.services.IStudyProtocolService;
 import com.andreidadushko.tomography2017.services.IStudyService;
 
 @Service
@@ -20,6 +23,12 @@ public class StudyServiceImpl implements IStudyService {
 
 	@Inject
 	private IStudyDao studyDao;
+	
+	@Inject
+	private IStudyProtocolService studyProtocolService;
+	
+	@Inject
+	private IStudyOfferCartService studyOfferCartService;
 
 	@Override
 	public Study get(Integer id) {
@@ -53,15 +62,24 @@ public class StudyServiceImpl implements IStudyService {
 
 	@Override
 	public void delete(Integer id) {
-
+		studyProtocolService.delete(id);
+		studyOfferCartService.massDelete(new Integer[]{id});
 		studyDao.delete(id);
 		LOGGER.info("Delete study with id = " + id);
 	}
 
 	@Override
-	public List<StudyForList> getAllStudyForList() {
-		List<StudyForList> list = studyDao.getAllStudyForList();
-		LOGGER.info("Get list of all study for list");
+	public List<StudyForList> getWithPagination(int offset, int limit) {
+		List<StudyForList> list = studyDao.getWithPagination(offset, limit);
+		LOGGER.info("Get list of studies for list with offset = {}, limit = {}", offset, limit);
+		return list;
+	}
+
+	@Override
+	public List<StudyForList> getWithPagination(int offset, int limit, StudyFilter studyFilter) {
+		List<StudyForList> list = studyDao.getWithPagination(offset, limit, studyFilter);
+		LOGGER.info("Get list of studies for list with offset = {}, limit = {} and filter = ", offset, limit,
+				studyFilter);
 		return list;
 	}
 

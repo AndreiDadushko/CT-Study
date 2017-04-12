@@ -8,4 +8,6 @@ import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 public interface IStudyOfferCartDao extends IAbstractDao<StudyOfferCart> {
 
 	List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId);
+	
+	void massDelete(Integer[] studyIdArray);
 }
