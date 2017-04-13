@@ -148,6 +148,25 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 	}
 
 	@Override
+	public void massDelete(Integer[] idArray) {
+		String sql = getDeleteQuery();
+		StringBuilder whereCause = null;
+		if (idArray != null && idArray.length != 0) {
+			whereCause = new StringBuilder();
+			for (int i = 0; i < idArray.length; i++) {
+				if (i != 0) {
+					whereCause.append(" OR ");
+					whereCause.append(" id = " + idArray[i]);
+				} else
+					whereCause.append(idArray[i]);
+			}
+		}
+		jdbcTemplate.update(sql + whereCause); // попробовать передать Object[]
+												// и null вместо него
+
+	}
+
+	@Override
 	public List<Study> getAll() {
 		throw new UnsupportedOperationException();
 	}

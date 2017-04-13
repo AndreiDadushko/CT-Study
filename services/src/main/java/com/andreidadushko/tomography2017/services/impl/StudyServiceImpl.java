@@ -23,10 +23,10 @@ public class StudyServiceImpl implements IStudyService {
 
 	@Inject
 	private IStudyDao studyDao;
-	
+
 	@Inject
 	private IStudyProtocolService studyProtocolService;
-	
+
 	@Inject
 	private IStudyOfferCartService studyOfferCartService;
 
@@ -63,9 +63,17 @@ public class StudyServiceImpl implements IStudyService {
 	@Override
 	public void delete(Integer id) {
 		studyProtocolService.delete(id);
-		studyOfferCartService.massDelete(new Integer[]{id});
+		studyOfferCartService.massDelete(new Integer[] { id });
 		studyDao.delete(id);
 		LOGGER.info("Delete study with id = " + id);
+	}
+
+	@Override
+	public void massDelete(Integer[] idArray) {
+		studyProtocolService.massDelete(idArray);
+		studyOfferCartService.massDelete(idArray);
+		studyDao.massDelete(idArray);
+		LOGGER.info("Delete studies with id = " + idArray);
 	}
 
 	@Override

@@ -21,7 +21,8 @@ public interface IStudyService {
 	@Transactional
 	void delete(Integer id);
 	
-	void massDelete(Integer)
+	@Transactional
+	void massDelete(Integer[] idArray);
 
 	List<StudyForList> getStudyForListByPersonId(Integer personId);
 
