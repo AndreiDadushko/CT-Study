@@ -129,11 +129,10 @@ public class PersonDaoImpl extends AbstractDaoImpl<Person> implements IPersonDao
 				whereCause.append(sqlParts.get(i));
 			}
 		}
-		if (personFilter.getSort() != null && personFilter.getSort().getColumn() != null) {
+		if (personFilter != null && personFilter.getSort() != null && personFilter.getSort().getColumn() != null) {
 			whereCause.append(" ORDER BY " + personFilter.getSort().getColumn());
 			if (personFilter.getSort().getOrder() != null) {
-				whereCause.append(" " + personFilter.getSort().getOrder()); // ASC
-																			// DESC
+				whereCause.append(" " + personFilter.getSort().getOrder());
 			}
 		}
 		objects.add(offset);

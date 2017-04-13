@@ -34,7 +34,7 @@ public class PersonServiceImpl implements IPersonService {
 		if (login == null || password == null)
 			return false;
 		Person person = personDao.get(login);
-		if (password.equals(person.getPassword()))
+		if (person!=null && password.equals(person.getPassword()))
 			return true;
 		else
 			return false;
