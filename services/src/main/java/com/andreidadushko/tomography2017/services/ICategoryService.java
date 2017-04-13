@@ -19,6 +19,8 @@ public interface ICategoryService {
 	@Transactional
 	void delete(Integer id);
 	
+	Integer getCount();
+	
 	List<Category> getRootCategories();
 	
 	List<Category> getByParentId(Integer parentId);

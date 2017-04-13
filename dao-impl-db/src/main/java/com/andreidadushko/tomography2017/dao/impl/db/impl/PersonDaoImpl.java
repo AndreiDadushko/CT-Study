@@ -38,6 +38,11 @@ public class PersonDaoImpl extends AbstractDaoImpl<Person> implements IPersonDao
 	}
 
 	@Override
+	public String getCountQuery() {
+		return "SELECT COUNT(*) FROM person";
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Person person) throws SQLException {
 		ps.setString(1, person.getFirstName());
 		ps.setString(2, person.getMiddleName());
@@ -124,10 +129,11 @@ public class PersonDaoImpl extends AbstractDaoImpl<Person> implements IPersonDao
 				whereCause.append(sqlParts.get(i));
 			}
 		}
-		if(personFilter.getSort()!=null && personFilter.getSort().getColumn()!=null){
-			whereCause.append(" ORDER BY "+personFilter.getSort().getColumn());
-			if(personFilter.getSort().getOrder()!=null){
-				whereCause.append(" "+personFilter.getSort().getOrder()); //ASC DESC
+		if (personFilter.getSort() != null && personFilter.getSort().getColumn() != null) {
+			whereCause.append(" ORDER BY " + personFilter.getSort().getColumn());
+			if (personFilter.getSort().getOrder() != null) {
+				whereCause.append(" " + personFilter.getSort().getOrder()); // ASC
+																			// DESC
 			}
 		}
 		objects.add(offset);

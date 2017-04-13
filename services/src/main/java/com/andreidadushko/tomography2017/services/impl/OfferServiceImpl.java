@@ -28,18 +28,19 @@ public class OfferServiceImpl implements IOfferService {
 		if (id == null)
 			return null;
 		return offerDao.get(id);
+	}
 
+	@Override
+	public Integer getCount() {
+		return offerDao.getCount();
 	}
 
 	@Override
 	public Offer insert(Offer offer) {
-		if (isValid(offer)) {
-			offerDao.insert(offer);
-			LOGGER.info("Insert offer with id = " + offer.getId());
-			return offer;
-		} else
-			throw new IllegalArgumentException();
-
+		isValid(offer);
+		offerDao.insert(offer);
+		LOGGER.info("Insert offer with id = " + offer.getId());
+		return offer;
 	}
 
 	@Override
@@ -48,20 +49,17 @@ public class OfferServiceImpl implements IOfferService {
 			offerDao.update(offer);
 			LOGGER.info("Update offer with id = " + offer.getId());
 		} else
-			throw new IllegalArgumentException();
-
+			throw new IllegalArgumentException("Could not update offer without id");
 	}
 
 	@Override
 	public void delete(Integer id) {
-
 		offerDao.delete(id);
 		LOGGER.info("Delete offer with id = " + id);
 	}
 
 	@Override
 	public List<Offer> getAll() {
-
 		List<Offer> list = offerDao.getAll();
 		LOGGER.info("Get list of all offers");
 		return list;
@@ -85,9 +83,9 @@ public class OfferServiceImpl implements IOfferService {
 
 	private boolean isValid(Offer offer) {
 		if (offer == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (offer.getName() == null || offer.getPrice() == null || offer.getCategorId() == null)
-			return false;
+			throw new IllegalArgumentException("Offer must have name, price and category id");
 		return true;
 	}
 }

@@ -24,49 +24,45 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 		if (id == null)
 			return null;
 		return studyProtocolDao.get(id);
+	}
 
+	@Override
+	public Integer getCount() {
+		return studyProtocolDao.getCount();
 	}
 
 	@Override
 	public StudyProtocol insert(StudyProtocol studyProtocol) {
-		if (isValid(studyProtocol)) {
-			studyProtocolDao.insert(studyProtocol);
-			LOGGER.info("Insert study protocol with id = " + studyProtocol.getId());
-			return studyProtocol;
-		} else
-			throw new IllegalArgumentException();
-
+		isValid(studyProtocol);
+		studyProtocolDao.insert(studyProtocol);
+		LOGGER.info("Insert study protocol with id = " + studyProtocol.getId());
+		return studyProtocol;
 	}
 
 	@Override
 	public void update(StudyProtocol studyProtocol) {
-		if (isValid(studyProtocol)) {
-			studyProtocolDao.update(studyProtocol);
-			LOGGER.info("Update study protocol with id = " + studyProtocol.getId());
-		} else
-			throw new IllegalArgumentException();
-
+		isValid(studyProtocol);
+		studyProtocolDao.update(studyProtocol);
+		LOGGER.info("Update study protocol with id = " + studyProtocol.getId());
 	}
 
 	@Override
 	public void delete(Integer id) {
-
 		studyProtocolDao.delete(id);
 		LOGGER.info("Delete study protocol with id = " + id);
 	}
-	
+
 	@Override
 	public void massDelete(Integer[] idArray) {
-
 		studyProtocolDao.massDelete(idArray);
 		LOGGER.info("Delete study protocol with id = " + idArray);
 	}
 
 	private boolean isValid(StudyProtocol studyProtocol) {
 		if (studyProtocol == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (studyProtocol.getProtocol() == null || studyProtocol.getId() == null)
-			return false;
+			throw new IllegalArgumentException("Study protocol must have id and protocol");
 		return true;
 	}
 

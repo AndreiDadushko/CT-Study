@@ -33,6 +33,11 @@ public class OfferDaoImpl extends AbstractDaoImpl<Offer> implements IOfferDao {
 	}
 
 	@Override
+	public String getCountQuery() {
+		return "SELECT COUNT(*) FROM offer";
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Offer offer) throws SQLException {
 		ps.setString(1, offer.getName());
 		ps.setDouble(2, offer.getPrice());

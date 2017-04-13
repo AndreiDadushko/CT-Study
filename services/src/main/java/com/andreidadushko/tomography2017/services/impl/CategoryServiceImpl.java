@@ -28,18 +28,19 @@ public class CategoryServiceImpl implements ICategoryService {
 		if (id == null)
 			return null;
 		return categoryDao.get(id);
+	}
 
+	@Override
+	public Integer getCount() {
+		return categoryDao.getCount();
 	}
 
 	@Override
 	public Category insert(Category category) {
-		if (isValid(category)) {
+		isValid(category);
 			categoryDao.insert(category);
 			LOGGER.info("Insert category with id = " + category.getId());
-			return category;
-		} else
-			throw new IllegalArgumentException();
-
+			return category;		
 	}
 
 	@Override
@@ -48,20 +49,17 @@ public class CategoryServiceImpl implements ICategoryService {
 			categoryDao.update(category);
 			LOGGER.info("Update category with id = " + category.getId());
 		} else
-			throw new IllegalArgumentException();
-
+			throw new IllegalArgumentException("Could not update category without id");
 	}
 
 	@Override
 	public void delete(Integer id) {
-
 		categoryDao.delete(id);
 		LOGGER.info("Delete category with id = " + id);
 	}
 
 	@Override
 	public List<Category> getRootCategories() {
-
 		return getByParentId(null);
 	}
 
@@ -83,9 +81,9 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	private boolean isValid(Category category) {
 		if (category == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (category.getName() == null)
-			return false;
+			throw new IllegalArgumentException("Category must have name");
 		return true;
 	}
 }

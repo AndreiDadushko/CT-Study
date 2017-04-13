@@ -41,7 +41,6 @@ public class Category {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
 		return result;
 	}
 

@@ -51,6 +51,8 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 	 */
 	public abstract String getDeleteQuery();
 
+	public abstract String getCountQuery();
+
 	/**
 	 * Устанавливает аргументы insert запроса в соответствии со значением полей
 	 * объекта object.
@@ -113,6 +115,13 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 		String sql = getDeleteQuery();
 		jdbcTemplate.update(sql + id);
 
+	}
+
+	@Override
+	public Integer getCount() {
+		String sql = getCountQuery();
+		Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+		return count;
 	}
 
 	@Override

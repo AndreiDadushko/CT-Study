@@ -33,6 +33,11 @@ public class StudyProtocolDaoImpl extends AbstractDaoImpl<StudyProtocol> impleme
 	}
 
 	@Override
+	public String getCountQuery() {
+		return "SELECT COUNT(*) FROM study_protocol";
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, StudyProtocol studyProtocol) throws SQLException {
 		ps.setInt(1, studyProtocol.getId());
 		ps.setString(2, studyProtocol.getProtocol());

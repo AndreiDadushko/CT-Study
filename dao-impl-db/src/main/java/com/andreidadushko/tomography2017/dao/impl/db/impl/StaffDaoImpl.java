@@ -48,6 +48,11 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 	}
 
 	@Override
+	public String getCountQuery() {
+		return "SELECT COUNT(*) FROM staff";
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Staff staff) throws SQLException {
 		ps.setString(1, staff.getDepartment());
 		ps.setString(2, staff.getPosition());

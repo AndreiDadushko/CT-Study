@@ -24,21 +24,25 @@ public class StaffServiceImpl implements IStaffService {
 
 	@Override
 	public Staff get(Integer id) {
+		
 		LOGGER.info("Get staff with id = " + id);
 		if (id == null)
 			return null;
 		return staffDao.get(id);
+	}
 
+	@Override
+	public Integer getCount() {
+
+		return staffDao.getCount();
 	}
 
 	@Override
 	public Staff insert(Staff staff) {
-		if (isValid(staff)) {
-			staffDao.insert(staff);
-			LOGGER.info("Insert staff with id = " + staff.getId());
-			return staff;
-		} else
-			throw new IllegalArgumentException();
+		isValid(staff);
+		staffDao.insert(staff);
+		LOGGER.info("Insert staff with id = " + staff.getId());
+		return staff;
 	}
 
 	@Override
@@ -47,7 +51,7 @@ public class StaffServiceImpl implements IStaffService {
 			staffDao.update(staff);
 			LOGGER.info("Update staff with id = " + staff.getId());
 		} else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Could not update staff without id");
 	}
 
 	@Override
@@ -66,8 +70,8 @@ public class StaffServiceImpl implements IStaffService {
 
 	@Override
 	public List<StaffForList> getWithPagination(int offset, int limit, StaffFilter staffFilter) {
-		List<StaffForList> list = staffDao.getWithPagination(offset, limit,staffFilter);
-		LOGGER.info("Get list of staff with offset = {}, limit = {} and filter = ", offset, limit,staffFilter);
+		List<StaffForList> list = staffDao.getWithPagination(offset, limit, staffFilter);
+		LOGGER.info("Get list of staff with offset = {}, limit = {} and filter = ", offset, limit, staffFilter);
 		return list;
 	}
 
@@ -77,16 +81,12 @@ public class StaffServiceImpl implements IStaffService {
 		LOGGER.info("Get list of positions by login");
 		return list;
 	}
-	
+
 	private boolean isValid(Staff staff) {
 		if (staff == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (staff.getDepartment() == null || staff.getPosition() == null || staff.getPersonId() == null)
-			return false;
-		if (staff.getStartDate() != null)
-			staff.getStartDate().setNanos(0);
-		if (staff.getEndDate() != null)
-			staff.getEndDate().setNanos(0);
+			throw new IllegalArgumentException("Staff must have department, position and person id");
 		return true;
 	}
 }

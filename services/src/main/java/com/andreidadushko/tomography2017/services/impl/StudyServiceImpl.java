@@ -36,18 +36,19 @@ public class StudyServiceImpl implements IStudyService {
 		if (id == null)
 			return null;
 		return studyDao.get(id);
+	}
 
+	@Override
+	public Integer getCount() {
+		return studyDao.getCount();
 	}
 
 	@Override
 	public Study insert(Study study) {
-		if (isValid(study)) {
-			studyDao.insert(study);
-			LOGGER.info("Insert study with id = " + study.getId());
-			return study;
-		} else
-			throw new IllegalArgumentException();
-
+		isValid(study);
+		studyDao.insert(study);
+		LOGGER.info("Insert study with id = " + study.getId());
+		return study;
 	}
 
 	@Override
@@ -56,8 +57,7 @@ public class StudyServiceImpl implements IStudyService {
 			studyDao.update(study);
 			LOGGER.info("Update study with id = " + study.getId());
 		} else
-			throw new IllegalArgumentException();
-
+			throw new IllegalArgumentException("Could not update study without id");
 	}
 
 	@Override
@@ -100,12 +100,11 @@ public class StudyServiceImpl implements IStudyService {
 
 	private boolean isValid(Study study) {
 		if (study == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (study.getAppointmentDate() == null || study.getPersonId() == null || study.getStaffId() == null)
-			return false;
+			throw new IllegalArgumentException("Study must have appointment date, staff id and person id");
 		if (study.getPermitted() == null)
 			study.setPermitted(true);
-		study.getAppointmentDate().setNanos(0);
 		return true;
 	}
 }

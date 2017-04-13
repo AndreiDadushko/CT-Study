@@ -30,7 +30,7 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	@Override
-	public Boolean validateUserPassword(String login, String password) {
+	public Boolean validateLoginPassword(String login, String password) {
 		if (login == null || password == null)
 			return false;
 		Person person = personDao.get(login);
@@ -42,12 +42,10 @@ public class PersonServiceImpl implements IPersonService {
 
 	@Override
 	public Person insert(Person person) {
-		if (isValid(person)) {
-			personDao.insert(person);
-			LOGGER.info("Insert person with id = " + person.getId());
-			return person;
-		} else
-			throw new IllegalArgumentException();
+		isValid(person);
+		personDao.insert(person);
+		LOGGER.info("Insert person with id = " + person.getId());
+		return person;
 	}
 
 	@Override
@@ -56,13 +54,19 @@ public class PersonServiceImpl implements IPersonService {
 			personDao.update(person);
 			LOGGER.info("Update person with id = " + person.getId());
 		} else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Could not update person without id");
 	}
 
 	@Override
 	public void delete(Integer id) {
 		personDao.delete(id);
 		LOGGER.info("Delete person with id = " + id);
+	}
+
+	@Override
+	public Integer getCount() {
+		
+		return personDao.getCount();
 	}
 
 	@Override
@@ -81,11 +85,9 @@ public class PersonServiceImpl implements IPersonService {
 
 	private boolean isValid(Person person) {
 		if (person == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (person.getLogin() == null || person.getPassword() == null)
-			return false;
-		if (person.getBirthDate() != null)
-			person.getBirthDate().setNanos(0);
+			throw new IllegalArgumentException("Person must have login and password");		
 		return true;
 	}
 

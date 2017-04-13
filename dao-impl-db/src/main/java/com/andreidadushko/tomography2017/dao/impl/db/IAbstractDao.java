@@ -12,6 +12,8 @@ public interface IAbstractDao<T> {
 
 	void delete(Integer id);
 
+	Integer getCount();
+	
 	List<T> getAll();
 
 }

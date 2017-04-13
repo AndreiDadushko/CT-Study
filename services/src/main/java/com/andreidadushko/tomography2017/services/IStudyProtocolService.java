@@ -7,6 +7,8 @@ import com.andreidadushko.tomography2017.datamodel.StudyProtocol;
 public interface IStudyProtocolService {
 
 	StudyProtocol get(Integer id);
+	
+	Integer getCount();
 
 	@Transactional
 	StudyProtocol insert(StudyProtocol studyProtocol);

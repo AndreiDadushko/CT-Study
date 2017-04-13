@@ -69,12 +69,9 @@ public class Staff {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((department == null) ? 0 : department.hashCode());
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((personId == null) ? 0 : personId.hashCode());
 		result = prime * result + ((position == null) ? 0 : position.hashCode());
-		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		return result;
 	}
 
@@ -95,8 +92,12 @@ public class Staff {
 		if (endDate == null) {
 			if (other.endDate != null)
 				return false;
-		} else if (!endDate.equals(other.endDate))
-			return false;
+		} else {
+			endDate.setNanos(0);
+			other.endDate.setNanos(0);
+			if (!endDate.equals(other.endDate))
+				return false;
+		}
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -115,10 +116,13 @@ public class Staff {
 		if (startDate == null) {
 			if (other.startDate != null)
 				return false;
-		} else if (!startDate.equals(other.startDate))
-			return false;
+		} else {
+			startDate.setNanos(0);
+			other.startDate.setNanos(0);
+			if (!startDate.equals(other.startDate))
+				return false;
+		}
 		return true;
 	}
 
-	
 }

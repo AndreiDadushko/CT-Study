@@ -42,6 +42,11 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 	}
 
 	@Override
+	public String getCountQuery() {
+		return "SELECT COUNT(*) FROM study";
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Study study) throws SQLException {
 		ps.setTimestamp(1, study.getAppointmentDate());
 		ps.setBoolean(2, study.getPermitted());

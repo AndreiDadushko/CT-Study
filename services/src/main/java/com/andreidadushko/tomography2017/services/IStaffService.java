@@ -23,6 +23,8 @@ public interface IStaffService {
 		
 	List<String> getPositionsByLogin(String login);
 	
+	Integer getCount();
+	
 	List<StaffForList> getWithPagination(int offset, int limit);
 
 	List<StaffForList> getWithPagination(int offset, int limit, StaffFilter staffFilter);

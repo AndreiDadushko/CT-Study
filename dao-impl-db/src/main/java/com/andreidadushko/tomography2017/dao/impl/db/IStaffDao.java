@@ -9,6 +9,8 @@ import com.andreidadushko.tomography2017.datamodel.Staff;
 public interface IStaffDao extends IAbstractDao<Staff> {
 
 	List<String> getPositionsByLogin(String login);
+	
+	Integer getCount();
 
 	List<StaffForList> getWithPagination(int offset, int limit);
 

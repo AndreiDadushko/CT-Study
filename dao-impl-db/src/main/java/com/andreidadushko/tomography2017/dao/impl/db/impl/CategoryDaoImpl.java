@@ -33,6 +33,11 @@ public class CategoryDaoImpl extends AbstractDaoImpl<Category> implements ICateg
 	}
 
 	@Override
+	public String getCountQuery() {
+		return "SELECT COUNT(*) FROM category";
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Category category) throws SQLException {
 		ps.setString(1, category.getName());
 		if (category.getParentId() != null)

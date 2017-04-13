@@ -21,7 +21,6 @@ public class PersonServiceTest extends AbstractTest {
 
 	@Before
 	public void initializeTestData() {
-
 		testData = new ArrayList<Person>();
 		Person person0 = new Person();
 		person0.setLogin("login0");
@@ -41,24 +40,35 @@ public class PersonServiceTest extends AbstractTest {
 		person2.setAdress("Минск");
 		person2.setLogin("valera");
 		person2.setPassword("password");
-		testData.add(person2);
-		
+		testData.add(person2);		
+	}
+	
+	private Person getWrongData(){
+		Person person = new Person();
+		person.setLogin(Integer.toString(new Object().hashCode()));
+		return person;
+	}
+	
+	private Person getCorrectData(){
+		Person person = new Person();
+		person.setFirstName("Иван");
+		person.setMiddleName("Иванович");
+		person.setLastName("Иванов");
+		person.setBirthDate(new java.sql.Timestamp(new Date().getTime()));
+		person.setPhoneNumber("+23414124124");
+		person.setAdress("Минск");
+		person.setLogin(Integer.toString(new Object().hashCode()));
+		person.setPassword(Integer.toString(new Object().hashCode()));
+		return person;
 	}
 
 	@Test
-	public void getWithIdTest() {
-		Person person = personService.insert(testData.get(2));
+	public void insertGetTest() {
+		Person person = personService.insert(getCorrectData());
 		Person personFromDB = personService.get(person.getId());
 		Assert.assertTrue("Returned data isn't correct", person.equals(personFromDB));
 	}
 	
-	/*@Test
-	public void getWithLoginTest() {
-		Person person = personService.insert(testData.get(2));
-		Person personFromDB = personService.get(person.getLogin());
-		Assert.assertTrue("Returned data isn't correct", person.equals(personFromDB));
-	}*/
-
 	@Test(expected = IllegalArgumentException.class)
 	public void insertNullTest() {		
 		personService.insert(null);

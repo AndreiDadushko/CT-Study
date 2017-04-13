@@ -25,6 +25,8 @@ public interface IStudyService {
 	void massDelete(Integer[] idArray);
 
 	List<StudyForList> getStudyForListByPersonId(Integer personId);
+	
+	Integer getCount();
 
 	List<StudyForList> getWithPagination(int offset, int limit);
 

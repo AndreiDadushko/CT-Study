@@ -11,7 +11,7 @@ public interface IPersonService {
 
 	Person get(Integer id);
 
-	Boolean validateUserPassword(String login, String password);
+	Boolean validateLoginPassword(String login, String password);
 
 	@Transactional
 	Person insert(Person person);
@@ -21,6 +21,8 @@ public interface IPersonService {
 
 	@Transactional
 	void delete(Integer id);
+	
+	Integer getCount();
 
 	List<Person> getWithPagination(int offset, int limit);
 	

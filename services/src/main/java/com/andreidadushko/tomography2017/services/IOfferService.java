@@ -19,6 +19,8 @@ public interface IOfferService {
 	@Transactional
 	void delete(Integer id);
 
+	Integer getCount();
+	
 	List<Offer> getAll();
 	
 	List<Offer> getByCategoryId(Integer categoryId);

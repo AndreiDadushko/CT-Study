@@ -25,7 +25,6 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 	@Override
 	public StudyOfferCart get(Integer id) {
-
 		LOGGER.info("Get studyOfferCart with id = " + id);
 		if (id == null)
 			return null;
@@ -34,13 +33,10 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 	@Override
 	public StudyOfferCart insert(StudyOfferCart studyOfferCart) {
-		if (isValid(studyOfferCart)) {
-			studyOfferCartDao.insert(studyOfferCart);
-			LOGGER.info("Insert studyOfferCart with id = " + studyOfferCart.getId());
-			return studyOfferCart;
-		} else
-			throw new IllegalArgumentException();
-
+		isValid(studyOfferCart);
+		studyOfferCartDao.insert(studyOfferCart);
+		LOGGER.info("Insert studyOfferCart with id = " + studyOfferCart.getId());
+		return studyOfferCart;
 	}
 
 	@Override
@@ -49,20 +45,17 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 			studyOfferCartDao.update(studyOfferCart);
 			LOGGER.info("Update studyOfferCart with id = " + studyOfferCart.getId());
 		} else
-			throw new IllegalArgumentException();
-
+			throw new IllegalArgumentException("Could not update studyOfferCart without id");
 	}
 
 	@Override
 	public void delete(Integer id) {
-
 		studyOfferCartDao.delete(id);
 		LOGGER.info("Delete studyOfferCart with id = " + id);
 	}
 
 	@Override
 	public List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId) {
-
 		List<StudyOfferCartForList> list = studyOfferCartDao.getStudyOfferCartByStudyId(studyId);
 		LOGGER.info("Get list of all studyOfferCart");
 		return list;
@@ -70,15 +63,15 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 
 	@Override
 	public void massDelete(Integer[] studyIdArray) {
-
 		studyOfferCartDao.massDelete(studyIdArray);
 		LOGGER.info("Delete studyOfferCart with study id = " + studyIdArray);
 	}
 
 	@Override
 	public void massInsert(Study study, List<Offer> offer) {
+		Integer studyId = null;
 		if (study != null && offer != null) {
-			int studyId = study.getId();
+			studyId = study.getId();
 			for (int i = 0; i < offer.size(); i++) {
 				if (offer.get(i) != null) {
 					StudyOfferCart studyOfferCart = new StudyOfferCart();
@@ -88,18 +81,17 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 				}
 			}
 		}
+		LOGGER.info("Insert studyOfferCarts with study id = {} and offers = {}", studyId, offer);
 	}
 
 	private boolean isValid(StudyOfferCart studyOfferCart) {
 		if (studyOfferCart == null)
-			return false;
+			throw new IllegalArgumentException("Could not insert/update null");
 		if (studyOfferCart.getPaid() == null || studyOfferCart.getStudyId() == null
 				|| studyOfferCart.getOfferId() == null)
-			return false;
+			throw new IllegalArgumentException("Person must have study id and offer id and paid information");
 		if (studyOfferCart.getPaid() == null)
 			studyOfferCart.setPaid(false);
-		if (studyOfferCart.getPayDate() != null)
-			studyOfferCart.getPayDate().setNanos(0);
 		return true;
 	}
 }

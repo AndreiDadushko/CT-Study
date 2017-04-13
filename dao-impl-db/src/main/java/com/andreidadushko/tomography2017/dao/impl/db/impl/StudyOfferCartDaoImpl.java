@@ -40,6 +40,11 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 	}
 
 	@Override
+	public String getCountQuery() {
+		return null;
+	}
+
+	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, StudyOfferCart studyOfferCart) throws SQLException {
 		ps.setBoolean(1, studyOfferCart.getPaid() != null ? studyOfferCart.getPaid() : false);
 		ps.setTimestamp(2, studyOfferCart.getPayDate());
@@ -87,6 +92,11 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 		}
 		jdbcTemplate.update(sql + whereCause); // попробовать передать Object[]
 												// и null вместо него
+	}
+
+	@Override
+	public Integer getCount() {
+		throw new UnsupportedOperationException();
 	}
 
 }
