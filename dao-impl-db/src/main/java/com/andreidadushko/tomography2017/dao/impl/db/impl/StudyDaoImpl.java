@@ -139,7 +139,7 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 				whereCause.append(sqlParts.get(i));
 			}
 		}
-		if (studyFilter.getSort() != null && studyFilter.getSort().getColumn() != null) {
+		if (studyFilter != null && studyFilter.getSort() != null && studyFilter.getSort().getColumn() != null) {
 			whereCause.append(" ORDER BY " + studyFilter.getSort().getColumn());
 			if (studyFilter.getSort().getOrder() != null) {
 				whereCause.append(" " + studyFilter.getSort().getOrder()); // ASC,DESC
@@ -166,9 +166,7 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 					whereCause.append(idArray[i]);
 			}
 		}
-		jdbcTemplate.update(sql + whereCause); // попробовать передать Object[]
-												// и null вместо него
-
+		jdbcTemplate.update(sql + whereCause);
 	}
 
 	@Override

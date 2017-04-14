@@ -89,7 +89,7 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 			throw new IllegalArgumentException("Could not insert/update null");
 		if (studyOfferCart.getPaid() == null || studyOfferCart.getStudyId() == null
 				|| studyOfferCart.getOfferId() == null)
-			throw new IllegalArgumentException("Person must have study id and offer id and paid information");
+			throw new IllegalArgumentException("StudyOfferCart must have study id and offer id and paid information");
 		if (studyOfferCart.getPaid() == null)
 			studyOfferCart.setPaid(false);
 		return true;

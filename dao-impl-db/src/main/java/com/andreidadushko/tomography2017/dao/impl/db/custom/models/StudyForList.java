@@ -93,5 +93,73 @@ public class StudyForList {
 				+ ", patientLastName=" + patientLastName + ", doctorFirstName=" + doctorFirstName
 				+ ", doctorMiddleName=" + doctorMiddleName + ", doctorLastName=" + doctorLastName + "]";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StudyForList other = (StudyForList) obj;
+		if (appointmentDate == null) {
+			if (other.appointmentDate != null)
+				return false;
+		} else {
+			appointmentDate.setNanos(0);
+			other.appointmentDate.setNanos(0);
+			if (!appointmentDate.equals(other.appointmentDate))
+				return false;
+		}
+		if (doctorFirstName == null) {
+			if (other.doctorFirstName != null)
+				return false;
+		} else if (!doctorFirstName.equals(other.doctorFirstName))
+			return false;
+		if (doctorLastName == null) {
+			if (other.doctorLastName != null)
+				return false;
+		} else if (!doctorLastName.equals(other.doctorLastName))
+			return false;
+		if (doctorMiddleName == null) {
+			if (other.doctorMiddleName != null)
+				return false;
+		} else if (!doctorMiddleName.equals(other.doctorMiddleName))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (patientFirstName == null) {
+			if (other.patientFirstName != null)
+				return false;
+		} else if (!patientFirstName.equals(other.patientFirstName))
+			return false;
+		if (patientLastName == null) {
+			if (other.patientLastName != null)
+				return false;
+		} else if (!patientLastName.equals(other.patientLastName))
+			return false;
+		if (patientMiddleName == null) {
+			if (other.patientMiddleName != null)
+				return false;
+		} else if (!patientMiddleName.equals(other.patientMiddleName))
+			return false;
+		if (permitted == null) {
+			if (other.permitted != null)
+				return false;
+		} else if (!permitted.equals(other.permitted))
+			return false;
+		return true;
+	}
 }
