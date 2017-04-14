@@ -145,9 +145,24 @@ public class PersonServiceTest extends AbstractTest {
 		listFromDB = personService.getWithPagination(number, 0);
 		Assert.assertTrue("Number of returned rows is not correct", listFromDB.size() == 0);
 	}
+	
+	@Test
+	public void getWithNullFilterTest() {
+		int number = personService.getCount();
+		List<Person> listFromDB = personService.getWithPagination(0, number, null);
+		Assert.assertTrue("Without filter must get all rows", number == listFromDB.size());
+	}
 
 	@Test
-	public void getWithFilteredPaginationTest() {
+	public void getWithEmptyFilterTest() {
+		int number = personService.getCount();
+		PersonFilter personFilter = new PersonFilter();
+		List<Person> listFromDB = personService.getWithPagination(0, number, personFilter);
+		Assert.assertTrue("With empty filter must get all rows", number == listFromDB.size());
+	}
+	
+	@Test
+	public void getWithFilterTest() {
 		PersonFilter personFilter = new PersonFilter();
 		personFilter.setFirstName(testData.get(2).getFirstName());
 		personFilter.setMiddleName(testData.get(2).getMiddleName());
@@ -168,13 +183,6 @@ public class PersonServiceTest extends AbstractTest {
 
 		Person person = listFromDB.get(0);
 		Assert.assertTrue("Work of filter is not correct", testData.get(2).equals(person));
-
-		listFromDB = personService.getWithPagination(0, number, null);
-		Assert.assertTrue("Without filter must get all rows", number == listFromDB.size());
-
-		personFilter = new PersonFilter();
-		listFromDB = personService.getWithPagination(0, number, personFilter);
-		Assert.assertTrue("With empty filter must get all rows", number == listFromDB.size());
 	}
 
 }

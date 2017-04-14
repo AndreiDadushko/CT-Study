@@ -1,13 +1,11 @@
 package com.andreidadushko.tomography2017.dao.impl.db.impl;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -80,18 +78,8 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 	@Override
 	public List<String> getPositionsByLogin(String login) {
 		String sql = getQueryPositionsByLogin();
-		List<String> rs = jdbcTemplate.query(sql, new Object[] { login }, new PositionsByLoginMapper());
-		// List<String> rss = jdbcTemplate.queryForList(sql,new Object[] { login
-		// }, String.class); //ПРОВЕРИТЬ!!!
+		List<String> rs = jdbcTemplate.queryForList(sql, new Object[] { login }, String.class);
 		return rs;
-	}
-
-	private final class PositionsByLoginMapper implements RowMapper<String> {
-		@Override
-		public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-			return rs.getString("position");
-		}
 	}
 
 	@Override
@@ -154,10 +142,10 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 				whereCause.append(sqlParts.get(i));
 			}
 		}
-		if(staffFilter.getSort()!=null && staffFilter.getSort().getColumn()!=null){
-			whereCause.append(" ORDER BY "+staffFilter.getSort().getColumn());
-			if(staffFilter.getSort().getOrder()!=null){
-				whereCause.append(" "+staffFilter.getSort().getOrder()); //ASC DESC
+		if (staffFilter != null && staffFilter.getSort() != null && staffFilter.getSort().getColumn() != null) {
+			whereCause.append(" ORDER BY " + staffFilter.getSort().getColumn());
+			if (staffFilter.getSort().getOrder() != null) {
+				whereCause.append(" " + staffFilter.getSort().getOrder());
 			}
 		}
 		objects.add(offset);
