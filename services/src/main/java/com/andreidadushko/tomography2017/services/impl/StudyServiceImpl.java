@@ -1,5 +1,6 @@
 package com.andreidadushko.tomography2017.services.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -73,7 +74,7 @@ public class StudyServiceImpl implements IStudyService {
 		studyProtocolService.massDelete(idArray);
 		studyOfferCartService.massDelete(idArray);
 		studyDao.massDelete(idArray);
-		LOGGER.info("Delete studies with id = " + idArray);
+		LOGGER.info("Delete studies with id = " + Arrays.asList(idArray));
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class StudyServiceImpl implements IStudyService {
 	@Override
 	public List<StudyForList> getWithPagination(int offset, int limit, StudyFilter studyFilter) {
 		List<StudyForList> list = studyDao.getWithPagination(offset, limit, studyFilter);
-		LOGGER.info("Get list of studies for list with offset = {}, limit = {} and filter = ", offset, limit,
+		LOGGER.info("Get list of studies for list with offset = {}, limit = {} and filter = {}", offset, limit,
 				studyFilter);
 		return list;
 	}

@@ -41,7 +41,7 @@ public class Offer {
 
 	@Override
 	public String toString() {
-		return "Service [id=" + id + ", name=" + name + ", price=" + price + ", categorId=" + categorId + "]";
+		return "Offer [id=" + id + ", name=" + name + ", price=" + price + ", categorId=" + categorId + "]";
 	}
 
 	@Override

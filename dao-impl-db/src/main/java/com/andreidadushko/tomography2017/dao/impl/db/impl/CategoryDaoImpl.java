@@ -59,7 +59,6 @@ public class CategoryDaoImpl extends AbstractDaoImpl<Category> implements ICateg
 	@Override
 	protected void setIdAfterInsert(KeyHolder keyHolder, Category category) {
 		category.setId(keyHolder.getKey().intValue());
-
 	}
 
 }

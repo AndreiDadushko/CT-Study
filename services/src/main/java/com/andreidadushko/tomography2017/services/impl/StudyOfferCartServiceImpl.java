@@ -1,5 +1,6 @@
 package com.andreidadushko.tomography2017.services.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,7 +65,7 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	@Override
 	public void massDelete(Integer[] studyIdArray) {
 		studyOfferCartDao.massDelete(studyIdArray);
-		LOGGER.info("Delete studyOfferCart with study id = " + studyIdArray);
+		LOGGER.info("Delete studyOfferCart with study id = " + Arrays.asList(studyIdArray));
 	}
 
 	@Override
@@ -87,8 +88,7 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	private boolean isValid(StudyOfferCart studyOfferCart) {
 		if (studyOfferCart == null)
 			throw new IllegalArgumentException("Could not insert/update null");
-		if (studyOfferCart.getPaid() == null || studyOfferCart.getStudyId() == null
-				|| studyOfferCart.getOfferId() == null)
+		if (studyOfferCart.getStudyId() == null || studyOfferCart.getOfferId() == null)
 			throw new IllegalArgumentException("StudyOfferCart must have study id and offer id and paid information");
 		if (studyOfferCart.getPaid() == null)
 			studyOfferCart.setPaid(false);

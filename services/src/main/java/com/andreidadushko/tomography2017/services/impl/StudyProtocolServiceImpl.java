@@ -1,5 +1,7 @@
 package com.andreidadushko.tomography2017.services.impl;
 
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -55,7 +57,7 @@ public class StudyProtocolServiceImpl implements IStudyProtocolService {
 	@Override
 	public void massDelete(Integer[] idArray) {
 		studyProtocolDao.massDelete(idArray);
-		LOGGER.info("Delete study protocol with id = " + idArray);
+		LOGGER.info("Delete study protocol with id = " + Arrays.asList(idArray));
 	}
 
 	private boolean isValid(StudyProtocol studyProtocol) {

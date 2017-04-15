@@ -1,10 +1,12 @@
 package com.andreidadushko.tomography2017.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.andreidadushko.tomography2017.datamodel.Category;
@@ -14,20 +16,31 @@ public class CategoryServiceTest extends AbstractTest {
 	@Inject
 	private ICategoryService categoryService;
 
-	@Test
-	public void insertGetTest() {
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		category = categoryService.insert(category);
-		Category categoryFromDB = categoryService.get(category.getId());
-		Assert.assertTrue("Returned data with null parent isn't correct", category.equals(categoryFromDB));
+	private List<Category> testData;
 
-		category.setName("test category1111");
-		category.setParentId(category.getId());
-		category = categoryService.insert(category);
+	@Before
+	public void initializeTestData() {
+		testData = new ArrayList<Category>();
+
+		Category category0 = new Category();
+		category0.setName(Integer.toString(new Object().hashCode()));
+		testData.add(category0);
+
+		Category category1 = new Category();
+		category1.setName(Integer.toString(new Object().hashCode()));
+		testData.add(category1);
+	}
+
+	@Test
+	public void getTest() {
+		Category category = categoryService.insert(testData.get(0));
+		Category categoryFromDB = categoryService.get(category.getId());
+		Assert.assertTrue("Returned category with null parent is not correct", category.equals(categoryFromDB));
+
+		testData.get(1).setParentId(category.getId());
+		category = categoryService.insert(testData.get(1));
 		categoryFromDB = categoryService.get(category.getId());
-		Assert.assertTrue("Returned data with not null parent isn't correct", category.equals(categoryFromDB));
+		Assert.assertTrue("Returned category with parent is not correct", category.equals(categoryFromDB));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -45,17 +58,23 @@ public class CategoryServiceTest extends AbstractTest {
 
 	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
 	public void insertWrongParentIdTest() {
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		category = categoryService.insert(category);
-		categoryService.delete(category.getId());
-
-		Category category1 = new Category();
-		category1.setName("test category111");
-		category1.setParentId(category.getId());
-		categoryService.insert(category1);
+		categoryService.insert(testData.get(0));
+		categoryService.delete(testData.get(0).getId());
+		testData.get(1).setParentId(testData.get(0).getId());
+		categoryService.insert(testData.get(1));
 		Assert.fail("Could not insert category with parent id, that does not exist");
+	}
+
+	@Test
+	public void insertTest() {
+		Category category = categoryService.insert(testData.get(0));
+		Category categoryFromDB = categoryService.get(category.getId());
+		Assert.assertTrue("Inserted category with null parent is not correct", category.equals(categoryFromDB));
+
+		testData.get(1).setParentId(category.getId());
+		category = categoryService.insert(testData.get(1));
+		categoryFromDB = categoryService.get(category.getId());
+		Assert.assertTrue("Inserted category with parent is not correct", category.equals(categoryFromDB));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -73,84 +92,68 @@ public class CategoryServiceTest extends AbstractTest {
 
 	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
 	public void updateWrongParentIdTest() {
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		category = categoryService.insert(category);
-		categoryService.delete(category.getId());
+		categoryService.insert(testData.get(0));
+		categoryService.delete(testData.get(0).getId());
 
-		Category category1 = new Category();
-		category1.setName("test category111");
-		category1.setParentId(null);
-		category1 = categoryService.insert(category1);
-		category1.setParentId(category.getId());
-		categoryService.update(category1);
+		categoryService.insert(testData.get(1));
+		testData.get(1).setParentId(testData.get(0).getId());
+		categoryService.update(testData.get(1));
 		Assert.fail("Could not update category's parent id, without existing parent");
 	}
 
 	@Test
 	public void updateTest() {
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		category = categoryService.insert(category);
-
-		Category category1 = new Category();
-		category1.setName("test category111");
-		category1.setParentId(null);
-		category1 = categoryService.insert(category1);
-
-		category1.setParentId(category.getId());
-		categoryService.update(category1);
-
-		Category categoryFromDB = categoryService.get(category1.getId());
-		Assert.assertTrue("Updated data isn't correct", category1.equals(categoryFromDB));
+		categoryService.insert(testData.get(0));
+		categoryService.insert(testData.get(1));
+		testData.get(1).setParentId(testData.get(0).getId());
+		categoryService.update(testData.get(1));
+		Category categoryFromDB = categoryService.get(testData.get(1).getId());
+		Assert.assertTrue("Updated data is not correct", testData.get(1).equals(categoryFromDB));
 	}
 
 	@Test
 	public void deleteTest() {
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		category = categoryService.insert(category);
-		categoryService.delete(category.getId());
-
-		Category categoryFromDB = categoryService.get(category.getId());
+		categoryService.insert(testData.get(0));
+		categoryService.delete(testData.get(0).getId());
+		Category categoryFromDB = categoryService.get(testData.get(0).getId());
 		Assert.assertNull("Could not delete data", categoryFromDB);
 	}
-/*
-	@Test
-	public void getAllTest() {
-		List<Category> categories = categoryService.getAll();
-		int numberBeforeInsert = categories.size();
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		categoryService.insert(category);
 
-		categories = categoryService.getAll();
-		int numberAfterInsert = categories.size();
-		Assert.assertTrue("Could not get all categories", numberBeforeInsert + 1 == numberAfterInsert);
-	}*/
-	
 	@Test
-	public void getByParentIdTest() {
-		Category category = new Category();
-		category.setName("test category");
-		category.setParentId(null);
-		category = categoryService.insert(category);
-
-		Category category1 = new Category();
-		category1.setName("test category111");
-		category1.setParentId(category.getId());
-		category1 = categoryService.insert(category1);
-		
-		Category category2 = new Category();
-		category2.setName("test category222");
-		category2.setParentId(category.getId());
-		category2 = categoryService.insert(category2);
-		List<Category> categoris = categoryService.getByParentId(category.getId());
-		Assert.assertTrue("Could not get all subcategories", categoris.size()==2);
+	public void getCountTest() {
+		int numberBeforeInsert = categoryService.getCount();
+		categoryService.insert(testData.get(0));
+		int numberAfterInsert = categoryService.getCount();
+		Assert.assertTrue("Returned count of rows is not correct", numberBeforeInsert + 1 == numberAfterInsert);
+		categoryService.delete(testData.get(0).getId());
+		int numberAfterDelete = categoryService.getCount();
+		Assert.assertTrue("Returned count of rows is not correct", numberBeforeInsert == numberAfterDelete);
 	}
 
+	@Test
+	public void getRootCategoriesTest() {
+		int numberBeforeInsert = categoryService.getByParentId(null).size();
+		categoryService.insert(testData.get(0));
+		int numberAfterInsert = categoryService.getByParentId(null).size();
+		Assert.assertTrue("Returned after insert count of rows is not correct",
+				numberBeforeInsert + 1 == numberAfterInsert);
+		categoryService.delete(testData.get(0).getId());
+		int numberAfterDelete = categoryService.getByParentId(null).size();
+		Assert.assertTrue("Returned after delete count of rows is not correct",
+				numberBeforeInsert == numberAfterDelete);
+	}
+
+	@Test
+	public void getByParentIdTest() {
+		categoryService.insert(testData.get(0));
+		testData.get(1).setParentId(testData.get(0).getId());
+		categoryService.insert(testData.get(1));
+		Category category = new Category();
+		category.setName(Integer.toString(new Object().hashCode()));
+		category.setParentId(testData.get(0).getId());
+		categoryService.insert(category);
+
+		List<Category> categoris = categoryService.getByParentId(testData.get(0).getId());
+		Assert.assertTrue("Could not get all subcategories", categoris.size() == 2);
+	}
 }

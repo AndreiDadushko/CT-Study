@@ -142,7 +142,7 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 		if (studyFilter != null && studyFilter.getSort() != null && studyFilter.getSort().getColumn() != null) {
 			whereCause.append(" ORDER BY " + studyFilter.getSort().getColumn());
 			if (studyFilter.getSort().getOrder() != null) {
-				whereCause.append(" " + studyFilter.getSort().getOrder()); // ASC,DESC
+				whereCause.append(" " + studyFilter.getSort().getOrder());
 			}
 		}
 		objects.add(offset);

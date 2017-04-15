@@ -71,8 +71,6 @@ public class StudyProtocolDaoImpl extends AbstractDaoImpl<StudyProtocol> impleme
 					whereCause.append(idArray[i]);
 			}
 		}
-		jdbcTemplate.update(sql + whereCause); // попробовать передать Object[]
-												// и null вместо него
+		jdbcTemplate.update(sql + whereCause); 
 	}
-
 }

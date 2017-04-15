@@ -71,7 +71,7 @@ public class StaffServiceImpl implements IStaffService {
 	@Override
 	public List<StaffForList> getWithPagination(int offset, int limit, StaffFilter staffFilter) {
 		List<StaffForList> list = staffDao.getWithPagination(offset, limit, staffFilter);
-		LOGGER.info("Get list of staff with offset = {}, limit = {} and filter = ", offset, limit, staffFilter);
+		LOGGER.info("Get list of staff with offset = {}, limit = {} and filter = {}", offset, limit, staffFilter);
 		return list;
 	}
 

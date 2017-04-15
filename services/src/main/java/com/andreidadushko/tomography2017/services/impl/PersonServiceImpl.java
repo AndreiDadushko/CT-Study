@@ -79,7 +79,7 @@ public class PersonServiceImpl implements IPersonService {
 	@Override
 	public List<Person> getWithPagination(int offset, int limit, PersonFilter personFilter) {
 		List<Person> persons = personDao.getWithPagination(offset, limit, personFilter);
-		LOGGER.info("Get list of persons with offset = {}, limit = {} and filter = ", offset, limit, personFilter);
+		LOGGER.info("Get list of persons with offset = {}, limit = {} and filter = {}", offset, limit, personFilter);
 		return persons;
 	}
 

@@ -36,7 +36,7 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 	}
 
 	public String getQueryStudyOfferCartForList() {
-		return "SELECT cart.id, c.name category, o.name offer, o.price, cart.paid, cart.pay_date FROM study_offer_cart cart LEFT JOIN offer o ON cart.offer_id = o.id LEFT JOIN category c ON o.categor_id = c.id LEFT JOIN study s ON cart.study_id = s.id WHERE s.id = ";
+		return "SELECT cart.id, c.name category, o.name offer, o.price, cart.paid, cart.pay_date FROM study_offer_cart cart LEFT JOIN offer o ON cart.offer_id = o.id LEFT JOIN category c ON o.categor_id = c.id LEFT JOIN study s ON cart.study_id = s.id WHERE s.id = ?";
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 	@Override
 	public List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId) {
 		String sql = getQueryStudyOfferCartForList();
-		List<StudyOfferCartForList> rs = jdbcTemplate.query(sql,
+		List<StudyOfferCartForList> rs = jdbcTemplate.query(sql, new Object[] { studyId },
 				new BeanPropertyRowMapper<StudyOfferCartForList>(StudyOfferCartForList.class));
 		return rs;
 	}
@@ -90,8 +90,7 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 					whereCause.append(studyIdArray[i]);
 			}
 		}
-		jdbcTemplate.update(sql + whereCause); // попробовать передать Object[]
-												// и null вместо него
+		jdbcTemplate.update(sql + whereCause);
 	}
 
 	@Override

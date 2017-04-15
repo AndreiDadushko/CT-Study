@@ -44,11 +44,11 @@ public class StudyServiceTest extends AbstractTest {
 	@Inject
 	private IStudyProtocolService studyProtocolService;
 
-	private static List<Study> testData;
+	private List<Study> testData;
 
-	private static StudyForList testStudyForList;
+	private StudyForList testStudyForList;
 
-	Person person;
+	private Person person;
 
 	@Before
 	public void initializeTestData() {
@@ -70,7 +70,7 @@ public class StudyServiceTest extends AbstractTest {
 
 		Staff staff = new Staff();
 		staff.setDepartment("РКД");
-		staff.setPosition("врач-рентгенолог");
+		staff.setPosition("Врач-рентгенолог");
 		staff.setStartDate(new java.sql.Timestamp(new Date().getTime()));
 		staff.setPersonId(person.getId());
 		staff = staffService.insert(staff);
@@ -219,19 +219,16 @@ public class StudyServiceTest extends AbstractTest {
 
 		studyService.massDelete(new Integer[] { study.getId(), study1.getId() });
 		Study studyFromDB = studyService.get(study.getId());
-		Assert.assertNull("Could not delete study", studyFromDB);
-
-		studyFromDB = studyService.get(study1.getId());
-		Assert.assertNull("Could not delete study", studyFromDB);
+		Study studyFromDB1 = studyService.get(study1.getId());
+		Assert.assertTrue("Could not delete study", studyFromDB == null && studyFromDB1 == null);
 
 		StudyProtocol studyProtocolFromDB = studyProtocolService.get(studyProtocol.getId());
 		Assert.assertNull("Could not delete study protocol", studyProtocolFromDB);
 
 		StudyOfferCart studyOfferCartFromDB = studyOfferCartService.get(studyOfferCart.getId());
-		Assert.assertNull("Could not delete studyOfferCart", studyOfferCartFromDB);
-
-		studyOfferCartFromDB = studyOfferCartService.get(studyOfferCart1.getId());
-		Assert.assertNull("Could not delete studyOfferCart", studyOfferCartFromDB);
+		StudyOfferCart studyOfferCartFromDB1 = studyOfferCartService.get(studyOfferCart1.getId());
+		Assert.assertTrue("Could not delete studyOfferCart",
+				studyOfferCartFromDB == null && studyOfferCartFromDB1 == null);
 	}
 
 	@Test

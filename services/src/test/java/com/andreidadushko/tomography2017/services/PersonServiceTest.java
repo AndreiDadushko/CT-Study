@@ -19,7 +19,7 @@ public class PersonServiceTest extends AbstractTest {
 	@Inject
 	private IPersonService personService;
 
-	private static List<Person> testData;
+	private List<Person> testData;
 
 	@Before
 	public void initializeTestData() {

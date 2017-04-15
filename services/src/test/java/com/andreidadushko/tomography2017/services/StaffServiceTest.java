@@ -24,11 +24,11 @@ public class StaffServiceTest extends AbstractTest {
 	@Inject
 	private IPersonService personService;
 
-	private static List<Staff> testData;
+	private List<Staff> testData;
 
-	private static String login;
+	private String login;
 
-	private static Person person;
+	private Person person;
 
 	@Before
 	public void initializeTestData() {
