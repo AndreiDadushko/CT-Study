@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.andreidadushko.tomography2017.dao.impl.db.ICategoryDao;
+import com.andreidadushko.tomography2017.dao.db.ICategoryDao;
 import com.andreidadushko.tomography2017.datamodel.Category;
 
 public class TestDaoCategory {

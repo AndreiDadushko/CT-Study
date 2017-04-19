@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IPersonDao;
-import com.andreidadushko.tomography2017.dao.impl.db.filters.PersonFilter;
+import com.andreidadushko.tomography2017.dao.db.IPersonDao;
+import com.andreidadushko.tomography2017.dao.db.filters.PersonFilter;
 import com.andreidadushko.tomography2017.datamodel.Person;
 import com.andreidadushko.tomography2017.services.IPersonService;
 

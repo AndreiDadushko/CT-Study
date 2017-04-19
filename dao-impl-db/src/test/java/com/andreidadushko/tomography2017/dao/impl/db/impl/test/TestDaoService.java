@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IOfferDao;
+import com.andreidadushko.tomography2017.dao.db.IOfferDao;
 import com.andreidadushko.tomography2017.datamodel.Offer;
 
 public class TestDaoService {

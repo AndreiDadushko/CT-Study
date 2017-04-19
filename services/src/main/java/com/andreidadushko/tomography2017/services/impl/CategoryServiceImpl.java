@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.andreidadushko.tomography2017.dao.impl.db.ICategoryDao;
+import com.andreidadushko.tomography2017.dao.db.ICategoryDao;
 import com.andreidadushko.tomography2017.datamodel.Category;
 import com.andreidadushko.tomography2017.services.ICategoryService;
 

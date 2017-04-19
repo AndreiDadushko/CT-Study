@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.andreidadushko.tomography2017.dao.impl.db.filters.PersonFilter;
+import com.andreidadushko.tomography2017.dao.db.filters.PersonFilter;
 import com.andreidadushko.tomography2017.datamodel.Person;
 
 public interface IPersonService {

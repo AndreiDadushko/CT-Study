@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
-import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StaffForList;
-import com.andreidadushko.tomography2017.dao.impl.db.filters.StaffFilter;
+import com.andreidadushko.tomography2017.dao.db.IStaffDao;
+import com.andreidadushko.tomography2017.dao.db.custom.models.StaffForList;
+import com.andreidadushko.tomography2017.dao.db.filters.StaffFilter;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 import com.andreidadushko.tomography2017.services.IStaffService;
 

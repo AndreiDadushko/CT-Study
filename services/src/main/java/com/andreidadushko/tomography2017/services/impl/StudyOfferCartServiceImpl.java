@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IStudyOfferCartDao;
-import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyOfferCartForList;
+import com.andreidadushko.tomography2017.dao.db.IStudyOfferCartDao;
+import com.andreidadushko.tomography2017.dao.db.custom.models.StudyOfferCartForList;
 import com.andreidadushko.tomography2017.datamodel.Offer;
 import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;

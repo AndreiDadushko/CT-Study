@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IStudyProtocolDao;
+import com.andreidadushko.tomography2017.dao.db.IStudyProtocolDao;
 import com.andreidadushko.tomography2017.datamodel.StudyProtocol;
 
 public class TestDaoStudyProtocol {

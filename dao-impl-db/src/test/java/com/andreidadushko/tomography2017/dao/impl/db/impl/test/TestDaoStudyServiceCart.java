@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IStudyOfferCartDao;
+import com.andreidadushko.tomography2017.dao.db.IStudyOfferCartDao;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 
 public class TestDaoStudyServiceCart {

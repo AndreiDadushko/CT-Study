@@ -11,7 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<common.project.version>1.0</common.project.version>
-		<spring.version>4.0.5.RELEASE</spring.version>
+		<spring.version>4.0.3.RELEASE</spring.version>
 		<jetty9.version>9.2.13.v20150730</jetty9.version>
 	</properties>
 
@@ -19,7 +19,7 @@
 		<module>datamodel</module>
 		<module>dao-api</module>
 		<module>dao-impl-db</module>
-		<!--module>dao-impl-xml</module -->
+		<module>dao-impl-xml</module>
 		<module>services</module>
 		<module>webapp</module>
 	</modules>
@@ -45,9 +45,11 @@
 				<version>1.0.0</version>
 			</dependency>
 
-			<!--dependency> <groupId>com.andreidadushko.tomography2017</groupId> <artifactId>dao-impl-xml</artifactId> 
-				<version>1.0.0</version> </dependency -->
-
+			<dependency>
+				<groupId>com.andreidadushko.tomography2017</groupId>
+				<artifactId>dao-impl-xml</artifactId>
+				<version>1.0.0</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.andreidadushko.tomography2017</groupId>
@@ -111,6 +113,11 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>

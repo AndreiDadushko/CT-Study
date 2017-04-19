@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.andreidadushko.tomography2017.dao.impl.db.IStaffDao;
+import com.andreidadushko.tomography2017.dao.db.IStaffDao;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 
 public class TestDaoStaff {

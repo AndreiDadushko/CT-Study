@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyForList;
-import com.andreidadushko.tomography2017.dao.impl.db.filters.StudyFilter;
+import com.andreidadushko.tomography2017.dao.db.custom.models.StudyForList;
+import com.andreidadushko.tomography2017.dao.db.filters.StudyFilter;
 import com.andreidadushko.tomography2017.datamodel.Study;
 
 public interface IStudyService {

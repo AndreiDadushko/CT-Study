@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyOfferCartForList;
+import com.andreidadushko.tomography2017.dao.db.custom.models.StudyOfferCartForList;
 import com.andreidadushko.tomography2017.datamodel.Category;
 import com.andreidadushko.tomography2017.datamodel.Offer;
 import com.andreidadushko.tomography2017.datamodel.Person;

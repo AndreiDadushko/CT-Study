@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StaffForList;
-import com.andreidadushko.tomography2017.dao.impl.db.filters.StaffFilter;
+import com.andreidadushko.tomography2017.dao.db.custom.models.StaffForList;
+import com.andreidadushko.tomography2017.dao.db.filters.StaffFilter;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 
 public interface IStaffService {

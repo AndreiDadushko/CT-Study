@@ -13,20 +13,12 @@
 	    http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
 	    http://www.springframework.org/schema/task
 	    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
-	    
-	    
-	    
+
+
+
 	<import resource="classpath:dao-context.xml" />
+
+	<context:component-scan
+		base-package="com.andreidadushko.tomography2017.services.impl" />
 	
-	<context:component-scan base-package="com.andreidadushko.tomography2017.services.impl" />
-	
-	<tx:annotation-driven />
-
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-
-
 </beans>

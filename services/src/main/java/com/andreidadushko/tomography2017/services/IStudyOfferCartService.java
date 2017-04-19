@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.andreidadushko.tomography2017.dao.impl.db.custom.models.StudyOfferCartForList;
+import com.andreidadushko.tomography2017.dao.db.custom.models.StudyOfferCartForList;
 import com.andreidadushko.tomography2017.datamodel.Offer;
 import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
