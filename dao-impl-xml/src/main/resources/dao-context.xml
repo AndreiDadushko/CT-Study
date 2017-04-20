@@ -14,4 +14,10 @@
 	<context:property-placeholder
 		ignore-unresolvable="true" location="classpath:xml.properties" />
 	
+	<bean id="domDriver" class="com.thoughtworks.xstream.io.xml.DomDriver"/>
+	
+	<bean id="xStream" class="com.thoughtworks.xstream.XStream">
+		<constructor-arg ref="domDriver" />
+	</bean>
+	
 </beans>

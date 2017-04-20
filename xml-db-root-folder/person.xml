@@ -1,16 +1,4 @@
 <com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
-  <rows>
-    <com.andreidadushko.tomography2017.datamodel.Person>
-      <id>1</id>
-      <firstName>Иван</firstName>
-      <middleName>Иванович</middleName>
-      <lastName>Иванов</lastName>
-      <birthDate>2017-04-19 10:40:24.241</birthDate>
-      <phoneNumber>+23414124124</phoneNumber>
-      <adress>Минск</adress>
-      <login>208043846</login>
-      <password>password</password>
-    </com.andreidadushko.tomography2017.datamodel.Person>
-  </rows>
-  <lastId>1</lastId>
+  <rows/>
+  <lastId>11</lastId>
 </com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>

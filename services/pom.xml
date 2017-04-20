@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.andreidadushko.tomography2017</groupId>
-			<artifactId>dao-impl-db</artifactId>
+			<artifactId>dao-impl-xml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

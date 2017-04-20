@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class PersonServiceTest extends AbstractTest {
 		Person personFromDB = personService.get(person.getId());
 		Assert.assertTrue("Returned data is not correct", person.equals(personFromDB));
 	}
-/*
+
 	@Test
 	public void validateCorrectLoginPasswordTest() {
 		Person person = personService.insert(testData.get(2));
@@ -79,13 +80,6 @@ public class PersonServiceTest extends AbstractTest {
 	public void insertOnlyLoginTest() {
 		personService.insert(testData.get(0));
 		Assert.fail("Could not insert person that have only login");
-	}
-
-	@Test(expected = org.springframework.dao.DuplicateKeyException.class)
-	public void insertNotUniqueLoginTest() {
-		personService.insert(testData.get(1));
-		personService.insert(testData.get(1));
-		Assert.fail("Login must be unique");
 	}
 
 	@Test
@@ -129,10 +123,10 @@ public class PersonServiceTest extends AbstractTest {
 		int numberBeforeInsert = personService.getCount();
 		personService.insert(testData.get(2));
 		int numberAfterInsert = personService.getCount();
-		Assert.assertTrue("Returned count of rows is not correct", numberBeforeInsert + 1 == numberAfterInsert);
+		Assert.assertTrue("Returned after insert count of rows is not correct", numberBeforeInsert + 1 == numberAfterInsert);
 		personService.delete(testData.get(2).getId());
 		int numberAfterDelete = personService.getCount();
-		Assert.assertTrue("Returned count of rows is not correct", numberBeforeInsert == numberAfterDelete);
+		Assert.assertTrue("Returned after delete count of rows is not correct", numberBeforeInsert == numberAfterDelete);
 	}
 
 	@Test
@@ -184,5 +178,10 @@ public class PersonServiceTest extends AbstractTest {
 		Person person = listFromDB.get(0);
 		Assert.assertTrue("Work of filter is not correct", testData.get(2).equals(person));
 	}
-*/
+
+	@After
+	public void destroyTestData() {
+		personService.delete(testData.get(1).getId());
+		personService.delete(testData.get(2).getId());
+	}
 }

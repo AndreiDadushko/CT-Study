@@ -1,79 +1,64 @@
 package com.andreidadushko.tomography2017.dao.xml.impl;
 
 import java.io.File;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.andreidadushko.tomography2017.dao.db.IStudyProtocolDao;
-import com.andreidadushko.tomography2017.dao.db.custom.models.StudyForList;
-import com.andreidadushko.tomography2017.dao.db.filters.StudyFilter;
+import com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper;
 import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyProtocol;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 @Repository
-public class StudyProtocolDaoXmlImpl implements IStudyProtocolDao {
-
-	private final XStream xstream = new XStream(new DomDriver());
-
-	@Value("${root.folder}")
-	private String rootFolder;
-
+public class StudyProtocolDaoXmlImpl extends AbstractDaoXmlImpl<StudyProtocol> implements IStudyProtocolDao {
 
 	@Override
-	public StudyProtocol get(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public File getFile() {
+		File file = new File(rootFolder + "study_protocol.xml");
+		return file;
 	}
-
 
 	@Override
-	public StudyProtocol insert(StudyProtocol object) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean idEquals(StudyProtocol object, Integer id) {
+		return object.getId().equals(id);
 	}
-
 
 	@Override
-	public void update(StudyProtocol object) {
-		// TODO Auto-generated method stub
-		
+	public void setId(StudyProtocol object, int id) {
+		object.setCreationDate(new java.sql.Timestamp(new Date().getTime()));
 	}
-
 
 	@Override
-	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+	public void updateObject(List<StudyProtocol> list, StudyProtocol object) {
+		for (StudyProtocol studyProtocol : list) {
+			if (studyProtocol.getId().equals(object.getId())) {
+				studyProtocol.setProtocol(object.getProtocol());
+				studyProtocol.setCreationDate(new java.sql.Timestamp(new Date().getTime()));
+				break;
+			}
+		}
 	}
-
-
-	@Override
-	public Integer getCount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<StudyProtocol> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public void massDelete(Integer[] idArray) {
-		// TODO Auto-generated method stub
-		
+		if (idArray != null && idArray.length != 0) {
+			File file = getFile();
+			XmlModelWrapper<StudyProtocol> wrapper = (XmlModelWrapper<StudyProtocol>) xstream.fromXML(file);
+			List<StudyProtocol> list = wrapper.getRows();
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				StudyProtocol studyProtocol = (StudyProtocol) iterator.next();
+				for (int i = 0; i < idArray.length; i++) {
+					if (studyProtocol.getId().equals(idArray[i])) {
+						iterator.remove();
+						break;
+					}
+				}
+			}
+			writeNewData(file, wrapper);
+		}
 	}
 
-
-	private File getFile() {
-		File file = new File(rootFolder + "person.xml");
-		return file;
-	}
 }

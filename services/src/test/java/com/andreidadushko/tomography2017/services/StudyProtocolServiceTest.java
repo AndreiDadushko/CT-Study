@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,28 +31,33 @@ public class StudyProtocolServiceTest extends AbstractTest {
 	private IStudyService studyService;
 
 	private List<StudyProtocol> testData;
+	
+	private Person person;
+	private Staff staff;
+	private Study study;
+	private Study study1;
 
 	@Before
 	public void initializeTestData() {
-		Person person = new Person();
+		person = new Person();
 		person.setLogin(Integer.toString(new Object().hashCode()));
 		person.setPassword("password");
 		person = personService.insert(person);
 
-		Staff staff = new Staff();
+		staff = new Staff();
 		staff.setDepartment("РКД");
 		staff.setPosition("Врач-рентгенолог");
 		staff.setPersonId(person.getId());
 		staff = staffService.insert(staff);
 
-		Study study = new Study();
+		study = new Study();
 		study.setAppointmentDate(new java.sql.Timestamp(new Date().getTime()));
 		study.setPermitted(true);
 		study.setPersonId(person.getId());
 		study.setStaffId(staff.getId());
 		studyService.insert(study);
 
-		Study study1 = new Study();
+		study1 = new Study();
 		study1.setAppointmentDate(new java.sql.Timestamp(new Date().getTime()));
 		study1.setPermitted(true);
 		study1.setPersonId(person.getId());
@@ -92,13 +98,6 @@ public class StudyProtocolServiceTest extends AbstractTest {
 	public void insertEmptyStudyProtocolTest() {
 		studyProtocolService.insert(testData.get(0));
 		Assert.fail("Could not insert empty study protocol");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongIdTest() {
-		studyService.delete(testData.get(1).getId());
-		studyProtocolService.insert(testData.get(1));
-		Assert.fail("Could not insert study protocol without existing study");
 	}
 
 	@Test
@@ -162,6 +161,15 @@ public class StudyProtocolServiceTest extends AbstractTest {
 		StudyProtocol studyProtocolFromDB2 = studyProtocolService.get(testData.get(2).getId());
 		Assert.assertTrue("Could not delete study protocol",
 				studyProtocolFromDB1 == null && studyProtocolFromDB2 == null);
-
+	}
+	
+	@After
+	public void destroyTestData() {
+		studyProtocolService.delete(testData.get(1).getId());
+		studyProtocolService.delete(testData.get(2).getId());
+		studyService.delete(study.getId());
+		studyService.delete(study1.getId());
+		staffService.delete(staff.getId());
+		personService.delete(person.getId());
 	}
 }

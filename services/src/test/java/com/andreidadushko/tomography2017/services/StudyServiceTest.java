@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +49,15 @@ public class StudyServiceTest extends AbstractTest {
 
 	private StudyForList testStudyForList;
 
-	private Person person;
+	private Person person;	
+	private Person person1;
+	private Staff staff;
+	private Staff staff1;
+	private StudyProtocol studyProtocol;
+	private Category category;
+	private Offer offer;
+	private StudyOfferCart studyOfferCart;
+	private StudyOfferCart studyOfferCart1;
 
 	@Before
 	public void initializeTestData() {
@@ -63,19 +72,19 @@ public class StudyServiceTest extends AbstractTest {
 		person.setPassword("password");
 		person = personService.insert(person);
 
-		Person person1 = new Person();
+		person1 = new Person();
 		person1.setLogin(Integer.toString(new Object().hashCode()));
 		person1.setPassword("password");
 		person1 = personService.insert(person1);
 
-		Staff staff = new Staff();
+		staff = new Staff();
 		staff.setDepartment("РКД");
 		staff.setPosition("Врач-рентгенолог");
 		staff.setStartDate(new java.sql.Timestamp(new Date().getTime()));
 		staff.setPersonId(person.getId());
 		staff = staffService.insert(staff);
 
-		Staff staff1 = new Staff();
+		staff1 = new Staff();
 		staff1.setDepartment("РКД");
 		staff1.setPosition("санитар");
 		staff1.setPersonId(person1.getId());
@@ -99,6 +108,22 @@ public class StudyServiceTest extends AbstractTest {
 		study2.setPersonId(person1.getId());
 		study2.setStaffId(staff1.getId());
 		testData.add(study2);
+		
+		studyProtocol = new StudyProtocol();
+		studyProtocol.setProtocol("test protocol");
+		
+		category = new Category();
+		category.setName(Integer.toString(new Object().hashCode()));
+		
+		offer = new Offer();
+		offer.setName(Integer.toString(new Object().hashCode()));
+		offer.setPrice(99.999);
+		
+		studyOfferCart = new StudyOfferCart();
+		studyOfferCart.setPaid(false);
+		
+		studyOfferCart1 = new StudyOfferCart();
+		studyOfferCart1.setPaid(false);
 
 		testStudyForList = new StudyForList();
 		testStudyForList.setAppointmentDate(study1.getAppointmentDate());
@@ -130,14 +155,6 @@ public class StudyServiceTest extends AbstractTest {
 		Assert.fail("Could not insert empty study");
 	}
 
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongPersonStaffIdTest() {
-		staffService.delete(testData.get(1).getStaffId());
-		personService.delete(testData.get(1).getPersonId());
-		studyService.insert(testData.get(1));
-		Assert.fail("Could not insert study without existing person and staff");
-	}
-
 	@Test
 	public void insertTest() {
 		Study study = studyService.insert(testData.get(1));
@@ -157,16 +174,6 @@ public class StudyServiceTest extends AbstractTest {
 		testData.get(0).setId(study.getId());
 		studyService.update(testData.get(0));
 		Assert.fail("Could not insert empty study");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void updateWrongPersonStaffIdTest() {
-		Study study = studyService.insert(testData.get(1));
-		staffService.delete(testData.get(2).getStaffId());
-		personService.delete(testData.get(2).getPersonId());
-		testData.get(2).setId(study.getId());
-		studyService.update(testData.get(2));
-		Assert.fail("Could not insert study without existing person and staff");
 	}
 
 	@Test
@@ -190,29 +197,18 @@ public class StudyServiceTest extends AbstractTest {
 	public void massDeleteTest() {
 		Study study = studyService.insert(testData.get(2));
 		Study study1 = studyService.insert(testData.get(1));
-		StudyProtocol studyProtocol = new StudyProtocol();
 		studyProtocol.setId(study.getId());
-		studyProtocol.setProtocol("test protocol");
 		studyProtocolService.insert(studyProtocol);
 
-		Category category = new Category();
-		category.setName(Integer.toString(new Object().hashCode()));
 		categoryService.insert(category);
-
-		Offer offer = new Offer();
-		offer.setName(Integer.toString(new Object().hashCode()));
-		offer.setPrice(99.999);
+		
 		offer.setCategorId(category.getId());
 		offerService.insert(offer);
 
-		StudyOfferCart studyOfferCart = new StudyOfferCart();
-		studyOfferCart.setPaid(false);
 		studyOfferCart.setStudyId(study.getId());
 		studyOfferCart.setOfferId(offer.getId());
 		studyOfferCartService.insert(studyOfferCart);
 
-		StudyOfferCart studyOfferCart1 = new StudyOfferCart();
-		studyOfferCart1.setPaid(false);
 		studyOfferCart1.setStudyId(study1.getId());
 		studyOfferCart1.setOfferId(offer.getId());
 		studyOfferCartService.insert(studyOfferCart1);
@@ -303,5 +299,19 @@ public class StudyServiceTest extends AbstractTest {
 		StudyForList studyForList = listFromDB.get(0);
 		Assert.assertTrue("Work of filter is not correct", testStudyForList.equals(studyForList));
 	}
-
+	
+	@After
+	public void destroyTestData() {
+		studyProtocolService.delete(studyProtocol.getId());
+		studyOfferCartService.delete(studyOfferCart.getId());
+		studyOfferCartService.delete(studyOfferCart1.getId());
+		offerService.delete(offer.getId());
+		categoryService.delete(category.getId());
+		studyService.delete(testData.get(1).getId());
+		studyService.delete(testData.get(2).getId());
+		staffService.delete(staff.getId());
+		staffService.delete(staff1.getId());
+		personService.delete(person.getId());
+		personService.delete(person1.getId());	
+	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,7 @@ public class StaffServiceTest extends AbstractTest {
 	private String login;
 
 	private Person person;
+	private Person person1;
 
 	@Before
 	public void initializeTestData() {
@@ -45,7 +47,7 @@ public class StaffServiceTest extends AbstractTest {
 		person.setPassword("password");
 		person = personService.insert(person);
 
-		Person person1 = new Person();
+		person1 = new Person();
 		person1.setLogin(Integer.toString(new Object().hashCode()));
 		person1.setPassword("password");
 		person1 = personService.insert(person1);
@@ -88,13 +90,6 @@ public class StaffServiceTest extends AbstractTest {
 		Assert.fail("Could not insert empty staff");
 	}
 
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongIdTest() {
-		personService.delete(testData.get(2).getPersonId());
-		staffService.insert(testData.get(2));
-		Assert.fail("Could not insert staff without existing person");
-	}
-
 	@Test
 	public void insertTest() {
 		Staff staff = staffService.insert(testData.get(2));
@@ -112,15 +107,6 @@ public class StaffServiceTest extends AbstractTest {
 	public void updateEmptyStaffTest() {
 		staffService.update(testData.get(0));
 		Assert.fail("Could not update empty staff");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void updateWrongIdTest() {
-		Staff staff = staffService.insert(testData.get(2));
-		personService.delete(testData.get(1).getPersonId());
-		testData.get(1).setId(staff.getId());
-		staffService.update(testData.get(1));
-		Assert.fail("Could not update staff without existing person");
 	}
 
 	@Test
@@ -221,4 +207,11 @@ public class StaffServiceTest extends AbstractTest {
 		Assert.assertTrue("Work of filter is not correct", testStaffForList.equals(staffForList));
 	}
 
+	@After
+	public void destroyTestData() {
+		staffService.delete(testData.get(1).getId());
+		staffService.delete(testData.get(2).getId());
+		personService.delete(person.getId());
+		personService.delete(person1.getId());		
+	}
 }

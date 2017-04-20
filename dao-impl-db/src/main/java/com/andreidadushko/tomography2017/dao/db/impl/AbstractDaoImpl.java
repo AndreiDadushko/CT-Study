@@ -80,7 +80,6 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 
 	@Override
 	public T insert(T object) {
-
 		String sql = getInsertQuery();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -96,23 +95,18 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 		setIdAfterInsert(keyHolder, object);
 
 		return object;
-
 	}
 
 	@Override
 	public void update(T object) {
-
 		String sql = getUpdateQuery();
-
 		jdbcTemplate.update(sql, argumentsForUpdate(object));
 	}
 
 	@Override
 	public void delete(Integer id) {
-
 		String sql = getDeleteQuery();
 		jdbcTemplate.update(sql + id);
-
 	}
 
 	@Override
@@ -124,11 +118,9 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 
 	@Override
 	public List<T> getAll() {
-
 		String sql = getSelectQuery();
 		List<T> rs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<T>(getClassForMapping()));
 		return rs;
-
 	}
 
 }
