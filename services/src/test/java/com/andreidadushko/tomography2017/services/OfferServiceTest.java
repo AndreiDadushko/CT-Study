@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +22,20 @@ public class OfferServiceTest extends AbstractTest {
 	private ICategoryService categoryService;
 
 	private List<Offer> testData;
+	
+	private Category category;
+	private Category category1;
 
 	@Before
 	public void initializeTestData() {
 		testData = new ArrayList<Offer>();
-		Category category = new Category();
+		category = new Category();
 		category.setName(Integer.toString(new Object().hashCode()));
 		category.setParentId(null);
 		categoryService.insert(category);
+		
+		category1 = new Category();
+		category1.setName(Integer.toString(new Object().hashCode()));
 
 		Offer offer0 = new Offer();
 		offer0.setName(Integer.toString(new Object().hashCode()));
@@ -63,13 +70,6 @@ public class OfferServiceTest extends AbstractTest {
 		Assert.fail("Could not insert empty offer");
 	}
 
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongCategorIdTest() {
-		categoryService.delete(testData.get(0).getCategorId());
-		offerService.insert(testData.get(0));
-		Assert.fail("Could not insert offer without existing category");
-	}
-
 	@Test
 	public void insertTest() {
 		offerService.insert(testData.get(0));
@@ -90,27 +90,11 @@ public class OfferServiceTest extends AbstractTest {
 		Assert.fail("Could not update empty offer");
 	}
 
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void updateWrongParentIdTest() {
-		Category category = new Category();
-		category.setName(Integer.toString(new Object().hashCode()));
-		category = categoryService.insert(category);
-		categoryService.delete(category.getId());
-
-		offerService.insert(testData.get(0));
-		testData.get(0).setCategorId(category.getId());
-		offerService.update(testData.get(0));
-		Assert.fail("Could not update offer's category id, without existing category");
-	}
-
 	@Test
-	public void updateTest() {
-		Category category = new Category();
-		category.setName(Integer.toString(new Object().hashCode()));
-		categoryService.insert(category);
-		
+	public void updateTest() {					
 		offerService.insert(testData.get(0));
-		testData.get(0).setCategorId(category.getId());
+		categoryService.insert(category1);	
+		testData.get(0).setCategorId(category1.getId());
 		offerService.update(testData.get(0));
 		Offer offerFromDB = offerService.get(testData.get(0).getId());
 		Assert.assertTrue("Updated data is not correct", testData.get(0).equals(offerFromDB));
@@ -151,5 +135,13 @@ public class OfferServiceTest extends AbstractTest {
 		offerService.insert(testData.get(1));
 		List<Offer> list =offerService.getByCategoryId(testData.get(1).getCategorId());
 		Assert.assertTrue("Returned list of offers is not correct", list.size() == 2);
+	}
+	
+	@After
+	public void destroyTestData() {
+		offerService.delete(testData.get(0).getId());
+		offerService.delete(testData.get(1).getId());
+		categoryService.delete(category.getId());
+		categoryService.delete(category1.getId());
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,10 @@ public class CategoryServiceTest extends AbstractTest {
 		Category category1 = new Category();
 		category1.setName(Integer.toString(new Object().hashCode()));
 		testData.add(category1);
+		
+		Category category2 = new Category();
+		category2.setName(Integer.toString(new Object().hashCode()));
+		testData.add(category2);
 	}
 
 	@Test
@@ -56,15 +61,6 @@ public class CategoryServiceTest extends AbstractTest {
 		Assert.fail("Could not insert empty category");
 	}
 
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongParentIdTest() {
-		categoryService.insert(testData.get(0));
-		categoryService.delete(testData.get(0).getId());
-		testData.get(1).setParentId(testData.get(0).getId());
-		categoryService.insert(testData.get(1));
-		Assert.fail("Could not insert category with parent id, that does not exist");
-	}
-
 	@Test
 	public void insertTest() {
 		Category category = categoryService.insert(testData.get(0));
@@ -88,17 +84,6 @@ public class CategoryServiceTest extends AbstractTest {
 		Category category = new Category();
 		categoryService.update(category);
 		Assert.fail("Could not update empty category");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void updateWrongParentIdTest() {
-		categoryService.insert(testData.get(0));
-		categoryService.delete(testData.get(0).getId());
-
-		categoryService.insert(testData.get(1));
-		testData.get(1).setParentId(testData.get(0).getId());
-		categoryService.update(testData.get(1));
-		Assert.fail("Could not update category's parent id, without existing parent");
 	}
 
 	@Test
@@ -147,13 +132,18 @@ public class CategoryServiceTest extends AbstractTest {
 	public void getByParentIdTest() {
 		categoryService.insert(testData.get(0));
 		testData.get(1).setParentId(testData.get(0).getId());
-		categoryService.insert(testData.get(1));
-		Category category = new Category();
-		category.setName(Integer.toString(new Object().hashCode()));
-		category.setParentId(testData.get(0).getId());
-		categoryService.insert(category);
+		categoryService.insert(testData.get(1));		
+		testData.get(2).setParentId(testData.get(0).getId());
+		categoryService.insert(testData.get(2));
 
 		List<Category> categoris = categoryService.getByParentId(testData.get(0).getId());
 		Assert.assertTrue("Could not get all subcategories", categoris.size() == 2);
+	}
+	
+	@After
+	public void destroyTestData() {
+		categoryService.delete(testData.get(2).getId());
+		categoryService.delete(testData.get(1).getId());
+		categoryService.delete(testData.get(0).getId());		
 	}
 }

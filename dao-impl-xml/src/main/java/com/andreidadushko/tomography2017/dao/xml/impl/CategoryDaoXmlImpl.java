@@ -1,73 +1,41 @@
 package com.andreidadushko.tomography2017.dao.xml.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.andreidadushko.tomography2017.dao.db.ICategoryDao;
-import com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper;
 import com.andreidadushko.tomography2017.datamodel.Category;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 @Repository
-public class CategoryDaoXmlImpl implements ICategoryDao {
-
-	private final XStream xstream = new XStream(new DomDriver());
-
-	@Value("${root.folder}")
-	private String rootFolder;
+public class CategoryDaoXmlImpl extends AbstractDaoXmlImpl<Category> implements ICategoryDao {
 
 	@Override
-	public Category get(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public File getFile() {
+		File file = new File(rootFolder + "category.xml");
+		return file;
 	}
 
 	@Override
-	public Category insert(Category object) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean idEquals(Category object, Integer id) {
+		return object.getId().equals(id);
 	}
 
 	@Override
-	public void update(Category object) {
-		// TODO Auto-generated method stub
-
+	public void setId(Category object, int id) {
+		object.setId(id);
 	}
 
 	@Override
-	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Integer getCount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Category> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void writeNewData(File file, XmlModelWrapper<Category> obj) {
-		try {
-			xstream.toXML(obj, new FileOutputStream(file));
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
+	public void updateObject(List<Category> list, Category object) {
+		for (Category category : list) {
+			if (category.getId().equals(object.getId())) {
+				category.setName(object.getName());
+				category.setParentId(object.getParentId());
+				break;
+			}
 		}
 	}
 
-	private File getFile() {
-		File file = new File(rootFolder + "person.xml");
-		return file;
-	}
 }
