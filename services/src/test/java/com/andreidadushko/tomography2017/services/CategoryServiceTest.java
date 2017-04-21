@@ -30,7 +30,7 @@ public class CategoryServiceTest extends AbstractTest {
 		Category category1 = new Category();
 		category1.setName(Integer.toString(new Object().hashCode()));
 		testData.add(category1);
-		
+
 		Category category2 = new Category();
 		category2.setName(Integer.toString(new Object().hashCode()));
 		testData.add(category2);
@@ -132,18 +132,18 @@ public class CategoryServiceTest extends AbstractTest {
 	public void getByParentIdTest() {
 		categoryService.insert(testData.get(0));
 		testData.get(1).setParentId(testData.get(0).getId());
-		categoryService.insert(testData.get(1));		
+		categoryService.insert(testData.get(1));
 		testData.get(2).setParentId(testData.get(0).getId());
 		categoryService.insert(testData.get(2));
 
 		List<Category> categoris = categoryService.getByParentId(testData.get(0).getId());
 		Assert.assertTrue("Could not get all subcategories", categoris.size() == 2);
 	}
-	
+
 	@After
 	public void destroyTestData() {
 		categoryService.delete(testData.get(2).getId());
 		categoryService.delete(testData.get(1).getId());
-		categoryService.delete(testData.get(0).getId());		
+		categoryService.delete(testData.get(0).getId());
 	}
 }

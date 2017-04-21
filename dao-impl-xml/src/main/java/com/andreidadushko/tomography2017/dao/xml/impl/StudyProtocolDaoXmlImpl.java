@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.andreidadushko.tomography2017.dao.db.IStudyProtocolDao;
 import com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper;
-import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyProtocol;
 
 @Repository

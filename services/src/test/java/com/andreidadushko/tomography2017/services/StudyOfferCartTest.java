@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,9 +41,17 @@ public class StudyOfferCartTest extends AbstractTest {
 
 	private List<StudyOfferCart> testData;
 
+	private Person person;
+	private Staff staff;
+	private Study study1;
+	private Study study2;
+	private Category category;
+	private Offer offer1;
+	private Offer offer2;
+
 	@Before
 	public void initializeTestData() {
-		Person person = new Person();
+		person = new Person();
 		person.setFirstName("Иван");
 		person.setMiddleName("Иванович");
 		person.setLastName("Иванов");
@@ -53,39 +62,39 @@ public class StudyOfferCartTest extends AbstractTest {
 		person.setPassword("password");
 		personService.insert(person);
 
-		Staff staff = new Staff();
+		staff = new Staff();
 		staff.setDepartment("РКД");
 		staff.setPosition("Врач-рентгенолог");
 		staff.setStartDate(new java.sql.Timestamp(new Date().getTime()));
 		staff.setPersonId(person.getId());
 		staffService.insert(staff);
 
-		Study study1 = new Study();
+		study1 = new Study();
 		study1.setAppointmentDate(new java.sql.Timestamp(new Date().getTime()));
 		study1.setPermitted(true);
 		study1.setPersonId(person.getId());
 		study1.setStaffId(staff.getId());
 		studyService.insert(study1);
 
-		Study study2 = new Study();
+		study2 = new Study();
 		study2.setAppointmentDate(new java.sql.Timestamp(new Date().getTime()));
 		study2.setPermitted(true);
 		study2.setPersonId(person.getId());
 		study2.setStaffId(staff.getId());
 		studyService.insert(study2);
 
-		Category category = new Category();
+		category = new Category();
 		category.setName(Integer.toString(new Object().hashCode()));
 		category.setParentId(null);
 		categoryService.insert(category);
 
-		Offer offer1 = new Offer();
+		offer1 = new Offer();
 		offer1.setName(Integer.toString(new Object().hashCode()));
 		offer1.setPrice(56.65);
 		offer1.setCategorId(category.getId());
 		offerService.insert(offer1);
 
-		Offer offer2 = new Offer();
+		offer2 = new Offer();
 		offer2.setName(Integer.toString(new Object().hashCode()));
 		offer2.setPrice(56.65);
 		offer2.setCategorId(category.getId());
@@ -126,20 +135,6 @@ public class StudyOfferCartTest extends AbstractTest {
 		Assert.fail("Could not insert empty studyOfferCart");
 	}
 
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongStudyIdTest() {
-		studyService.delete(testData.get(0).getStudyId());
-		studyOfferCartService.insert(testData.get(0));
-		Assert.fail("Could not insert studyOfferCart without existing study");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void insertWrongOfferIdTest() {
-		offerService.delete(testData.get(0).getOfferId());
-		studyOfferCartService.insert(testData.get(0));
-		Assert.fail("Could not insert studyOfferCart without existing offer");
-	}
-
 	@Test
 	public void insertTest() {
 		studyOfferCartService.insert(testData.get(0));
@@ -158,26 +153,6 @@ public class StudyOfferCartTest extends AbstractTest {
 		StudyOfferCart studyOfferCart = new StudyOfferCart();
 		studyOfferCartService.update(studyOfferCart);
 		Assert.fail("Could not insert empty studyOfferCart");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void updateWrongStudyIdTest() {
-		studyOfferCartService.insert(testData.get(0));
-
-		studyService.delete(testData.get(1).getStudyId());
-		testData.get(1).setId(testData.get(0).getId());
-		studyOfferCartService.update(testData.get(1));
-		Assert.fail("Could not update studyOfferCart without existing study");
-	}
-
-	@Test(expected = org.springframework.dao.DataIntegrityViolationException.class)
-	public void updateWrongOfferIdTest() {
-		studyOfferCartService.insert(testData.get(0));
-
-		offerService.delete(testData.get(1).getOfferId());
-		testData.get(1).setId(testData.get(0).getId());
-		studyOfferCartService.update(testData.get(1));
-		Assert.fail("Could not update studyOfferCart without existing offer");
 	}
 
 	@Test
@@ -211,19 +186,43 @@ public class StudyOfferCartTest extends AbstractTest {
 
 	@Test
 	public void massInsertTest() {
-		Study study = studyService.get(testData.get(0).getStudyId());
 		List<Offer> offers = new ArrayList<Offer>();
 		offers.add(offerService.get(testData.get(0).getOfferId()));
 		offers.add(offerService.get(testData.get(1).getOfferId()));
-		studyOfferCartService.massInsert(study, offers);
-		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(study.getId());
+		studyOfferCartService.massInsert(study1, offers);
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(study1.getId());
 		Assert.assertTrue("Could not insert studyOfferCart for each offer", listFromDB.size() == 2);
 	}
-	
+
 	@Test
-	public void getStudyOfferCartByStudyIdTest(){
+	public void getStudyOfferCartByStudyIdTest() {
 		studyOfferCartService.insert(testData.get(0));
-		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(testData.get(0).getStudyId());
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService
+				.getStudyOfferCartByStudyId(testData.get(0).getStudyId());
 		Assert.assertTrue("Could not get all studyOfferCart by study id", listFromDB.size() == 1);
+	}
+
+	@Test
+	public void getCartWithNullStudyIdTest() {
+		studyOfferCartService.insert(testData.get(0));
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(null);
+		Assert.assertTrue("Could not get studyOfferCart with null study id", listFromDB.size() == 0);
+	}
+
+	@After
+	public void destroyTestData() {
+		studyOfferCartService.delete(testData.get(0).getId());
+		studyOfferCartService.delete(testData.get(1).getId());
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(study1.getId());
+		for (StudyOfferCartForList studyOfferCartForList : listFromDB) {
+			studyOfferCartService.delete(studyOfferCartForList.getId());
+		}
+		offerService.delete(offer1.getId());
+		offerService.delete(offer2.getId());
+		categoryService.delete(category.getId());
+		studyService.delete(study1.getId());
+		studyService.delete(study2.getId());
+		staffService.delete(staff.getId());
+		personService.delete(person.getId());
 	}
 }

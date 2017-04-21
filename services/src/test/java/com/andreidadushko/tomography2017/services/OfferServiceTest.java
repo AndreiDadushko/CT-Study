@@ -22,7 +22,7 @@ public class OfferServiceTest extends AbstractTest {
 	private ICategoryService categoryService;
 
 	private List<Offer> testData;
-	
+
 	private Category category;
 	private Category category1;
 
@@ -33,7 +33,7 @@ public class OfferServiceTest extends AbstractTest {
 		category.setName(Integer.toString(new Object().hashCode()));
 		category.setParentId(null);
 		categoryService.insert(category);
-		
+
 		category1 = new Category();
 		category1.setName(Integer.toString(new Object().hashCode()));
 
@@ -42,7 +42,7 @@ public class OfferServiceTest extends AbstractTest {
 		offer0.setPrice(56.65);
 		offer0.setCategorId(category.getId());
 		testData.add(offer0);
-		
+
 		Offer offer1 = new Offer();
 		offer1.setName(Integer.toString(new Object().hashCode()));
 		offer1.setPrice(56.65);
@@ -91,9 +91,9 @@ public class OfferServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void updateTest() {					
+	public void updateTest() {
 		offerService.insert(testData.get(0));
-		categoryService.insert(category1);	
+		categoryService.insert(category1);
 		testData.get(0).setCategorId(category1.getId());
 		offerService.update(testData.get(0));
 		Offer offerFromDB = offerService.get(testData.get(0).getId());
@@ -123,20 +123,22 @@ public class OfferServiceTest extends AbstractTest {
 		int numberBeforeInsert = offerService.getCount();
 		offerService.insert(testData.get(0));
 		int numberAfterInsert = offerService.getCount();
-		Assert.assertTrue("Returned after insert count of rows is not correct", numberBeforeInsert + 1 == numberAfterInsert);
+		Assert.assertTrue("Returned after insert count of rows is not correct",
+				numberBeforeInsert + 1 == numberAfterInsert);
 		offerService.delete(testData.get(0).getId());
 		int numberAfterDelete = offerService.getCount();
-		Assert.assertTrue("Returned after delete count of rows is not correct", numberBeforeInsert == numberAfterDelete);
+		Assert.assertTrue("Returned after delete count of rows is not correct",
+				numberBeforeInsert == numberAfterDelete);
 	}
-	
+
 	@Test
-	public void getByCategoryIdTest(){
+	public void getByCategoryIdTest() {
 		offerService.insert(testData.get(0));
 		offerService.insert(testData.get(1));
-		List<Offer> list =offerService.getByCategoryId(testData.get(1).getCategorId());
+		List<Offer> list = offerService.getByCategoryId(testData.get(1).getCategorId());
 		Assert.assertTrue("Returned list of offers is not correct", list.size() == 2);
 	}
-	
+
 	@After
 	public void destroyTestData() {
 		offerService.delete(testData.get(0).getId());
