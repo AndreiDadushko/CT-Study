@@ -113,11 +113,11 @@ public class PersonDaoImpl extends AbstractDaoImpl<Person> implements IPersonDao
 				objects.add(personFilter.getAdress());
 			}
 			if (personFilter.getFrom() != null) {
-				sqlParts.add("birth_date > ?");
+				sqlParts.add("birth_date >= ?");
 				objects.add(personFilter.getFrom());
 			}
 			if (personFilter.getTo() != null) {
-				sqlParts.add("birth_date < ?");
+				sqlParts.add("birth_date <= ?");
 				objects.add(personFilter.getTo());
 			}
 		}

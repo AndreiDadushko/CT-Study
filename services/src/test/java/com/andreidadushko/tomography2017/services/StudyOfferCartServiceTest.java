@@ -19,7 +19,7 @@ import com.andreidadushko.tomography2017.datamodel.Staff;
 import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 
-public class StudyOfferCartTest extends AbstractTest {
+public class StudyOfferCartServiceTest extends AbstractTest {
 
 	@Inject
 	private IStudyOfferCartService studyOfferCartService;
