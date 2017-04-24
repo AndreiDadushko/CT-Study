@@ -47,9 +47,9 @@ public class PersonController {
 			personService.insert(person);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} /*catch (UnsupportedOperationException e){
+		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}*/
+		}
 		return new ResponseEntity<IntegerModel>(new IntegerModel(person.getId()), HttpStatus.CREATED);
 	}
 
@@ -67,6 +67,8 @@ public class PersonController {
 			personService.update(person);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+		} catch (UnsupportedOperationException e) {
+			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
 		}
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}

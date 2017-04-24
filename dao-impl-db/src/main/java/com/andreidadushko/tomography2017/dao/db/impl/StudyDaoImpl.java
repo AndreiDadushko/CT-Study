@@ -123,11 +123,11 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 				objects.add(studyFilter.getPatientMiddleName());
 			}
 			if (studyFilter.getFrom() != null) {
-				sqlParts.add("appointment_date > ?");
+				sqlParts.add("appointment_date >= ?");
 				objects.add(studyFilter.getFrom());
 			}
 			if (studyFilter.getTo() != null) {
-				sqlParts.add("appointment_date < ?");
+				sqlParts.add("appointment_date <= ?");
 				objects.add(studyFilter.getTo());
 			}
 		}

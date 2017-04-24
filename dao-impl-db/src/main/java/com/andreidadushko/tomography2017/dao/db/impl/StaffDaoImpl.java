@@ -118,19 +118,19 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 				objects.add(staffFilter.getPosition());
 			}
 			if (staffFilter.getStartFrom() != null) {
-				sqlParts.add("start_date > ?");
+				sqlParts.add("start_date >= ?");
 				objects.add(staffFilter.getStartFrom());
 			}
 			if (staffFilter.getStartTo() != null) {
-				sqlParts.add("start_date < ?");
+				sqlParts.add("start_date <= ?");
 				objects.add(staffFilter.getStartTo());
 			}
 			if (staffFilter.getEndFrom() != null) {
-				sqlParts.add("end_date > ?");
+				sqlParts.add("end_date >= ?");
 				objects.add(staffFilter.getEndFrom());
 			}
 			if (staffFilter.getEndTo() != null) {
-				sqlParts.add("end_date < ?");
+				sqlParts.add("end_date <= ?");
 				objects.add(staffFilter.getEndTo());
 			}
 		}
