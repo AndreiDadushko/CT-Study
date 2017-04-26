@@ -190,7 +190,7 @@ public class StudyOfferCartServiceTest extends AbstractTest {
 		offers.add(offerService.get(testData.get(0).getOfferId()));
 		offers.add(offerService.get(testData.get(1).getOfferId()));
 		studyOfferCartService.massInsert(study1, offers);
-		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(study1.getId());
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getCartByStudyId(study1.getId());
 		Assert.assertTrue("Could not insert studyOfferCart for each offer", listFromDB.size() == 2);
 	}
 
@@ -198,14 +198,14 @@ public class StudyOfferCartServiceTest extends AbstractTest {
 	public void getStudyOfferCartByStudyIdTest() {
 		studyOfferCartService.insert(testData.get(0));
 		List<StudyOfferCartForList> listFromDB = studyOfferCartService
-				.getStudyOfferCartByStudyId(testData.get(0).getStudyId());
+				.getCartByStudyId(testData.get(0).getStudyId());
 		Assert.assertTrue("Could not get all studyOfferCart by study id", listFromDB.size() == 1);
 	}
 
 	@Test
 	public void getCartWithNullStudyIdTest() {
 		studyOfferCartService.insert(testData.get(0));
-		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(null);
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getCartByStudyId(null);
 		Assert.assertTrue("Could not get studyOfferCart with null study id", listFromDB.size() == 0);
 	}
 
@@ -213,7 +213,7 @@ public class StudyOfferCartServiceTest extends AbstractTest {
 	public void destroyTestData() {
 		studyOfferCartService.delete(testData.get(0).getId());
 		studyOfferCartService.delete(testData.get(1).getId());
-		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getStudyOfferCartByStudyId(study1.getId());
+		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getCartByStudyId(study1.getId());
 		for (StudyOfferCartForList studyOfferCartForList : listFromDB) {
 			studyOfferCartService.delete(studyOfferCartForList.getId());
 		}

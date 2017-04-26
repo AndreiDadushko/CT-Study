@@ -56,7 +56,7 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	}
 
 	@Override
-	public List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId) {
+	public List<StudyOfferCartForList> getCartByStudyId(Integer studyId) {
 		List<StudyOfferCartForList> list = studyOfferCartDao.getStudyOfferCartByStudyId(studyId);
 		LOGGER.info("Get list of all studyOfferCart");
 		return list;

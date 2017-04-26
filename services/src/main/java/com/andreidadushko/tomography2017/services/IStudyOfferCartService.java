@@ -28,5 +28,5 @@ public interface IStudyOfferCartService {
 	@Transactional
 	void massInsert(Study study, List<Offer> offer);
 	
-	List<StudyOfferCartForList> getStudyOfferCartByStudyId(Integer studyId);
+	List<StudyOfferCartForList> getCartByStudyId(Integer studyId);
 }
