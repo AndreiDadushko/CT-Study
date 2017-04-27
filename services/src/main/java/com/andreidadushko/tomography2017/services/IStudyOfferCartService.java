@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.andreidadushko.tomography2017.dao.db.custom.models.StudyOfferCartForList;
-import com.andreidadushko.tomography2017.datamodel.Offer;
-import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 
 public interface IStudyOfferCartService {
@@ -26,7 +24,7 @@ public interface IStudyOfferCartService {
 	void massDelete(Integer[] studyIdArray);
 
 	@Transactional
-	void massInsert(Study study, List<Offer> offer);
-	
+	void massInsert(Integer studyId, Integer[] offerIdArray);
+
 	List<StudyOfferCartForList> getCartByStudyId(Integer studyId);
 }

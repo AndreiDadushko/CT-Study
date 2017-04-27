@@ -128,7 +128,7 @@ public class StudyController {
 		return studyModel;
 	}
 
-	public static Study studyModel2studyEntity(StudyModel studyModel) {
+	private Study studyModel2studyEntity(StudyModel studyModel) {
 		Study study = new Study();
 		study.setId(studyModel.getId());
 		study.setAppointmentDate(studyModel.getAppointmentDate() == null ? null

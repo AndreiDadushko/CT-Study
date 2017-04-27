@@ -186,10 +186,8 @@ public class StudyOfferCartServiceTest extends AbstractTest {
 
 	@Test
 	public void massInsertTest() {
-		List<Offer> offers = new ArrayList<Offer>();
-		offers.add(offerService.get(testData.get(0).getOfferId()));
-		offers.add(offerService.get(testData.get(1).getOfferId()));
-		studyOfferCartService.massInsert(study1, offers);
+		Integer[] offerIdArray = new Integer[]{offer1.getId(),offer2.getId()};
+		studyOfferCartService.massInsert(study1.getId(), offerIdArray);
 		List<StudyOfferCartForList> listFromDB = studyOfferCartService.getCartByStudyId(study1.getId());
 		Assert.assertTrue("Could not insert studyOfferCart for each offer", listFromDB.size() == 2);
 	}

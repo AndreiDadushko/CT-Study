@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.andreidadushko.tomography2017.dao.db.IStudyOfferCartDao;
 import com.andreidadushko.tomography2017.dao.db.custom.models.StudyOfferCartForList;
-import com.andreidadushko.tomography2017.datamodel.Offer;
-import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 import com.andreidadushko.tomography2017.services.IStudyOfferCartService;
 
@@ -69,20 +67,17 @@ public class StudyOfferCartServiceImpl implements IStudyOfferCartService {
 	}
 
 	@Override
-	public void massInsert(Study study, List<Offer> offer) {
-		Integer studyId = null;
-		if (study != null && offer != null) {
-			studyId = study.getId();
-			for (int i = 0; i < offer.size(); i++) {
-				if (offer.get(i) != null) {
+	public void massInsert(Integer studyId, Integer[] offerIdArray) {
+		if (studyId != null && offerIdArray != null) {
+			for (int i = 0; i < offerIdArray.length; i++) {
+				if (offerIdArray[i] != null) {
 					StudyOfferCart studyOfferCart = new StudyOfferCart();
 					studyOfferCart.setStudyId(studyId);
-					studyOfferCart.setOfferId(offer.get(i).getId());
+					studyOfferCart.setOfferId(offerIdArray[i]);
 					insert(studyOfferCart);
 				}
 			}
 		}
-		LOGGER.info("Insert studyOfferCarts with study id = {} and offers = {}", studyId, offer);
 	}
 
 	private boolean isValid(StudyOfferCart studyOfferCart) {

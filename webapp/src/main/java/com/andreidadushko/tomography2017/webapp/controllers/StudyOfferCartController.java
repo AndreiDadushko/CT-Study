@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andreidadushko.tomography2017.dao.db.custom.models.StudyOfferCartForList;
-import com.andreidadushko.tomography2017.datamodel.Offer;
-import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 import com.andreidadushko.tomography2017.services.IStudyOfferCartService;
 import com.andreidadushko.tomography2017.webapp.models.CartForListModel;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
-import com.andreidadushko.tomography2017.webapp.models.OfferModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyOfferCartModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyWithOffersModel;
 
@@ -89,16 +86,16 @@ public class StudyOfferCartController {
 		return new ResponseEntity<List<CartForListModel>>(convertedCartForList, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "massinsert", method = RequestMethod.POST)
+	@RequestMapping(value = "/massinsert", method = RequestMethod.POST)
 	public ResponseEntity<?> massInsert(@RequestBody StudyWithOffersModel studyOffersModel) {
-		Study study = StudyController.studyModel2studyEntity(studyOffersModel.getStudyModel());
-		List<OfferModel> offerModelList = studyOffersModel.getOfferModel();
-		List<Offer> offerList = new ArrayList<Offer>();
-		for (OfferModel offerModel : offerModelList) {
-			offerList.add(OfferController.offerModel2OfferEntity(offerModel));
+		Integer studyId = studyOffersModel.getStudyId().getNumber();
+		IntegerModel[] offerIdModelArray = studyOffersModel.getOfferIdArray();
+		Integer[] offerIdArray = new Integer[offerIdModelArray.length];
+		for (int i = 0; i < offerIdModelArray.length; i++) {
+			offerIdArray[i] = offerIdModelArray[i].getNumber();
 		}
 		try {
-			studyOfferCartService.massInsert(study, offerList);
+			studyOfferCartService.massInsert(studyId, offerIdArray);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (UnsupportedOperationException e) {
