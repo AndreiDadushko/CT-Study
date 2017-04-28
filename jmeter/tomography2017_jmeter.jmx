@@ -15,10 +15,10 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">20</stringProp>
         <longProp name="ThreadGroup.start_time">1492934039000</longProp>
         <longProp name="ThreadGroup.end_time">1492934039000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -49,7 +49,7 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">8081</stringProp>
+          <stringProp name="HTTPSampler.port">8082</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
           <stringProp name="HTTPSampler.path"></stringProp>
@@ -460,7 +460,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">{&quot;id&quot;:${person_id},&quot;firstName&quot;:&quot;glebania&quot;,&quot;middleName&quot;:&quot;WWWW&quot;,&quot;lastName&quot;:&quot;.COM&quot;,&quot;birthDate&quot;:951084000000,&quot;phoneNumber&quot;:&quot;+45345534534&quot;,&quot;adress&quot;:&quot;Минск&quot;,&quot;login&quot;:&quot;login${person-number}&quot;,&quot;password&quot;:&quot;pass&quot;}</stringProp>
+                  <stringProp name="Argument.value">{&quot;id&quot;:${person_id},&quot;firstName&quot;:&quot;glebania&quot;,&quot;middleName&quot;:&quot;WWWW&quot;,&quot;lastName&quot;:&quot;.COM&quot;,&quot;birthDate&quot;:951084000000,&quot;phoneNumber&quot;:&quot;+45345534534&quot;,&quot;adress&quot;:&quot;Минск&quot;,&quot;login&quot;:&quot;login${counter}&quot;,&quot;password&quot;:&quot;pass&quot;}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -564,7 +564,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">{&quot;id&quot;:${category_id},&quot;name&quot;:&quot;ugaugauga category&quot;,&quot;parentId&quot;:null}</stringProp>
+                  <stringProp name="Argument.value">{&quot;id&quot;:${category_id},&quot;name&quot;:&quot; ${counter}ugaugauga category&quot;,&quot;parentId&quot;:null}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
