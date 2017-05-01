@@ -54,20 +54,17 @@ public class PersonServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void validateCorrectLoginPasswordTest() {
+	public void getByLoginTest() {
 		Person person = personService.insert(testData.get(2));
 		Assert.assertTrue("Could not validate existing person",
-				personService.validateLoginPassword(person.getLogin(), person.getPassword()));
+				personService.getByLogin(person.getLogin()).equals(person));
 	}
 
 	@Test
-	public void validateIncorrectLoginPasswordTest() {
+	public void getByIncorrectLoginTest() {
 		String notExistingLogin = Integer.toString(new Object().hashCode());
-		String notExistingPassword = Integer.toString(new Object().hashCode());
-		Assert.assertFalse("Could not validate incorrect login and password",
-				personService.validateLoginPassword(notExistingLogin, notExistingPassword));
-		Assert.assertFalse("Could not validate null login and password",
-				personService.validateLoginPassword(null, null));
+		Assert.assertNull("Could not get person that does not exist", personService.getByLogin(notExistingLogin));
+		Assert.assertNull("Could not get person with null login", personService.getByLogin(null));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -123,10 +120,12 @@ public class PersonServiceTest extends AbstractTest {
 		int numberBeforeInsert = personService.getCount();
 		personService.insert(testData.get(2));
 		int numberAfterInsert = personService.getCount();
-		Assert.assertTrue("Returned after insert count of rows is not correct", numberBeforeInsert + 1 == numberAfterInsert);
+		Assert.assertTrue("Returned after insert count of rows is not correct",
+				numberBeforeInsert + 1 == numberAfterInsert);
 		personService.delete(testData.get(2).getId());
 		int numberAfterDelete = personService.getCount();
-		Assert.assertTrue("Returned after delete count of rows is not correct", numberBeforeInsert == numberAfterDelete);
+		Assert.assertTrue("Returned after delete count of rows is not correct",
+				numberBeforeInsert == numberAfterDelete);
 	}
 
 	@Test
@@ -139,7 +138,7 @@ public class PersonServiceTest extends AbstractTest {
 		listFromDB = personService.getWithPagination(number, 0);
 		Assert.assertTrue("Number of returned rows is not correct", listFromDB.size() == 0);
 	}
-	
+
 	@Test
 	public void getWithNullFilterTest() {
 		int number = personService.getCount();
@@ -154,7 +153,7 @@ public class PersonServiceTest extends AbstractTest {
 		List<Person> listFromDB = personService.getWithPagination(0, number, personFilter);
 		Assert.assertTrue("With empty filter must get all rows", number == listFromDB.size());
 	}
-	
+
 	@Test
 	public void getWithFilterTest() {
 		PersonFilter personFilter = new PersonFilter();

@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +21,20 @@ import com.andreidadushko.tomography2017.dao.db.filters.PersonFilter;
 import com.andreidadushko.tomography2017.dao.db.filters.SortData;
 import com.andreidadushko.tomography2017.datamodel.Person;
 import com.andreidadushko.tomography2017.services.IPersonService;
-import com.andreidadushko.tomography2017.webapp.models.BolleanModel;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.PersonFilterModel;
 import com.andreidadushko.tomography2017.webapp.models.PersonModel;
+import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
 
 @RestController
 @RequestMapping("/person")
 public class PersonController {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
+
+	@Inject
+	private ApplicationContext context;
+	
 	@Inject
 	private IPersonService personService;
 
@@ -41,23 +49,19 @@ public class PersonController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> insert(@RequestBody PersonModel personModel) {
+	public ResponseEntity<?> insert(@RequestBody PersonModel personModel) {		
 		Person person = personModel2PersonEntity(personModel);
-		try {
+		try { 
 			personService.insert(person);
 		} catch (IllegalArgumentException e) {
+			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
+		} catch (org.springframework.dao.DuplicateKeyException e) {
+			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<IntegerModel>(new IntegerModel(person.getId()), HttpStatus.CREATED);
-	}
-
-	@RequestMapping(value = "/authentication", method = RequestMethod.GET)
-	public ResponseEntity<?> validateLoginPassword(@RequestParam(required = true) String login,
-			@RequestParam(required = true) String password) {
-		Boolean result = personService.validateLoginPassword(login, password);
-		return new ResponseEntity<BolleanModel>(new BolleanModel(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
@@ -66,6 +70,7 @@ public class PersonController {
 		try {
 			personService.update(person);
 		} catch (IllegalArgumentException e) {
+			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);

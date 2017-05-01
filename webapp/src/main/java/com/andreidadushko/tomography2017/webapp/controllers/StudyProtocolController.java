@@ -2,6 +2,8 @@ package com.andreidadushko.tomography2017.webapp.controllers;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,8 @@ import com.andreidadushko.tomography2017.webapp.models.StudyProtocolModel;
 @RequestMapping("/protocol")
 public class StudyProtocolController {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudyProtocolController.class);
+	
 	@Inject
 	private IStudyProtocolService studyProtocolService;
 
@@ -44,6 +48,7 @@ public class StudyProtocolController {
 		try {
 			studyProtocolService.insert(studyProtocol);
 		} catch (IllegalArgumentException e) {
+			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -57,6 +62,7 @@ public class StudyProtocolController {
 		try {
 			studyProtocolService.update(studyProtocol);
 		} catch (IllegalArgumentException e) {
+			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);

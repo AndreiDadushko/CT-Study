@@ -30,14 +30,12 @@ public class PersonServiceImpl implements IPersonService {
 	}
 
 	@Override
-	public Boolean validateLoginPassword(String login, String password) {
-		if (login == null || password == null)
-			return false;
+	public Person getByLogin(String login) {
+		if (login == null)
+			return null;
 		Person person = personDao.get(login);
-		if (person!=null && password.equals(person.getPassword()))
-			return true;
-		else
-			return false;
+		LOGGER.info("Get person with login = " + login);
+		return person;
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class PersonServiceImpl implements IPersonService {
 
 	@Override
 	public Integer getCount() {
-		
+
 		return personDao.getCount();
 	}
 
@@ -87,7 +85,7 @@ public class PersonServiceImpl implements IPersonService {
 		if (person == null)
 			throw new IllegalArgumentException("Could not insert/update null");
 		if (person.getLogin() == null || person.getPassword() == null)
-			throw new IllegalArgumentException("Person must have login and password");		
+			throw new IllegalArgumentException("Person must have login and password");
 		return true;
 	}
 

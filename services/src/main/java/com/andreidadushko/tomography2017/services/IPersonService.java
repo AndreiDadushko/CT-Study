@@ -11,7 +11,7 @@ public interface IPersonService {
 
 	Person get(Integer id);
 
-	Boolean validateLoginPassword(String login, String password);
+	Person getByLogin(String login);
 
 	@Transactional
 	Person insert(Person person);

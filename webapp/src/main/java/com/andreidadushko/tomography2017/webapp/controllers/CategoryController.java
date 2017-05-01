@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +20,16 @@ import com.andreidadushko.tomography2017.datamodel.Category;
 import com.andreidadushko.tomography2017.services.ICategoryService;
 import com.andreidadushko.tomography2017.webapp.models.CategoryModel;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
+import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
 
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
+
+	@Inject
+	private ApplicationContext context;
 
 	@Inject
 	private ICategoryService categoryService;
@@ -43,15 +52,21 @@ public class CategoryController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody CategoryModel categoryModel) {
-		Category category = categoryModel2CategoryEntity(categoryModel);
-		try {
-			categoryService.insert(category);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<IntegerModel>(new IntegerModel(category.getId()), HttpStatus.CREATED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			Category category = categoryModel2CategoryEntity(categoryModel);
+			try {
+				categoryService.insert(category);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} catch (UnsupportedOperationException e) {
+				return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+			} /*catch (UnsupportedOperationException e) {
+				return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);*/
+			return new ResponseEntity<IntegerModel>(new IntegerModel(category.getId()), HttpStatus.CREATED);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
@@ -60,6 +75,7 @@ public class CategoryController {
 		try {
 			categoryService.update(category);
 		} catch (IllegalArgumentException e) {
+			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);

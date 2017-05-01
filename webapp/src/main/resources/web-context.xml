@@ -14,8 +14,9 @@
 
 	<mvc:annotation-driven />
 	
+	<import resource="classpath:services-context.xml" />
+	
+	<context:component-scan base-package="com.andreidadushko.tomography2017.webapp.storage" />
 	<context:component-scan base-package="com.andreidadushko.tomography2017.webapp.controllers" />
-
-
-
+	
 </beans>
