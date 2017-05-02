@@ -30,7 +30,7 @@ public class UserAuthStorage {
 
 	@Override
 	public String toString() {
-		return "UserAuthStorage [id=" + id + "]";
+		return "User with id=" + id;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.andreidadushko.tomography2017.webapp.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -50,6 +51,7 @@ public class StudyController {
 			if (study != null) {
 				convertedStudy = studyEntity2StudyModel(study);
 			}
+			LOGGER.info("{} request study with id = {}", userAuthStorage, id);
 			return new ResponseEntity<StudyModel>(convertedStudy, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -61,6 +63,7 @@ public class StudyController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Integer result = studyService.getCount();
+			LOGGER.info("{} request count of studies", userAuthStorage);
 			return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -73,9 +76,10 @@ public class StudyController {
 			Study study = studyModel2studyEntity(studyModel);
 			try {
 				studyService.insert(study);
+				LOGGER.info("{} insert study with id = {}", userAuthStorage, study.getId());
 				return new ResponseEntity<IntegerModel>(new IntegerModel(study.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			}
 		} else
@@ -89,9 +93,10 @@ public class StudyController {
 			Study study = studyModel2studyEntity(studyModel);
 			try {
 				studyService.update(study);
+				LOGGER.info("{} update study with id = {}", userAuthStorage, study.getId());
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			}
 		} else
@@ -104,6 +109,7 @@ public class StudyController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyService.delete(id);
+			LOGGER.info("{} delete study with id = {}", userAuthStorage, id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -115,6 +121,7 @@ public class StudyController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyService.massDelete(idArray);
+			LOGGER.info("{} delete studies with id = {}", userAuthStorage, Arrays.asList(idArray));
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -132,6 +139,7 @@ public class StudyController {
 				for (StudyForList studyForList : list) {
 					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
 				}
+				LOGGER.info("{} request studies with person id = {}", userAuthStorage, personId);
 				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
 			} catch (UnsupportedOperationException e) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -152,6 +160,7 @@ public class StudyController {
 				for (StudyForList studyForList : list) {
 					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
 				}
+				LOGGER.info("{} request studies with offset = {}, limit = {}", userAuthStorage, offset, limit);
 				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
 			} catch (UnsupportedOperationException e) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -173,6 +182,8 @@ public class StudyController {
 				for (StudyForList studyForList : list) {
 					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
 				}
+				LOGGER.info("{} request studies with offset = {}, limit = {}, filter = {}", userAuthStorage, offset,
+						limit, studyFilter);
 				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
 			} catch (UnsupportedOperationException e) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -47,31 +47,33 @@ public class BasicAuthFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-
-		String[] credentials = resolveCredentials(req);
-		boolean isCredentialsResolved = credentials != null && credentials.length == 2;
-		if (!isCredentialsResolved) {
-			res.sendError(HttpStatus.UNAUTHORIZED_401);
-			return;
-		}
-		String login = credentials[0];
-		String password = credentials[1];
-
-		Person person = personService.getByLogin(login);
-		if (person.getPassword().equals(password)) {
-			UserAuthStorage userDataStorage = appContext.getBean(UserAuthStorage.class);
-			List<String> positions = staffService.getPositionsByLogin(login);
-			if (req.getRequestURI().matches("^/staff.*") && !positions.contains("Администратор")) {
-				res.sendError(HttpStatus.METHOD_NOT_ALLOWED_405);
-			} else {
-				userDataStorage.setId(person.getId());
-				userDataStorage.setPositions(positions);
-				chain.doFilter(request, response);
-			}
+		if (req.getRequestURI().matches("^/person.*") && req.getMethod().toUpperCase().equals("POST")) {
+			chain.doFilter(request, response);
 		} else {
-			res.sendError(HttpStatus.UNAUTHORIZED_401);
-		}
+			String[] credentials = resolveCredentials(req);
+			boolean isCredentialsResolved = credentials != null && credentials.length == 2;
+			if (!isCredentialsResolved) {
+				res.sendError(HttpStatus.UNAUTHORIZED_401);
+				return;
+			}
+			String login = credentials[0];
+			String password = credentials[1];
 
+			Person person = personService.getByLogin(login);
+			if (person.getPassword().equals(password)) {
+				UserAuthStorage userDataStorage = appContext.getBean(UserAuthStorage.class);
+				List<String> positions = staffService.getPositionsByLogin(login);
+				if (req.getRequestURI().matches("^/staff.*") && !positions.contains("Администратор")) {
+					res.sendError(HttpStatus.METHOD_NOT_ALLOWED_405);
+				} else {
+					userDataStorage.setId(person.getId());
+					userDataStorage.setPositions(positions);
+					chain.doFilter(request, response);
+				}
+			} else {
+				res.sendError(HttpStatus.UNAUTHORIZED_401);
+			}
+		}
 	}
 
 	private String[] resolveCredentials(HttpServletRequest req) {

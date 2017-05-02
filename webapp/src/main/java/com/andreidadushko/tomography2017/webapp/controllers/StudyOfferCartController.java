@@ -1,6 +1,7 @@
 package com.andreidadushko.tomography2017.webapp.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ public class StudyOfferCartController {
 			if (studyOfferCart != null) {
 				convertedCart = cartEntity2CartModel(studyOfferCart);
 			}
+			LOGGER.info("{} request cart with id = {}", userAuthStorage, id);
 			return new ResponseEntity<StudyOfferCartModel>(convertedCart, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -66,10 +68,13 @@ public class StudyOfferCartController {
 			StudyOfferCart studyOfferCart = cartModel2CartEntity(cartModel);
 			try {
 				studyOfferCartService.insert(studyOfferCart);
+				LOGGER.info("{} insert cart with id = {}", userAuthStorage, studyOfferCart.getId());
 				return new ResponseEntity<IntegerModel>(new IntegerModel(studyOfferCart.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 			}
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -82,10 +87,13 @@ public class StudyOfferCartController {
 			StudyOfferCart studyOfferCart = cartModel2CartEntity(cartModel);
 			try {
 				studyOfferCartService.update(studyOfferCart);
+				LOGGER.info("{} update cart with id = {}", userAuthStorage, studyOfferCart.getId());
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 			}
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -97,6 +105,7 @@ public class StudyOfferCartController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyOfferCartService.delete(id);
+			LOGGER.info("{} delete cart with id = {}", userAuthStorage, id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -108,6 +117,7 @@ public class StudyOfferCartController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyOfferCartService.massDelete(idArray);
+			LOGGER.info("{} delete carts with id = {}", userAuthStorage, Arrays.asList(idArray));
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -125,6 +135,7 @@ public class StudyOfferCartController {
 			for (StudyOfferCartForList cartForList : list) {
 				convertedCartForList.add(CartForListModel2CartForListEntity(cartForList));
 			}
+			LOGGER.info("{} request carts with study id = {}", userAuthStorage, studyId);
 			return new ResponseEntity<List<CartForListModel>>(convertedCartForList, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -142,9 +153,14 @@ public class StudyOfferCartController {
 			}
 			try {
 				studyOfferCartService.massInsert(studyId, offerIdArray);
+				LOGGER.info("{} insert carts with study id = {} and offer id = {}", userAuthStorage, studyId,
+						Arrays.asList(offerIdArray));
 				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 			}
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);

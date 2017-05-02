@@ -41,12 +41,16 @@ public class CategoryController {
 		if (category != null) {
 			convertedCategory = categoryEntity2CategoryModel(category);
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request category with id = {}", userAuthStorage, id);
 		return new ResponseEntity<CategoryModel>(convertedCategory, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
 		Integer result = categoryService.getCount();
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request count of categories", userAuthStorage);
 		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 	}
 
@@ -57,9 +61,10 @@ public class CategoryController {
 			Category category = categoryModel2CategoryEntity(categoryModel);
 			try {
 				categoryService.insert(category);
+				LOGGER.info("{} insert category with id = {}", userAuthStorage, category.getId());
 				return new ResponseEntity<IntegerModel>(new IntegerModel(category.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -75,9 +80,10 @@ public class CategoryController {
 			Category category = categoryModel2CategoryEntity(categoryModel);
 			try {
 				categoryService.update(category);
+				LOGGER.info("{} update category with id = {}", userAuthStorage, category.getId());
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -92,6 +98,7 @@ public class CategoryController {
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			try {
 				categoryService.delete(id);
+				LOGGER.info("{} delete category with id = {}", userAuthStorage, id);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -107,6 +114,8 @@ public class CategoryController {
 		for (Category category : list) {
 			convertedList.add(categoryEntity2CategoryModel(category));
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request all root categories", userAuthStorage);
 		return new ResponseEntity<List<CategoryModel>>(convertedList, HttpStatus.OK);
 	}
 
@@ -117,6 +126,8 @@ public class CategoryController {
 		for (Category category : list) {
 			convertedList.add(categoryEntity2CategoryModel(category));
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request categories with parent id = {}", userAuthStorage, parentId);
 		return new ResponseEntity<List<CategoryModel>>(convertedList, HttpStatus.OK);
 	}
 

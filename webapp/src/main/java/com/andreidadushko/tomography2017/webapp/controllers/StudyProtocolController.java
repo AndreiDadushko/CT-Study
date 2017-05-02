@@ -1,5 +1,7 @@
 package com.andreidadushko.tomography2017.webapp.controllers;
 
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -48,6 +50,7 @@ public class StudyProtocolController {
 			if (studyProtocol != null) {
 				convertedProtocol = protocolEntity2ProtocolModel(studyProtocol);
 			}
+			LOGGER.info("{} request study protocol with id = {}", userAuthStorage, id);
 			return new ResponseEntity<StudyProtocolModel>(convertedProtocol, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -58,6 +61,7 @@ public class StudyProtocolController {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Integer result = studyProtocolService.getCount();
+			LOGGER.info("{} request count of study protocols", userAuthStorage);
 			return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -70,9 +74,10 @@ public class StudyProtocolController {
 			StudyProtocol studyProtocol = protocolModel2ProtocolEntity(studyProtocolModel);
 			try {
 				studyProtocolService.insert(studyProtocol);
+				LOGGER.info("{} insert study protocol with id = {}", userAuthStorage, studyProtocol.getId());
 				return new ResponseEntity<IntegerModel>(new IntegerModel(studyProtocol.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			}
 		} else
@@ -86,9 +91,10 @@ public class StudyProtocolController {
 			StudyProtocol studyProtocol = protocolModel2ProtocolEntity(studyProtocolModel);
 			try {
 				studyProtocolService.update(studyProtocol);
+				LOGGER.info("{} update study protocol with id = {}", userAuthStorage, studyProtocol.getId());
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			}
 		} else
@@ -101,6 +107,7 @@ public class StudyProtocolController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyProtocolService.delete(id);
+			LOGGER.info("{} delete study protocol with id = {}", userAuthStorage, id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -112,6 +119,7 @@ public class StudyProtocolController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyProtocolService.massDelete(idArray);
+			LOGGER.info("{} delete study protocols with id = {}", userAuthStorage, Arrays.asList(idArray));
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);

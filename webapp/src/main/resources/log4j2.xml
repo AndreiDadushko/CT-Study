@@ -11,11 +11,11 @@
 		<Root level="info">
 		    <AppenderRef ref="Console" />
 		</Root>
-		<Logger level="warn" name="com.andreidadushko.tomography2017.webapp.controllers"
+		<Logger level="info" name="com.andreidadushko.tomography2017.webapp.controllers"
 			additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>
-		<Logger level="info" name="com.andreidadushko.tomography2017.services.impl"
+		<Logger level="warn" name="com.andreidadushko.tomography2017.services.impl"
 			additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>

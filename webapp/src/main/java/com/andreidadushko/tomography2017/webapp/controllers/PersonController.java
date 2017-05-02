@@ -48,6 +48,7 @@ public class PersonController {
 			if (person != null) {
 				convertedPerson = personEntity2PersonModel(person);
 			}
+			LOGGER.info("{} request person with id = {}", userAuthStorage, id);
 			return new ResponseEntity<PersonModel>(convertedPerson, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -58,9 +59,10 @@ public class PersonController {
 		Person person = personModel2PersonEntity(personModel);
 		try {
 			personService.insert(person);
+			LOGGER.info("User insert person with id = {}", person.getId());
 			return new ResponseEntity<IntegerModel>(new IntegerModel(person.getId()), HttpStatus.CREATED);
 		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.info("User has entered incorrect data : {}", e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -75,9 +77,10 @@ public class PersonController {
 			Person person = personModel2PersonEntity(personModel);
 			try {
 				personService.update(person);
+				LOGGER.info("{} update person with id = {}", userAuthStorage, person.getId());
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			}
 		} else
@@ -90,6 +93,7 @@ public class PersonController {
 		if (userAuthStorage.getPositions().contains("Администратор") || userAuthStorage.getId().equals(id)) {
 			try {
 				personService.delete(id);
+				LOGGER.info("{} delete person with id = {}", userAuthStorage, id);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -104,6 +108,7 @@ public class PersonController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Integer result = personService.getCount();
+			LOGGER.info("{} request count of persons", userAuthStorage);
 			return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -120,6 +125,7 @@ public class PersonController {
 			for (Person person : allPersons) {
 				convertedPersons.add(personEntity2PersonModel(person));
 			}
+			LOGGER.info("{} request persons with offset = {}, limit = {}", userAuthStorage, offset, limit);
 			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -137,6 +143,8 @@ public class PersonController {
 			for (Person person : allPersons) {
 				convertedPersons.add(personEntity2PersonModel(person));
 			}
+			LOGGER.info("{} request persons with offset = {}, limit = {}, filter = {}", userAuthStorage, offset, limit,
+					personFilter);
 			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);

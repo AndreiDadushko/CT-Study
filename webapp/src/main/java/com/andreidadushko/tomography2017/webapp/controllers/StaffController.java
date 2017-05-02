@@ -26,6 +26,7 @@ import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.StaffFilterModel;
 import com.andreidadushko.tomography2017.webapp.models.StaffForListModel;
 import com.andreidadushko.tomography2017.webapp.models.StaffModel;
+import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
 
 @RestController
 @RequestMapping("/staff")
@@ -46,17 +47,21 @@ public class StaffController {
 		if (staff != null) {
 			convertedStuff = staffEntity2StaffModel(staff);
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request staff with id = {}", userAuthStorage, id);
 		return new ResponseEntity<StaffModel>(convertedStuff, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody StaffModel staffModel) {
 		Staff staff = personModel2PersonEntity(staffModel);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		try {
 			staffService.insert(staff);
+			LOGGER.info("{} insert staff with id = {}", userAuthStorage, staff.getId());
 			return new ResponseEntity<IntegerModel>(new IntegerModel(staff.getId()), HttpStatus.CREATED);
 		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -66,11 +71,13 @@ public class StaffController {
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody StaffModel staffModel) {
 		Staff staff = personModel2PersonEntity(staffModel);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		try {
 			staffService.update(staff);
+			LOGGER.info("{} update staff with id = {}", userAuthStorage, staff.getId());
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
+			LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -81,6 +88,8 @@ public class StaffController {
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
 		try {
 			staffService.delete(id);
+			UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+			LOGGER.info("{} delete staff with id = {}", userAuthStorage, id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -90,12 +99,16 @@ public class StaffController {
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
 		Integer result = staffService.getCount();
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request count of staff", userAuthStorage);
 		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/positions", method = RequestMethod.GET)
 	public ResponseEntity<?> getPositionsByLogin(@RequestParam(required = true) String login) {
 		List<String> allPositions = staffService.getPositionsByLogin(login);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request positions of staff with login = {}", userAuthStorage, login);
 		return new ResponseEntity<List<String>>(allPositions, HttpStatus.OK);
 	}
 
@@ -107,6 +120,8 @@ public class StaffController {
 		for (StaffForList staffForList : allStaff) {
 			convertedStaffForList.add(staffForListEntity2StaffForListModel(staffForList));
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request staff with offset = {}, limit = {}", userAuthStorage, offset, limit);
 		return new ResponseEntity<List<StaffForListModel>>(convertedStaffForList, HttpStatus.OK);
 	}
 
@@ -120,6 +135,9 @@ public class StaffController {
 			for (StaffForList staffForList : allStaff) {
 				convertedStaffForList.add(staffForListEntity2StaffForListModel(staffForList));
 			}
+			UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+			LOGGER.info("{} request staff with offset = {}, limit = {}, filter = {}", userAuthStorage, offset, limit,
+					staffFilter);
 			return new ResponseEntity<List<StaffForListModel>>(convertedStaffForList, HttpStatus.OK);
 		} catch (UnsupportedOperationException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -41,12 +41,16 @@ public class OfferController {
 		if (offer != null) {
 			convertedOffer = offerEntity2OfferModel(offer);
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request offer with id = {}", userAuthStorage, id);
 		return new ResponseEntity<OfferModel>(convertedOffer, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
 		Integer result = offerService.getCount();
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request count of offers", userAuthStorage);
 		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 	}
 
@@ -57,9 +61,10 @@ public class OfferController {
 			Offer offer = offerModel2OfferEntity(offerModel);
 			try {
 				offerService.insert(offer);
+				LOGGER.info("{} insert offer with id = {}", userAuthStorage, offer.getId());
 				return new ResponseEntity<IntegerModel>(new IntegerModel(offer.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -75,9 +80,10 @@ public class OfferController {
 			Offer offer = offerModel2OfferEntity(offerModel);
 			try {
 				offerService.update(offer);
+				LOGGER.info("{} update category with id = {}", userAuthStorage, offer.getId());
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} catch (IllegalArgumentException e) {
-				LOGGER.warn(e.getMessage());
+				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -92,6 +98,7 @@ public class OfferController {
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			try {
 				offerService.delete(id);
+				LOGGER.info("{} delete offer with id = {}", userAuthStorage, id);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -107,6 +114,8 @@ public class OfferController {
 		for (Offer offer : list) {
 			convertedOfferList.add(offerEntity2OfferModel(offer));
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request all offers", userAuthStorage);
 		return new ResponseEntity<List<OfferModel>>(convertedOfferList, HttpStatus.OK);
 	}
 
@@ -117,6 +126,8 @@ public class OfferController {
 		for (Offer offer : list) {
 			convertedOfferList.add(offerEntity2OfferModel(offer));
 		}
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		LOGGER.info("{} request all offers with category id = {}", userAuthStorage, categoryId);
 		return new ResponseEntity<List<OfferModel>>(convertedOfferList, HttpStatus.OK);
 	}
 
