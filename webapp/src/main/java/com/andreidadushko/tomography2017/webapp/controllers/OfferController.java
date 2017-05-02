@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,15 +20,19 @@ import com.andreidadushko.tomography2017.datamodel.Offer;
 import com.andreidadushko.tomography2017.services.IOfferService;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.OfferModel;
+import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
 
 @RestController
 @RequestMapping("/offer")
 public class OfferController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OfferController.class);
+
+	@Inject
+	private ApplicationContext context;
 	
 	@Inject
-	private IOfferService offerService;
+	private IOfferService offerService;	
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
@@ -47,36 +52,52 @@ public class OfferController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody OfferModel offerModel) {
-		Offer offer = offerModel2OfferEntity(offerModel);
-		try {
-			offerService.insert(offer);
-		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<IntegerModel>(new IntegerModel(offer.getId()), HttpStatus.CREATED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")) {
+			Offer offer = offerModel2OfferEntity(offerModel);
+			try {
+				offerService.insert(offer);
+				return new ResponseEntity<IntegerModel>(new IntegerModel(offer.getId()), HttpStatus.CREATED);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody OfferModel offerModel) {
-		Offer offer = offerModel2OfferEntity(offerModel);
-		try {
-			offerService.update(offer);
-		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")) {
+			Offer offer = offerModel2OfferEntity(offerModel);
+			try {
+				offerService.update(offer);
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		offerService.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")) {
+			try {
+				offerService.delete(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -108,7 +129,7 @@ public class OfferController {
 		return offerModel;
 	}
 
-	public static Offer offerModel2OfferEntity(OfferModel offerModel) {
+	private Offer offerModel2OfferEntity(OfferModel offerModel) {
 		Offer offer = new Offer();
 		offer.setId(offerModel.getId());
 		offer.setName(offerModel.getName());

@@ -34,83 +34,112 @@ public class PersonController {
 
 	@Inject
 	private ApplicationContext context;
-	
+
 	@Inject
 	private IPersonService personService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
-		Person person = personService.get(id);
-		PersonModel convertedPerson = null;
-		if (person != null) {
-			convertedPerson = personEntity2PersonModel(person);
-		}
-		return new ResponseEntity<PersonModel>(convertedPerson, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог") || userAuthStorage.getId().equals(id)) {
+			Person person = personService.get(id);
+			PersonModel convertedPerson = null;
+			if (person != null) {
+				convertedPerson = personEntity2PersonModel(person);
+			}
+			return new ResponseEntity<PersonModel>(convertedPerson, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> insert(@RequestBody PersonModel personModel) {		
+	public ResponseEntity<?> insert(@RequestBody PersonModel personModel) {
 		Person person = personModel2PersonEntity(personModel);
-		try { 
+		try {
 			personService.insert(person);
+			return new ResponseEntity<IntegerModel>(new IntegerModel(person.getId()), HttpStatus.CREATED);
 		} catch (IllegalArgumentException e) {
 			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		} catch (org.springframework.dao.DuplicateKeyException e) {
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<IntegerModel>(new IntegerModel(person.getId()), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody PersonModel personModel) {
-		Person person = personModel2PersonEntity(personModel);
-		try {
-			personService.update(person);
-		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getId().equals(personModel.getId())) {
+			Person person = personModel2PersonEntity(personModel);
+			try {
+				personService.update(person);
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		personService.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор") || userAuthStorage.getId().equals(id)) {
+			try {
+				personService.delete(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
-		Integer result = personService.getCount();
-		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			Integer result = personService.getCount();
+			return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPagination(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit) {
-		List<Person> allPersons = personService.getWithPagination(offset, limit);
-		List<PersonModel> convertedPersons = new ArrayList<PersonModel>();
-		for (Person person : allPersons) {
-			convertedPersons.add(personEntity2PersonModel(person));
-		}
-		return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			List<Person> allPersons = personService.getWithPagination(offset, limit);
+			List<PersonModel> convertedPersons = new ArrayList<PersonModel>();
+			for (Person person : allPersons) {
+				convertedPersons.add(personEntity2PersonModel(person));
+			}
+			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/filter", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody PersonFilterModel personFilterModel) {
-		PersonFilter personFilter = personFilterModel2PersonFilter(personFilterModel);
-		List<Person> allPersons = personService.getWithPagination(offset, limit, personFilter);
-		List<PersonModel> convertedPersons = new ArrayList<>();
-		for (Person person : allPersons) {
-			convertedPersons.add(personEntity2PersonModel(person));
-		}
-		return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			PersonFilter personFilter = personFilterModel2PersonFilter(personFilterModel);
+			List<Person> allPersons = personService.getWithPagination(offset, limit, personFilter);
+			List<PersonModel> convertedPersons = new ArrayList<>();
+			for (Person person : allPersons) {
+				convertedPersons.add(personEntity2PersonModel(person));
+			}
+			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	private PersonModel personEntity2PersonModel(Person person) {

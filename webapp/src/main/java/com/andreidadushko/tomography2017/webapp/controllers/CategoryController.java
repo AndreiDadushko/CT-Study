@@ -53,40 +53,51 @@ public class CategoryController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody CategoryModel categoryModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
-		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Category category = categoryModel2CategoryEntity(categoryModel);
 			try {
 				categoryService.insert(category);
+				return new ResponseEntity<IntegerModel>(new IntegerModel(category.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.warn(e.getMessage());
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			} catch (UnsupportedOperationException e) {
-				return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-			} /*catch (UnsupportedOperationException e) {
-				return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);*/
-			return new ResponseEntity<IntegerModel>(new IntegerModel(category.getId()), HttpStatus.CREATED);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody CategoryModel categoryModel) {
-		Category category = categoryModel2CategoryEntity(categoryModel);
-		try {
-			categoryService.update(category);
-		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")) {
+			Category category = categoryModel2CategoryEntity(categoryModel);
+			try {
+				categoryService.update(category);
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		categoryService.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")) {
+			try {
+				categoryService.delete(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/root", method = RequestMethod.GET)

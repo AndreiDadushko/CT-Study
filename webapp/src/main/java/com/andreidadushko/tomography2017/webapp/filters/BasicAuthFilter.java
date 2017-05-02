@@ -61,9 +61,13 @@ public class BasicAuthFilter implements Filter {
 		if (person.getPassword().equals(password)) {
 			UserAuthStorage userDataStorage = appContext.getBean(UserAuthStorage.class);
 			List<String> positions = staffService.getPositionsByLogin(login);
-			userDataStorage.setId(person.getId());
-			userDataStorage.setPositions(positions);
-			chain.doFilter(request, response);
+			if (req.getRequestURI().matches("^/staff.*") && !positions.contains("Администратор")) {
+				res.sendError(HttpStatus.METHOD_NOT_ALLOWED_405);
+			} else {
+				userDataStorage.setId(person.getId());
+				userDataStorage.setPositions(positions);
+				chain.doFilter(request, response);
+			}
 		} else {
 			res.sendError(HttpStatus.UNAUTHORIZED_401);
 		}

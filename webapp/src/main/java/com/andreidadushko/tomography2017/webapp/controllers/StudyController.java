@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,103 +26,159 @@ import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyFilterModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyForListModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyModel;
+import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
 
 @RestController
 @RequestMapping("/study")
 public class StudyController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StudyController.class);
-	
+
+	@Inject
+	private ApplicationContext context;
+
 	@Inject
 	private IStudyService studyService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
-		Study study = studyService.get(id);
-		StudyModel convertedStudy = null;
-		if (study != null) {
-			convertedStudy = studyEntity2StudyModel(study);
-		}
-		return new ResponseEntity<StudyModel>(convertedStudy, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			Study study = studyService.get(id);
+			StudyModel convertedStudy = null;
+			if (study != null) {
+				convertedStudy = studyEntity2StudyModel(study);
+			}
+			return new ResponseEntity<StudyModel>(convertedStudy, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
-		Integer result = studyService.getCount();
-		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			Integer result = studyService.getCount();
+			return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody StudyModel studyModel) {
-		Study study = studyModel2studyEntity(studyModel);
-		try {
-			studyService.insert(study);
-		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<IntegerModel>(new IntegerModel(study.getId()), HttpStatus.CREATED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			Study study = studyModel2studyEntity(studyModel);
+			try {
+				studyService.insert(study);
+				return new ResponseEntity<IntegerModel>(new IntegerModel(study.getId()), HttpStatus.CREATED);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody StudyModel studyModel) {
-		Study study = studyModel2studyEntity(studyModel);
-		try {
-			studyService.update(study);
-		} catch (IllegalArgumentException e) {
-			LOGGER.warn(e.getMessage());
-			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			Study study = studyModel2studyEntity(studyModel);
+			try {
+				studyService.update(study);
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn(e.getMessage());
+				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		studyService.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			studyService.delete(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
-		studyService.massDelete(idArray);
-		return new ResponseEntity<>(HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			studyService.massDelete(idArray);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/person/{personId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getStudyForListByPersonId(@PathVariable Integer personId) {
-		List<StudyForList> list = studyService.getStudyForListByPersonId(personId);
-		List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
-		for (StudyForList studyForList : list) {
-			convertedStudyForList.add(studyEntity2StudyModel(studyForList));
-		}
-		return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
+				|| userAuthStorage.getId().equals(personId)) {
+			try {
+				List<StudyForList> list = studyService.getStudyForListByPersonId(personId);
+				List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
+				for (StudyForList studyForList : list) {
+					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
+				}
+				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
+			} catch (UnsupportedOperationException e) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPagination(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit) {
-		List<StudyForList> list = studyService.getWithPagination(offset, limit);
-		List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
-		for (StudyForList studyForList : list) {
-			convertedStudyForList.add(studyEntity2StudyModel(studyForList));
-		}
-		return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			try {
+				List<StudyForList> list = studyService.getWithPagination(offset, limit);
+				List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
+				for (StudyForList studyForList : list) {
+					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
+				}
+				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
+			} catch (UnsupportedOperationException e) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@RequestMapping(value = "/filter", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody StudyFilterModel studyFilterModel) {
-		StudyFilter studyFilter = studyFilterModel2StudyFilter(studyFilterModel);
-		List<StudyForList> list = studyService.getWithPagination(offset, limit, studyFilter);
-		List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
-		for (StudyForList studyForList : list) {
-			convertedStudyForList.add(studyEntity2StudyModel(studyForList));
-		}
-		return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
+		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		if (userAuthStorage.getPositions().contains("Администратор")
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+			try {
+				StudyFilter studyFilter = studyFilterModel2StudyFilter(studyFilterModel);
+				List<StudyForList> list = studyService.getWithPagination(offset, limit, studyFilter);
+				List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
+				for (StudyForList studyForList : list) {
+					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
+				}
+				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
+			} catch (UnsupportedOperationException e) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} else
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	private StudyModel studyEntity2StudyModel(Study study) {

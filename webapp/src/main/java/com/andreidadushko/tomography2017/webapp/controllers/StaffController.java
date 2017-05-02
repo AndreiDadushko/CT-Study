@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,10 @@ import com.andreidadushko.tomography2017.webapp.models.StaffModel;
 public class StaffController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StaffController.class);
-	
+
+	@Inject
+	private ApplicationContext context;
+
 	@Inject
 	private IStaffService staffService;
 
@@ -50,13 +54,13 @@ public class StaffController {
 		Staff staff = personModel2PersonEntity(staffModel);
 		try {
 			staffService.insert(staff);
+			return new ResponseEntity<IntegerModel>(new IntegerModel(staff.getId()), HttpStatus.CREATED);
 		} catch (IllegalArgumentException e) {
 			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
+			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<IntegerModel>(new IntegerModel(staff.getId()), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
@@ -64,19 +68,23 @@ public class StaffController {
 		Staff staff = personModel2PersonEntity(staffModel);
 		try {
 			staffService.update(staff);
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (IllegalArgumentException e) {
 			LOGGER.warn(e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
-		} catch (UnsupportedOperationException e) {
-			return new ResponseEntity<IntegerModel>(HttpStatus.METHOD_NOT_ALLOWED);
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
+			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		staffService.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			staffService.delete(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
+			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
+		}
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
@@ -105,13 +113,17 @@ public class StaffController {
 	@RequestMapping(value = "/filter", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody StaffFilterModel staffFilterModel) {
-		StaffFilter staffFilter = staffFilterModel2StaffFilter(staffFilterModel);
-		List<StaffForList> allStaff = staffService.getWithPagination(offset, limit, staffFilter);
-		List<StaffForListModel> convertedStaffForList = new ArrayList<StaffForListModel>();
-		for (StaffForList staffForList : allStaff) {
-			convertedStaffForList.add(staffForListEntity2StaffForListModel(staffForList));
+		try {
+			StaffFilter staffFilter = staffFilterModel2StaffFilter(staffFilterModel);
+			List<StaffForList> allStaff = staffService.getWithPagination(offset, limit, staffFilter);
+			List<StaffForListModel> convertedStaffForList = new ArrayList<StaffForListModel>();
+			for (StaffForList staffForList : allStaff) {
+				convertedStaffForList.add(staffForListEntity2StaffForListModel(staffForList));
+			}
+			return new ResponseEntity<List<StaffForListModel>>(convertedStaffForList, HttpStatus.OK);
+		} catch (UnsupportedOperationException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<StaffForListModel>>(convertedStaffForList, HttpStatus.OK);
 	}
 
 	private StaffModel staffEntity2StaffModel(Staff staff) {
