@@ -8,12 +8,12 @@
 		<property name="smePassword">8764086236346a</property>
 		<property name="smtqPassword">88364086236346a</property>
 	</properties>
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
@@ -36,6 +36,16 @@
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</SMTP>
 
+		<JDBC name="databaseAppender" tableName="LOGGING.APPLICATION_LOG">
+			<ConnectionFactory
+				class="com.andreidadushko.tomography2017.webapp.connection.ConnectionFactory"
+				method="getDatabaseConnection" />
+			<Column name="EVENT_DATE" isEventTimestamp="true" />
+			<Column name="LEVEL" pattern="%level" />
+			<Column name="LOGGER" pattern="%logger" />
+			<Column name="MESSAGE" pattern="%message" />
+			<Column name="THROWABLE" pattern="%ex{full}" />
+		</JDBC>
 
 	</Appenders>
 
@@ -49,6 +59,7 @@
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFile" />
 			<AppenderRef ref="Mailer" />
+			<AppenderRef ref="databaseAppender" />
 		</Logger>
 		<Logger level="warn" name="com.andreidadushko.tomography2017.services.impl"
 			additivity="false">
