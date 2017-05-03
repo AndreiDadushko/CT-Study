@@ -93,9 +93,10 @@ public class PersonController {
 		if (userAuthStorage.getPositions().contains("Администратор") || userAuthStorage.getId().equals(id)) {
 			try {
 				personService.delete(id);
-				LOGGER.info("{} delete person with id = {}", userAuthStorage, id);
+				LOGGER.info("{} delete person with id = {}", userAuthStorage, id);					
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+				LOGGER.error("{} could not delete person with id = {}", userAuthStorage, id);
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 			}
 		} else
@@ -142,7 +143,7 @@ public class PersonController {
 			List<PersonModel> convertedPersons = new ArrayList<>();
 			for (Person person : allPersons) {
 				convertedPersons.add(personEntity2PersonModel(person));
-			}
+			}			
 			LOGGER.info("{} request persons with offset = {}, limit = {}, filter = {}", userAuthStorage, offset, limit,
 					personFilter);
 			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);

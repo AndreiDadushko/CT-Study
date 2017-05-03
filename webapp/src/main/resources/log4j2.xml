@@ -1,24 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration >
+<Configuration>
 
+	<properties>
+		<property name="smtoPassword">88374086236346a</property>
+		<property name="smtuPassword">883640862386346a</property>
+		<property name="smtiPassword">88364086436346a</property>
+		<property name="smePassword">8764086236346a</property>
+		<property name="smtqPassword">88364086236346a</property>
+	</properties>
+	
+	
+	
+	
+	
+	
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
+
+		<RollingFile name="RollingFile" fileName="logs/app.log"
+			filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+
+		<SMTP name="Mailer" suppressExceptions="false" subject="Error log"
+			to="andreidadushko@gmail.com" from="phoenixwillrevive@gmail.com"
+			smtpHost="smtp.gmail.com" smtpPort="465" smtpProtocol="smtps"
+			smtpUsername="phoenixwillrevive@gmail.com" smtpPassword="${smtqPassword}"
+			ignoreExceptions="false" bufferSize="20">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</SMTP>
+
+
 	</Appenders>
-	
+
 	<Loggers>
 		<Root level="info">
-		    <AppenderRef ref="Console" />
+			<AppenderRef ref="Console" />
 		</Root>
-		<Logger level="info" name="com.andreidadushko.tomography2017.webapp.controllers"
+		<Logger level="info"
+			name="com.andreidadushko.tomography2017.webapp.controllers"
 			additivity="false">
 			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="Mailer" />
 		</Logger>
 		<Logger level="warn" name="com.andreidadushko.tomography2017.services.impl"
 			additivity="false">
 			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="Mailer" />
 		</Logger>
 	</Loggers>
+
+
+
+
+
+
+
+
 
 </Configuration>
