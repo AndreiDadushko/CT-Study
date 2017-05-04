@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andreidadushko.tomography2017.dao.db.custom.models.StaffForList;
-import com.andreidadushko.tomography2017.dao.db.filters.SortData;
 import com.andreidadushko.tomography2017.dao.db.filters.StaffFilter;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 import com.andreidadushko.tomography2017.services.IStaffService;
@@ -40,12 +40,15 @@ public class StaffController {
 	@Inject
 	private IStaffService staffService;
 
+	@Inject
+	private ConversionService conversionService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		Staff staff = staffService.get(id);
 		StaffModel convertedStuff = null;
 		if (staff != null) {
-			convertedStuff = staffEntity2StaffModel(staff);
+			convertedStuff = conversionService.convert(staff, StaffModel.class);
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request staff with id = {}", userAuthStorage, id);
@@ -54,7 +57,7 @@ public class StaffController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody StaffModel staffModel) {
-		Staff staff = personModel2PersonEntity(staffModel);
+		Staff staff = conversionService.convert(staffModel, Staff.class);
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		try {
 			staffService.insert(staff);
@@ -70,7 +73,7 @@ public class StaffController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody StaffModel staffModel) {
-		Staff staff = personModel2PersonEntity(staffModel);
+		Staff staff = conversionService.convert(staffModel, Staff.class);
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		try {
 			staffService.update(staff);
@@ -118,7 +121,7 @@ public class StaffController {
 		List<StaffForList> allStaff = staffService.getWithPagination(offset, limit);
 		List<StaffForListModel> convertedStaffForList = new ArrayList<StaffForListModel>();
 		for (StaffForList staffForList : allStaff) {
-			convertedStaffForList.add(staffForListEntity2StaffForListModel(staffForList));
+			convertedStaffForList.add(conversionService.convert(staffForList, StaffForListModel.class));
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request staff with offset = {}, limit = {}", userAuthStorage, offset, limit);
@@ -129,11 +132,11 @@ public class StaffController {
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody StaffFilterModel staffFilterModel) {
 		try {
-			StaffFilter staffFilter = staffFilterModel2StaffFilter(staffFilterModel);
+			StaffFilter staffFilter = conversionService.convert(staffFilterModel, StaffFilter.class);
 			List<StaffForList> allStaff = staffService.getWithPagination(offset, limit, staffFilter);
 			List<StaffForListModel> convertedStaffForList = new ArrayList<StaffForListModel>();
 			for (StaffForList staffForList : allStaff) {
-				convertedStaffForList.add(staffForListEntity2StaffForListModel(staffForList));
+				convertedStaffForList.add(conversionService.convert(staffForList, StaffForListModel.class));
 			}
 			UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 			LOGGER.info("{} request staff with offset = {}, limit = {}, filter = {}", userAuthStorage, offset, limit,
@@ -144,63 +147,4 @@ public class StaffController {
 		}
 	}
 
-	private StaffModel staffEntity2StaffModel(Staff staff) {
-		StaffModel staffModel = new StaffModel();
-		staffModel.setId(staff.getId());
-		staffModel.setDepartment(staff.getDepartment());
-		staffModel.setPosition(staff.getPosition());
-		staffModel.setStartDate(staff.getStartDate() == null ? null : staff.getStartDate().getTime());
-		staffModel.setEndDate(staff.getEndDate() == null ? null : staff.getEndDate().getTime());
-		staffModel.setPersonId(staff.getPersonId());
-		return staffModel;
-	}
-
-	private Staff personModel2PersonEntity(StaffModel staffModel) {
-		Staff staff = new Staff();
-		staff.setId(staffModel.getId());
-		staff.setDepartment(staffModel.getDepartment());
-		staff.setPosition(staffModel.getPosition());
-		staff.setStartDate(
-				staffModel.getStartDate() == null ? null : new java.sql.Timestamp(staffModel.getStartDate()));
-		staff.setEndDate(staffModel.getEndDate() == null ? null : new java.sql.Timestamp(staffModel.getEndDate()));
-		staff.setPersonId(staffModel.getPersonId());
-		return staff;
-	}
-
-	private StaffForListModel staffForListEntity2StaffForListModel(StaffForList staffForList) {
-		StaffForListModel staffForListModel = new StaffForListModel();
-		staffForListModel.setId(staffForList.getId());
-		staffForListModel.setFirstName(staffForList.getFirstName());
-		staffForListModel.setMiddleName(staffForList.getMiddleName());
-		staffForListModel.setLastName(staffForList.getLastName());
-		staffForListModel.setDepartment(staffForList.getDepartment());
-		staffForListModel.setPosition(staffForList.getPosition());
-		staffForListModel
-				.setStartDate(staffForList.getStartDate() == null ? null : staffForList.getStartDate().getTime());
-		staffForListModel.setEndDate(staffForList.getEndDate() == null ? null : staffForList.getEndDate().getTime());
-		return staffForListModel;
-	}
-
-	private StaffFilter staffFilterModel2StaffFilter(StaffFilterModel staffFilterModel) {
-		StaffFilter staffFilter = new StaffFilter();
-		staffFilter.setFirstName(staffFilterModel.getFirstName());
-		staffFilter.setMiddleName(staffFilterModel.getMiddleName());
-		staffFilter.setLastName(staffFilterModel.getLastName());
-		staffFilter.setDepartment(staffFilterModel.getDepartment());
-		staffFilter.setStartFrom(staffFilterModel.getStartFrom() == null ? null
-				: new java.sql.Timestamp(staffFilterModel.getStartFrom()));
-		staffFilter.setStartTo(
-				staffFilterModel.getStartTo() == null ? null : new java.sql.Timestamp(staffFilterModel.getStartTo()));
-		staffFilter.setEndFrom(
-				staffFilterModel.getEndFrom() == null ? null : new java.sql.Timestamp(staffFilterModel.getEndFrom()));
-		staffFilter.setEndTo(
-				staffFilterModel.getEndTo() == null ? null : new java.sql.Timestamp(staffFilterModel.getEndTo()));
-		if (staffFilterModel.getSort() != null) {
-			SortData sortData = new SortData();
-			sortData.setColumn(staffFilterModel.getSort().getColumn());
-			sortData.setOrder(staffFilterModel.getSort().getOrder());
-			staffFilter.setSort(sortData);
-		}
-		return staffFilter;
-	}
 }

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andreidadushko.tomography2017.dao.db.custom.models.StudyForList;
-import com.andreidadushko.tomography2017.dao.db.filters.SortData;
 import com.andreidadushko.tomography2017.dao.db.filters.StudyFilter;
 import com.andreidadushko.tomography2017.datamodel.Study;
 import com.andreidadushko.tomography2017.services.IStudyService;
@@ -41,6 +41,9 @@ public class StudyController {
 	@Inject
 	private IStudyService studyService;
 
+	@Inject
+	private ConversionService conversionService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
@@ -49,7 +52,7 @@ public class StudyController {
 			Study study = studyService.get(id);
 			StudyModel convertedStudy = null;
 			if (study != null) {
-				convertedStudy = studyEntity2StudyModel(study);
+				convertedStudy = conversionService.convert(study, StudyModel.class);
 			}
 			LOGGER.info("{} request study with id = {}", userAuthStorage, id);
 			return new ResponseEntity<StudyModel>(convertedStudy, HttpStatus.OK);
@@ -73,7 +76,7 @@ public class StudyController {
 	public ResponseEntity<?> insert(@RequestBody StudyModel studyModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			Study study = studyModel2studyEntity(studyModel);
+			Study study = conversionService.convert(studyModel, Study.class);
 			try {
 				studyService.insert(study);
 				LOGGER.info("{} insert study with id = {}", userAuthStorage, study.getId());
@@ -90,7 +93,7 @@ public class StudyController {
 	public ResponseEntity<?> update(@RequestBody StudyModel studyModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			Study study = studyModel2studyEntity(studyModel);
+			Study study = conversionService.convert(studyModel, Study.class);
 			try {
 				studyService.update(study);
 				LOGGER.info("{} update study with id = {}", userAuthStorage, study.getId());
@@ -137,7 +140,7 @@ public class StudyController {
 				List<StudyForList> list = studyService.getStudyForListByPersonId(personId);
 				List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
 				for (StudyForList studyForList : list) {
-					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
+					convertedStudyForList.add(conversionService.convert(studyForList, StudyForListModel.class));
 				}
 				LOGGER.info("{} request studies with person id = {}", userAuthStorage, personId);
 				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
@@ -158,7 +161,7 @@ public class StudyController {
 				List<StudyForList> list = studyService.getWithPagination(offset, limit);
 				List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
 				for (StudyForList studyForList : list) {
-					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
+					convertedStudyForList.add(conversionService.convert(studyForList, StudyForListModel.class));
 				}
 				LOGGER.info("{} request studies with offset = {}, limit = {}", userAuthStorage, offset, limit);
 				return new ResponseEntity<List<StudyForListModel>>(convertedStudyForList, HttpStatus.OK);
@@ -176,11 +179,11 @@ public class StudyController {
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			try {
-				StudyFilter studyFilter = studyFilterModel2StudyFilter(studyFilterModel);
+				StudyFilter studyFilter = conversionService.convert(studyFilterModel, StudyFilter.class);
 				List<StudyForList> list = studyService.getWithPagination(offset, limit, studyFilter);
 				List<StudyForListModel> convertedStudyForList = new ArrayList<StudyForListModel>();
 				for (StudyForList studyForList : list) {
-					convertedStudyForList.add(studyEntity2StudyModel(studyForList));
+					convertedStudyForList.add(conversionService.convert(studyForList, StudyForListModel.class));
 				}
 				LOGGER.info("{} request studies with offset = {}, limit = {}, filter = {}", userAuthStorage, offset,
 						limit, studyFilter);
@@ -192,59 +195,4 @@ public class StudyController {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	private StudyModel studyEntity2StudyModel(Study study) {
-		StudyModel studyModel = new StudyModel();
-		studyModel.setId(study.getId());
-		studyModel.setAppointmentDate(study.getAppointmentDate() == null ? null : study.getAppointmentDate().getTime());
-		studyModel.setPermitted(study.getPermitted());
-		studyModel.setPersonId(study.getPersonId());
-		studyModel.setStaffId(study.getStaffId());
-		return studyModel;
-	}
-
-	private Study studyModel2studyEntity(StudyModel studyModel) {
-		Study study = new Study();
-		study.setId(studyModel.getId());
-		study.setAppointmentDate(studyModel.getAppointmentDate() == null ? null
-				: new java.sql.Timestamp(studyModel.getAppointmentDate()));
-		study.setPermitted(studyModel.getPermitted());
-		study.setPersonId(studyModel.getPersonId());
-		study.setStaffId(studyModel.getStaffId());
-		return study;
-	}
-
-	private StudyForListModel studyEntity2StudyModel(StudyForList studyForList) {
-		StudyForListModel studyForListModel = new StudyForListModel();
-		studyForListModel.setId(studyForList.getId());
-		studyForListModel.setAppointmentDate(studyForList.getAppointmentDate().getTime());
-		studyForListModel.setPermitted(studyForList.getPermitted());
-		studyForListModel.setPatientFirstName(studyForList.getPatientFirstName());
-		studyForListModel.setPatientMiddleName(studyForList.getPatientMiddleName());
-		studyForListModel.setPatientLastName(studyForList.getPatientLastName());
-		studyForListModel.setDoctorFirstName(studyForList.getDoctorFirstName());
-		studyForListModel.setDoctorMiddleName(studyForList.getDoctorMiddleName());
-		studyForListModel.setDoctorLastName(studyForList.getDoctorLastName());
-		return studyForListModel;
-	}
-
-	private StudyFilter studyFilterModel2StudyFilter(StudyFilterModel studyFilterModel) {
-		StudyFilter studyFilter = new StudyFilter();
-		studyFilter.setPermitted(studyFilterModel.getPermitted());
-		studyFilter.setPatientFirstName(studyFilterModel.getPatientFirstName());
-		studyFilter.setPatientMiddleName(studyFilterModel.getPatientMiddleName());
-		studyFilter.setPatientLastName(studyFilterModel.getPatientLastName());
-		studyFilter.setDoctorFirstName(studyFilterModel.getDoctorFirstName());
-		studyFilter.setDoctorMiddleName(studyFilterModel.getDoctorMiddleName());
-		studyFilter.setDoctorLastName(studyFilterModel.getDoctorLastName());
-		studyFilter.setFrom(
-				studyFilterModel.getFrom() == null ? null : new java.sql.Timestamp(studyFilterModel.getFrom()));
-		studyFilter.setTo(studyFilterModel.getTo() == null ? null : new java.sql.Timestamp(studyFilterModel.getTo()));
-		if (studyFilterModel.getSort() != null) {
-			SortData sortData = new SortData();
-			sortData.setColumn(studyFilterModel.getSort().getColumn());
-			sortData.setOrder(studyFilterModel.getSort().getOrder());
-			studyFilter.setSort(sortData);
-		}
-		return studyFilter;
-	}
 }

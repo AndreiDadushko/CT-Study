@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,12 +35,15 @@ public class CategoryController {
 	@Inject
 	private ICategoryService categoryService;
 
+	@Inject
+	private ConversionService conversionService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		Category category = categoryService.get(id);
 		CategoryModel convertedCategory = null;
 		if (category != null) {
-			convertedCategory = categoryEntity2CategoryModel(category);
+			convertedCategory = conversionService.convert(category, CategoryModel.class);
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request category with id = {}", userAuthStorage, id);
@@ -58,7 +62,7 @@ public class CategoryController {
 	public ResponseEntity<?> insert(@RequestBody CategoryModel categoryModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
-			Category category = categoryModel2CategoryEntity(categoryModel);
+			Category category = conversionService.convert(categoryModel, Category.class);
 			try {
 				categoryService.insert(category);
 				LOGGER.info("{} insert category with id = {}", userAuthStorage, category.getId());
@@ -77,7 +81,7 @@ public class CategoryController {
 	public ResponseEntity<?> update(@RequestBody CategoryModel categoryModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
-			Category category = categoryModel2CategoryEntity(categoryModel);
+			Category category = conversionService.convert(categoryModel, Category.class);
 			try {
 				categoryService.update(category);
 				LOGGER.info("{} update category with id = {}", userAuthStorage, category.getId());
@@ -112,7 +116,7 @@ public class CategoryController {
 		List<Category> list = categoryService.getRootCategories();
 		List<CategoryModel> convertedList = new ArrayList<CategoryModel>();
 		for (Category category : list) {
-			convertedList.add(categoryEntity2CategoryModel(category));
+			convertedList.add(conversionService.convert(category, CategoryModel.class));
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request all root categories", userAuthStorage);
@@ -124,26 +128,11 @@ public class CategoryController {
 		List<Category> list = categoryService.getByParentId(parentId);
 		List<CategoryModel> convertedList = new ArrayList<CategoryModel>();
 		for (Category category : list) {
-			convertedList.add(categoryEntity2CategoryModel(category));
+			convertedList.add(conversionService.convert(category, CategoryModel.class));
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request categories with parent id = {}", userAuthStorage, parentId);
 		return new ResponseEntity<List<CategoryModel>>(convertedList, HttpStatus.OK);
 	}
 
-	private CategoryModel categoryEntity2CategoryModel(Category category) {
-		CategoryModel categoryModel = new CategoryModel();
-		categoryModel.setId(category.getId());
-		categoryModel.setName(category.getName());
-		categoryModel.setParentId(category.getParentId());
-		return categoryModel;
-	}
-
-	private Category categoryModel2CategoryEntity(CategoryModel categoryModel) {
-		Category category = new Category();
-		category.setId(categoryModel.getId());
-		category.setName(categoryModel.getName());
-		category.setParentId(categoryModel.getParentId());
-		return category;
-	}
 }

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,9 @@ public class StudyProtocolController {
 	@Inject
 	private IStudyService studyService;
 
+	@Inject
+	private ConversionService conversionService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		Study study = studyService.get(id);
@@ -48,7 +52,7 @@ public class StudyProtocolController {
 			StudyProtocol studyProtocol = studyProtocolService.get(id);
 			StudyProtocolModel convertedProtocol = null;
 			if (studyProtocol != null) {
-				convertedProtocol = protocolEntity2ProtocolModel(studyProtocol);
+				convertedProtocol = conversionService.convert(studyProtocol, StudyProtocolModel.class);
 			}
 			LOGGER.info("{} request study protocol with id = {}", userAuthStorage, id);
 			return new ResponseEntity<StudyProtocolModel>(convertedProtocol, HttpStatus.OK);
@@ -71,7 +75,7 @@ public class StudyProtocolController {
 	public ResponseEntity<?> insert(@RequestBody StudyProtocolModel studyProtocolModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			StudyProtocol studyProtocol = protocolModel2ProtocolEntity(studyProtocolModel);
+			StudyProtocol studyProtocol = conversionService.convert(studyProtocolModel, StudyProtocol.class);
 			try {
 				studyProtocolService.insert(studyProtocol);
 				LOGGER.info("{} insert study protocol with id = {}", userAuthStorage, studyProtocol.getId());
@@ -88,7 +92,7 @@ public class StudyProtocolController {
 	public ResponseEntity<?> update(@RequestBody StudyProtocolModel studyProtocolModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			StudyProtocol studyProtocol = protocolModel2ProtocolEntity(studyProtocolModel);
+			StudyProtocol studyProtocol = conversionService.convert(studyProtocolModel, StudyProtocol.class);
 			try {
 				studyProtocolService.update(studyProtocol);
 				LOGGER.info("{} update study protocol with id = {}", userAuthStorage, studyProtocol.getId());
@@ -123,24 +127,6 @@ public class StudyProtocolController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-	}
-
-	private StudyProtocolModel protocolEntity2ProtocolModel(StudyProtocol studyProtocol) {
-		StudyProtocolModel studyProtocolModel = new StudyProtocolModel();
-		studyProtocolModel.setId(studyProtocol.getId());
-		studyProtocolModel.setProtocol(studyProtocol.getProtocol());
-		studyProtocolModel.setCreationDate(
-				studyProtocol.getCreationDate() == null ? null : studyProtocol.getCreationDate().getTime());
-		return studyProtocolModel;
-	}
-
-	private StudyProtocol protocolModel2ProtocolEntity(StudyProtocolModel studyProtocolModel) {
-		StudyProtocol studyProtocol = new StudyProtocol();
-		studyProtocol.setId(studyProtocolModel.getId());
-		studyProtocol.setProtocol(studyProtocolModel.getProtocol());
-		studyProtocol.setCreationDate(studyProtocolModel.getCreationDate() == null ? null
-				: new java.sql.Timestamp(studyProtocolModel.getCreationDate()));
-		return studyProtocol;
 	}
 
 }

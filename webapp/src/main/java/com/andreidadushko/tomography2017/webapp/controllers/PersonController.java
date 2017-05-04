@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andreidadushko.tomography2017.dao.db.filters.PersonFilter;
-import com.andreidadushko.tomography2017.dao.db.filters.SortData;
 import com.andreidadushko.tomography2017.datamodel.Person;
 import com.andreidadushko.tomography2017.services.IPersonService;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
@@ -38,6 +38,9 @@ public class PersonController {
 	@Inject
 	private IPersonService personService;
 
+	@Inject
+	private ConversionService conversionService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
@@ -46,7 +49,7 @@ public class PersonController {
 			Person person = personService.get(id);
 			PersonModel convertedPerson = null;
 			if (person != null) {
-				convertedPerson = personEntity2PersonModel(person);
+				convertedPerson = conversionService.convert(person, PersonModel.class);
 			}
 			LOGGER.info("{} request person with id = {}", userAuthStorage, id);
 			return new ResponseEntity<PersonModel>(convertedPerson, HttpStatus.OK);
@@ -56,7 +59,7 @@ public class PersonController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody PersonModel personModel) {
-		Person person = personModel2PersonEntity(personModel);
+		Person person = conversionService.convert(personModel, Person.class);
 		try {
 			personService.insert(person);
 			LOGGER.info("User insert person with id = {}", person.getId());
@@ -74,7 +77,7 @@ public class PersonController {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getId().equals(personModel.getId())) {
-			Person person = personModel2PersonEntity(personModel);
+			Person person = conversionService.convert(personModel, Person.class);
 			try {
 				personService.update(person);
 				LOGGER.info("{} update person with id = {}", userAuthStorage, person.getId());
@@ -93,7 +96,7 @@ public class PersonController {
 		if (userAuthStorage.getPositions().contains("Администратор") || userAuthStorage.getId().equals(id)) {
 			try {
 				personService.delete(id);
-				LOGGER.info("{} delete person with id = {}", userAuthStorage, id);					
+				LOGGER.info("{} delete person with id = {}", userAuthStorage, id);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				LOGGER.error("{} could not delete person with id = {}", userAuthStorage, id);
@@ -124,7 +127,7 @@ public class PersonController {
 			List<Person> allPersons = personService.getWithPagination(offset, limit);
 			List<PersonModel> convertedPersons = new ArrayList<PersonModel>();
 			for (Person person : allPersons) {
-				convertedPersons.add(personEntity2PersonModel(person));
+				convertedPersons.add(conversionService.convert(person, PersonModel.class));
 			}
 			LOGGER.info("{} request persons with offset = {}, limit = {}", userAuthStorage, offset, limit);
 			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
@@ -138,63 +141,17 @@ public class PersonController {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			PersonFilter personFilter = personFilterModel2PersonFilter(personFilterModel);
+			PersonFilter personFilter = conversionService.convert(personFilterModel, PersonFilter.class);
 			List<Person> allPersons = personService.getWithPagination(offset, limit, personFilter);
 			List<PersonModel> convertedPersons = new ArrayList<>();
 			for (Person person : allPersons) {
-				convertedPersons.add(personEntity2PersonModel(person));
-			}			
+				convertedPersons.add(conversionService.convert(person, PersonModel.class));
+			}
 			LOGGER.info("{} request persons with offset = {}, limit = {}, filter = {}", userAuthStorage, offset, limit,
 					personFilter);
 			return new ResponseEntity<List<PersonModel>>(convertedPersons, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-	}
-
-	private PersonModel personEntity2PersonModel(Person person) {
-		PersonModel personModel = new PersonModel();
-		personModel.setId(person.getId());
-		personModel.setFirstName(person.getFirstName());
-		personModel.setMiddleName(person.getMiddleName());
-		personModel.setLastName(person.getLastName());
-		personModel.setBirthDate(person.getBirthDate() == null ? null : person.getBirthDate().getTime());
-		personModel.setPhoneNumber(person.getPhoneNumber());
-		personModel.setAdress(person.getAdress());
-		return personModel;
-	}
-
-	private Person personModel2PersonEntity(PersonModel personModel) {
-		Person person = new Person();
-		person.setId(personModel.getId());
-		person.setFirstName(personModel.getFirstName());
-		person.setMiddleName(personModel.getMiddleName());
-		person.setLastName(personModel.getLastName());
-		person.setBirthDate(
-				personModel.getBirthDate() == null ? null : new java.sql.Timestamp(personModel.getBirthDate()));
-		person.setPhoneNumber(personModel.getPhoneNumber());
-		person.setAdress(personModel.getAdress());
-		person.setLogin(personModel.getLogin());
-		person.setPassword(personModel.getPassword());
-		return person;
-	}
-
-	private PersonFilter personFilterModel2PersonFilter(PersonFilterModel personFilterModel) {
-		PersonFilter personFilter = new PersonFilter();
-		personFilter.setFirstName(personFilterModel.getFirstName());
-		personFilter.setMiddleName(personFilterModel.getMiddleName());
-		personFilter.setLastName(personFilterModel.getLastName());
-		personFilter.setAdress(personFilterModel.getAdress());
-		personFilter.setFrom(
-				personFilterModel.getFrom() == null ? null : new java.sql.Timestamp(personFilterModel.getFrom()));
-		personFilter
-				.setTo(personFilterModel.getTo() == null ? null : new java.sql.Timestamp(personFilterModel.getTo()));
-		if (personFilterModel.getSort() != null) {
-			SortData sortData = new SortData();
-			sortData.setColumn(personFilterModel.getSort().getColumn());
-			sortData.setOrder(personFilterModel.getSort().getOrder());
-			personFilter.setSort(sortData);
-		}
-		return personFilter;
 	}
 
 }

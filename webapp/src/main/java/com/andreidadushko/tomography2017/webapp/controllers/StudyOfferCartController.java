@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,9 @@ public class StudyOfferCartController {
 	@Inject
 	private IStudyService studyService;
 
+	@Inject
+	private ConversionService conversionService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		StudyOfferCart studyOfferCart = studyOfferCartService.get(id);
@@ -53,7 +57,7 @@ public class StudyOfferCartController {
 				|| userAuthStorage.getId().equals(study.getPersonId())) {
 			StudyOfferCartModel convertedCart = null;
 			if (studyOfferCart != null) {
-				convertedCart = cartEntity2CartModel(studyOfferCart);
+				convertedCart = conversionService.convert(studyOfferCart, StudyOfferCartModel.class);
 			}
 			LOGGER.info("{} request cart with id = {}", userAuthStorage, id);
 			return new ResponseEntity<StudyOfferCartModel>(convertedCart, HttpStatus.OK);
@@ -65,7 +69,7 @@ public class StudyOfferCartController {
 	public ResponseEntity<?> insert(@RequestBody StudyOfferCartModel cartModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			StudyOfferCart studyOfferCart = cartModel2CartEntity(cartModel);
+			StudyOfferCart studyOfferCart = conversionService.convert(cartModel, StudyOfferCart.class);
 			try {
 				studyOfferCartService.insert(studyOfferCart);
 				LOGGER.info("{} insert cart with id = {}", userAuthStorage, studyOfferCart.getId());
@@ -84,7 +88,7 @@ public class StudyOfferCartController {
 	public ResponseEntity<?> update(@RequestBody StudyOfferCartModel cartModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
-			StudyOfferCart studyOfferCart = cartModel2CartEntity(cartModel);
+			StudyOfferCart studyOfferCart = conversionService.convert(cartModel, StudyOfferCart.class);
 			try {
 				studyOfferCartService.update(studyOfferCart);
 				LOGGER.info("{} update cart with id = {}", userAuthStorage, studyOfferCart.getId());
@@ -133,7 +137,7 @@ public class StudyOfferCartController {
 			List<StudyOfferCartForList> list = studyOfferCartService.getCartByStudyId(studyId);
 			List<CartForListModel> convertedCartForList = new ArrayList<CartForListModel>();
 			for (StudyOfferCartForList cartForList : list) {
-				convertedCartForList.add(CartForListModel2CartForListEntity(cartForList));
+				convertedCartForList.add(conversionService.convert(cartForList, CartForListModel.class));
 			}
 			LOGGER.info("{} request carts with study id = {}", userAuthStorage, studyId);
 			return new ResponseEntity<List<CartForListModel>>(convertedCartForList, HttpStatus.OK);
@@ -166,36 +170,4 @@ public class StudyOfferCartController {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	private StudyOfferCartModel cartEntity2CartModel(StudyOfferCart studyOfferCart) {
-		StudyOfferCartModel cartModel = new StudyOfferCartModel();
-		cartModel.setId(studyOfferCart.getId());
-		cartModel.setPaid(studyOfferCart.getPaid());
-		cartModel.setPayDate(studyOfferCart.getPayDate() == null ? null : studyOfferCart.getPayDate().getTime());
-		cartModel.setStudyId(studyOfferCart.getStudyId());
-		cartModel.setOfferId(studyOfferCart.getOfferId());
-		return cartModel;
-	}
-
-	private StudyOfferCart cartModel2CartEntity(StudyOfferCartModel cartModel) {
-		StudyOfferCart studyOfferCart = new StudyOfferCart();
-		studyOfferCart.setId(cartModel.getId());
-		studyOfferCart.setPaid(cartModel.getPaid());
-		studyOfferCart
-				.setPayDate(cartModel.getPayDate() == null ? null : new java.sql.Timestamp(cartModel.getPayDate()));
-		studyOfferCart.setStudyId(cartModel.getStudyId());
-		studyOfferCart.setOfferId(cartModel.getOfferId());
-		return studyOfferCart;
-	}
-
-	private CartForListModel CartForListModel2CartForListEntity(StudyOfferCartForList studyOfferCartForList) {
-		CartForListModel cartForListModel = new CartForListModel();
-		cartForListModel.setId(studyOfferCartForList.getId());
-		cartForListModel.setCategory(studyOfferCartForList.getCategory());
-		cartForListModel.setOffer(studyOfferCartForList.getOffer());
-		cartForListModel.setPrice(studyOfferCartForList.getPrice());
-		cartForListModel.setPaid(studyOfferCartForList.getPaid());
-		cartForListModel.setPayDate(
-				studyOfferCartForList.getPayDate() == null ? null : studyOfferCartForList.getPayDate().getTime());
-		return cartForListModel;
-	}
 }

@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,16 +31,19 @@ public class OfferController {
 
 	@Inject
 	private ApplicationContext context;
-	
+
 	@Inject
-	private IOfferService offerService;	
+	private IOfferService offerService;
+
+	@Inject
+	private ConversionService conversionService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		Offer offer = offerService.get(id);
 		OfferModel convertedOffer = null;
 		if (offer != null) {
-			convertedOffer = offerEntity2OfferModel(offer);
+			convertedOffer = conversionService.convert(offer, OfferModel.class);
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request offer with id = {}", userAuthStorage, id);
@@ -58,7 +62,7 @@ public class OfferController {
 	public ResponseEntity<?> insert(@RequestBody OfferModel offerModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
-			Offer offer = offerModel2OfferEntity(offerModel);
+			Offer offer = conversionService.convert(offerModel, Offer.class);
 			try {
 				offerService.insert(offer);
 				LOGGER.info("{} insert offer with id = {}", userAuthStorage, offer.getId());
@@ -77,7 +81,7 @@ public class OfferController {
 	public ResponseEntity<?> update(@RequestBody OfferModel offerModel) {
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
-			Offer offer = offerModel2OfferEntity(offerModel);
+			Offer offer = conversionService.convert(offerModel, Offer.class);
 			try {
 				offerService.update(offer);
 				LOGGER.info("{} update category with id = {}", userAuthStorage, offer.getId());
@@ -112,7 +116,7 @@ public class OfferController {
 		List<Offer> list = offerService.getAll();
 		List<OfferModel> convertedOfferList = new ArrayList<OfferModel>();
 		for (Offer offer : list) {
-			convertedOfferList.add(offerEntity2OfferModel(offer));
+			convertedOfferList.add(conversionService.convert(offer, OfferModel.class));
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request all offers", userAuthStorage);
@@ -124,28 +128,11 @@ public class OfferController {
 		List<Offer> list = offerService.getByCategoryId(categoryId);
 		List<OfferModel> convertedOfferList = new ArrayList<OfferModel>();
 		for (Offer offer : list) {
-			convertedOfferList.add(offerEntity2OfferModel(offer));
+			convertedOfferList.add(conversionService.convert(offer, OfferModel.class));
 		}
 		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
 		LOGGER.info("{} request all offers with category id = {}", userAuthStorage, categoryId);
 		return new ResponseEntity<List<OfferModel>>(convertedOfferList, HttpStatus.OK);
 	}
 
-	private OfferModel offerEntity2OfferModel(Offer offer) {
-		OfferModel offerModel = new OfferModel();
-		offerModel.setId(offer.getId());
-		offerModel.setName(offer.getName());
-		offerModel.setPrice(offer.getPrice());
-		offerModel.setCategorId(offer.getCategorId());
-		return offerModel;
-	}
-
-	private Offer offerModel2OfferEntity(OfferModel offerModel) {
-		Offer offer = new Offer();
-		offer.setId(offerModel.getId());
-		offer.setName(offerModel.getName());
-		offer.setPrice(offerModel.getPrice());
-		offer.setCategorId(offerModel.getCategorId());
-		return offer;
-	}
 }
