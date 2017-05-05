@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.andreidadushko.tomography2017.dao.db.IPersonDao;
 import com.andreidadushko.tomography2017.dao.db.filters.PersonFilter;
+import com.andreidadushko.tomography2017.dao.db.utils.FilterUtil;
 import com.andreidadushko.tomography2017.datamodel.Person;
 
 @Repository
@@ -120,19 +121,9 @@ public class PersonDaoImpl extends AbstractDaoImpl<Person> implements IPersonDao
 				sqlParts.add("birth_date <= ?");
 				objects.add(personFilter.getTo());
 			}
-		}
-		if (!sqlParts.isEmpty()) {
-			whereCause.append(" WHERE ");
-			for (int i = 0; i < sqlParts.size(); i++) {
-				if (i != 0)
-					whereCause.append(" AND ");
-				whereCause.append(sqlParts.get(i));
-			}
-		}
-		if (personFilter != null && personFilter.getSort() != null && personFilter.getSort().getColumn() != null) {
-			whereCause.append(" ORDER BY " + personFilter.getSort().getColumn());
-			if (personFilter.getSort().getOrder() != null) {
-				whereCause.append(" " + personFilter.getSort().getOrder());
+			FilterUtil.makeWhere(whereCause, sqlParts);
+			if (personFilter.getSort() != null && personFilter.getSort().getColumn() != null) {
+				FilterUtil.makeSort(whereCause, personFilter.getSort());
 			}
 		}
 		objects.add(offset);

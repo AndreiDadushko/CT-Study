@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.andreidadushko.tomography2017.dao.db.IStudyDao;
 import com.andreidadushko.tomography2017.dao.db.custom.models.StudyForList;
 import com.andreidadushko.tomography2017.dao.db.filters.StudyFilter;
+import com.andreidadushko.tomography2017.dao.db.utils.FilterUtil;
 import com.andreidadushko.tomography2017.datamodel.Study;
 
 @Repository
@@ -130,19 +131,9 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 				sqlParts.add("appointment_date <= ?");
 				objects.add(studyFilter.getTo());
 			}
-		}
-		if (!sqlParts.isEmpty()) {
-			whereCause.append(" WHERE ");
-			for (int i = 0; i < sqlParts.size(); i++) {
-				if (i != 0)
-					whereCause.append(" AND ");
-				whereCause.append(sqlParts.get(i));
-			}
-		}
-		if (studyFilter != null && studyFilter.getSort() != null && studyFilter.getSort().getColumn() != null) {
-			whereCause.append(" ORDER BY " + studyFilter.getSort().getColumn());
-			if (studyFilter.getSort().getOrder() != null) {
-				whereCause.append(" " + studyFilter.getSort().getOrder());
+			FilterUtil.makeWhere(whereCause, sqlParts);
+			if (studyFilter.getSort() != null && studyFilter.getSort().getColumn() != null) {
+				FilterUtil.makeSort(whereCause, studyFilter.getSort());
 			}
 		}
 		objects.add(offset);

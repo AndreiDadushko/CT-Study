@@ -61,7 +61,7 @@
 			<AppenderRef ref="Mailer" />
 			<AppenderRef ref="databaseAppender" />
 		</Logger>
-		<Logger level="warn" name="com.andreidadushko.tomography2017.services.impl"
+		<Logger level="info" name="com.andreidadushko.tomography2017.services.impl"
 			additivity="false">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFile" />

@@ -21,46 +21,18 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 	@Inject
 	protected JdbcTemplate jdbcTemplate;
 
-	/**
-	 * Возвращает sql запрос для получения всех записей.
-	 * <p/>
-	 * SELECT * FROM [Table]
-	 */
 	public abstract String getSelectQuery();
 
-	/**
-	 * Возвращает sql запрос для вставки новой записи в базу данных.
-	 * <p/>
-	 * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
-	 */
 	public abstract String getInsertQuery();
-
-	/**
-	 * Возвращает sql запрос для обновления записи.
-	 * <p/>
-	 * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
-	 */
+	
 	public abstract String getUpdateQuery();
 
-	/**
-	 * Возвращает sql запрос для удаления записи из базы данных.
-	 * <p/>
-	 * DELETE FROM [Table] WHERE id= ?;
-	 */
 	public abstract String getDeleteQuery();
 
 	public abstract String getCountQuery();
 
-	/**
-	 * Устанавливает аргументы insert запроса в соответствии со значением полей
-	 * объекта object.
-	 */
 	protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws SQLException;
 
-	/**
-	 * Устанавливает аргументы update запроса в соответствии со значением полей
-	 * объекта object.
-	 */
 	protected abstract Object[] argumentsForUpdate(T object);
 
 	protected abstract Class<T> getClassForMapping();

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.andreidadushko.tomography2017.dao.db.IStaffDao;
 import com.andreidadushko.tomography2017.dao.db.custom.models.StaffForList;
 import com.andreidadushko.tomography2017.dao.db.filters.StaffFilter;
+import com.andreidadushko.tomography2017.dao.db.utils.FilterUtil;
 import com.andreidadushko.tomography2017.datamodel.Staff;
 
 @Repository
@@ -133,19 +134,9 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 				sqlParts.add("end_date <= ?");
 				objects.add(staffFilter.getEndTo());
 			}
-		}
-		if (!sqlParts.isEmpty()) {
-			whereCause.append(" WHERE ");
-			for (int i = 0; i < sqlParts.size(); i++) {
-				if (i != 0)
-					whereCause.append(" AND ");
-				whereCause.append(sqlParts.get(i));
-			}
-		}
-		if (staffFilter != null && staffFilter.getSort() != null && staffFilter.getSort().getColumn() != null) {
-			whereCause.append(" ORDER BY " + staffFilter.getSort().getColumn());
-			if (staffFilter.getSort().getOrder() != null) {
-				whereCause.append(" " + staffFilter.getSort().getOrder());
+			FilterUtil.makeWhere(whereCause, sqlParts);
+			if (staffFilter.getSort() != null && staffFilter.getSort().getColumn() != null) {
+				FilterUtil.makeSort(whereCause, staffFilter.getSort());
 			}
 		}
 		objects.add(offset);

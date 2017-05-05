@@ -1,8 +1,12 @@
 package com.andreidadushko.tomography2017.datamodel;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Person {
+public class Person implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private Integer id;
 	private String firstName;
 	private String middleName;
