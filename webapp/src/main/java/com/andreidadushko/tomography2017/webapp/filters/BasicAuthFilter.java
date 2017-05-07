@@ -23,6 +23,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.andreidadushko.tomography2017.datamodel.Person;
 import com.andreidadushko.tomography2017.services.IPersonService;
 import com.andreidadushko.tomography2017.services.IStaffService;
+import com.andreidadushko.tomography2017.webapp.cache.IPersonRepo;
+import com.andreidadushko.tomography2017.webapp.cache.IPositionsRepo;
 import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
 
 public class BasicAuthFilter implements Filter {
@@ -32,12 +34,17 @@ public class BasicAuthFilter implements Filter {
 
 	private ApplicationContext appContext;
 
+	private IPersonRepo personRepo;
+	private IPositionsRepo positionsRepo;
+
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		WebApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(config.getServletContext());
 		personService = context.getBean(IPersonService.class);
 		staffService = context.getBean(IStaffService.class);
+		personRepo = context.getBean(IPersonRepo.class);
+		positionsRepo = context.getBean(IPositionsRepo.class);
 		appContext = context;
 
 	}
@@ -59,10 +66,23 @@ public class BasicAuthFilter implements Filter {
 			String login = credentials[0];
 			String password = credentials[1];
 
-			Person person = personService.getByLogin(login);
-			if (person.getPassword().equals(password)) {
+			Person person = personRepo.find(login);
+			if (person == null) {
+				person = personService.getByLogin(login);
+				if (person != null) {
+					personRepo.save(login, person);
+				}
+			}
+
+			if (person != null && person.getPassword().equals(password)) {
 				UserAuthStorage userDataStorage = appContext.getBean(UserAuthStorage.class);
-				List<String> positions = staffService.getPositionsByLogin(login);
+				List<String> positions = positionsRepo.find(login);
+				if (positions == null) {
+					positions = staffService.getPositionsByLogin(login);
+					if (positions != null) {
+						positionsRepo.save(login, positions);
+					}
+				}
 				if (req.getRequestURI().matches("^/staff.*") && !positions.contains("Администратор")) {
 					res.sendError(HttpStatus.METHOD_NOT_ALLOWED_405);
 				} else {

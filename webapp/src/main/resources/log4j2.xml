@@ -53,7 +53,7 @@
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
-		<Logger level="info"
+		<Logger level="warn"
 			name="com.andreidadushko.tomography2017.webapp.controllers"
 			additivity="false">
 			<AppenderRef ref="Console" />
@@ -61,7 +61,7 @@
 			<AppenderRef ref="Mailer" />
 			<AppenderRef ref="databaseAppender" />
 		</Logger>
-		<Logger level="info" name="com.andreidadushko.tomography2017.services.impl"
+		<Logger level="warn" name="com.andreidadushko.tomography2017.services.impl"
 			additivity="false">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFile" />
