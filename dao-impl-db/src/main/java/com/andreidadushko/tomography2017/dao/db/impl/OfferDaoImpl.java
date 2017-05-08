@@ -19,12 +19,12 @@ public class OfferDaoImpl extends AbstractDaoImpl<Offer> implements IOfferDao {
 
 	@Override
 	public String getInsertQuery() {
-		return "INSERT INTO offer (name, price, categor_id) VALUES (?,?,?)";
+		return "INSERT INTO offer (name, name_en, price, categor_id) VALUES (?,?,?,?)";
 	}
 
 	@Override
 	public String getUpdateQuery() {
-		return "UPDATE offer SET name=?, price=?, categor_id=? WHERE id=?";
+		return "UPDATE offer SET name=?, name_en=?, price=?, categor_id=? WHERE id=?";
 	}
 
 	@Override
@@ -40,13 +40,15 @@ public class OfferDaoImpl extends AbstractDaoImpl<Offer> implements IOfferDao {
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement ps, Offer offer) throws SQLException {
 		ps.setString(1, offer.getName());
-		ps.setDouble(2, offer.getPrice());
-		ps.setInt(3, offer.getCategorId());
+		ps.setString(2, offer.getNameEn());
+		ps.setDouble(3, offer.getPrice());
+		ps.setInt(4, offer.getCategorId());
 	}
 
 	@Override
 	protected Object[] argumentsForUpdate(Offer offer) {
-		return new Object[] { offer.getName(), offer.getPrice(), offer.getCategorId(), offer.getId() };
+		return new Object[] { offer.getName(), offer.getNameEn(), offer.getPrice(), offer.getCategorId(),
+				offer.getId() };
 	}
 
 	@Override

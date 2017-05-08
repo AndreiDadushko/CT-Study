@@ -90,12 +90,14 @@ public class StudyOfferCartServiceTest extends AbstractTest {
 
 		offer1 = new Offer();
 		offer1.setName(Integer.toString(new Object().hashCode()));
+		offer1.setNameEn(Integer.toString(new Object().hashCode()));
 		offer1.setPrice(56.65);
 		offer1.setCategorId(category.getId());
 		offerService.insert(offer1);
 
 		offer2 = new Offer();
 		offer2.setName(Integer.toString(new Object().hashCode()));
+		offer2.setNameEn(Integer.toString(new Object().hashCode()));
 		offer2.setPrice(56.65);
 		offer2.setCategorId(category.getId());
 		offerService.insert(offer2);

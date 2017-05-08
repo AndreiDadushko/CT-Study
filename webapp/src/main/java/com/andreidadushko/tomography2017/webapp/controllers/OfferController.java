@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.andreidadushko.tomography2017.datamodel.Offer;
 import com.andreidadushko.tomography2017.services.IOfferService;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
+import com.andreidadushko.tomography2017.webapp.models.OfferFullModel;
 import com.andreidadushko.tomography2017.webapp.models.OfferModel;
 import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
@@ -59,10 +60,10 @@ public class OfferController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> insert(@RequestBody OfferModel offerModel) {
+	public ResponseEntity<?> insert(@RequestBody OfferFullModel offerFullModel) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
-			Offer offer = conversionService.convert(offerModel, Offer.class);
+			Offer offer = conversionService.convert(offerFullModel, Offer.class);
 			try {
 				offerService.insert(offer);
 				LOGGER.info("{} insert offer with id = {}", userAuthStorage, offer.getId());
@@ -78,10 +79,10 @@ public class OfferController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody OfferModel offerModel) {
+	public ResponseEntity<?> update(@RequestBody OfferFullModel offerFullModel) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
-			Offer offer = conversionService.convert(offerModel, Offer.class);
+			Offer offer = conversionService.convert(offerFullModel, Offer.class);
 			try {
 				offerService.update(offer);
 				LOGGER.info("{} update category with id = {}", userAuthStorage, offer.getId());

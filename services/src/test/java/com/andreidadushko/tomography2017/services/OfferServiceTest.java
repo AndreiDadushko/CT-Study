@@ -39,12 +39,14 @@ public class OfferServiceTest extends AbstractTest {
 
 		Offer offer0 = new Offer();
 		offer0.setName(Integer.toString(new Object().hashCode()));
+		offer0.setNameEn(Integer.toString(new Object().hashCode()));
 		offer0.setPrice(56.65);
 		offer0.setCategorId(category.getId());
 		testData.add(offer0);
 
 		Offer offer1 = new Offer();
 		offer1.setName(Integer.toString(new Object().hashCode()));
+		offer1.setNameEn(Integer.toString(new Object().hashCode()));
 		offer1.setPrice(56.65);
 		offer1.setCategorId(category.getId());
 		testData.add(offer1);

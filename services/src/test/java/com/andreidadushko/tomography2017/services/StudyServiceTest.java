@@ -117,6 +117,7 @@ public class StudyServiceTest extends AbstractTest {
 		
 		offer = new Offer();
 		offer.setName(Integer.toString(new Object().hashCode()));
+		offer.setNameEn(Integer.toString(new Object().hashCode()));
 		offer.setPrice(99.999);
 		
 		studyOfferCart = new StudyOfferCart();

@@ -84,8 +84,9 @@ public class OfferServiceImpl implements IOfferService {
 	private boolean isValid(Offer offer) {
 		if (offer == null)
 			throw new IllegalArgumentException("Could not insert/update null");
-		if (offer.getName() == null || offer.getPrice() == null || offer.getCategorId() == null)
-			throw new IllegalArgumentException("Offer must have name, price and category id");
+		if (offer.getName() == null || offer.getNameEn() == null || offer.getPrice() == null
+				|| offer.getCategorId() == null)
+			throw new IllegalArgumentException("Offer must have name, name_en, price and category id");
 		return true;
 	}
 }

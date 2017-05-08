@@ -4,6 +4,7 @@ public class Offer {
 
 	private Integer id;
 	private String name;
+	private String nameEn;
 	private Double price;
 	private Integer categorId;
 
@@ -23,6 +24,14 @@ public class Offer {
 		this.name = name;
 	}
 
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
+
 	public Double getPrice() {
 		return price;
 	}
@@ -40,16 +49,12 @@ public class Offer {
 	}
 
 	@Override
-	public String toString() {
-		return "Offer [id=" + id + ", name=" + name + ", price=" + price + ", categorId=" + categorId + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((nameEn == null) ? 0 : nameEn.hashCode());
 		return result;
 	}
 
@@ -77,12 +82,23 @@ public class Offer {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (nameEn == null) {
+			if (other.nameEn != null)
+				return false;
+		} else if (!nameEn.equals(other.nameEn))
+			return false;
 		if (price == null) {
 			if (other.price != null)
 				return false;
 		} else if (!price.equals(other.price))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Offer [id=" + id + ", name=" + name + ", nameEn=" + nameEn + ", price=" + price + ", categorId="
+				+ categorId + "]";
 	}
 
 }
