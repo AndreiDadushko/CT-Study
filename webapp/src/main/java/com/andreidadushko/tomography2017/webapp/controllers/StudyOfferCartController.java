@@ -27,7 +27,7 @@ import com.andreidadushko.tomography2017.webapp.models.CartForListModel;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyOfferCartModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyWithOffersModel;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 @RestController
 @RequestMapping("/cart")
@@ -51,7 +51,7 @@ public class StudyOfferCartController {
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		StudyOfferCart studyOfferCart = studyOfferCartService.get(id);
 		Study study = studyService.get(studyOfferCart.getStudyId());
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
 				|| userAuthStorage.getId().equals(study.getPersonId())) {
@@ -67,7 +67,7 @@ public class StudyOfferCartController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody StudyOfferCartModel cartModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			StudyOfferCart studyOfferCart = conversionService.convert(cartModel, StudyOfferCart.class);
 			try {
@@ -86,7 +86,7 @@ public class StudyOfferCartController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody StudyOfferCartModel cartModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			StudyOfferCart studyOfferCart = conversionService.convert(cartModel, StudyOfferCart.class);
 			try {
@@ -105,7 +105,7 @@ public class StudyOfferCartController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyOfferCartService.delete(id);
@@ -117,7 +117,7 @@ public class StudyOfferCartController {
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyOfferCartService.massDelete(idArray);
@@ -130,7 +130,7 @@ public class StudyOfferCartController {
 	@RequestMapping(value = "/study/{studyId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getCartByStudyId(@PathVariable Integer studyId) {
 		Study study = studyService.get(studyId);
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
 				|| userAuthStorage.getId().equals(study.getPersonId())) {
@@ -147,7 +147,7 @@ public class StudyOfferCartController {
 
 	@RequestMapping(value = "/massinsert", method = RequestMethod.POST)
 	public ResponseEntity<?> massInsert(@RequestBody StudyWithOffersModel studyOffersModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Integer studyId = studyOffersModel.getStudyId().getNumber();
 			IntegerModel[] offerIdModelArray = studyOffersModel.getOfferIdArray();

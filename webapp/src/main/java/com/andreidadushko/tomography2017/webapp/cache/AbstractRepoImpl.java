@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
 
 public abstract class AbstractRepoImpl<T> implements IAbstractRepo<T> {
@@ -17,6 +18,8 @@ public abstract class AbstractRepoImpl<T> implements IAbstractRepo<T> {
 	private RedisTemplate<String, T> redisTemplate;
 
 	protected abstract String getKey();
+
+	protected abstract Logger getLogger();
 
 	@Override
 	public void save(String login, T object) {
@@ -53,7 +56,7 @@ public abstract class AbstractRepoImpl<T> implements IAbstractRepo<T> {
 		try (FileOutputStream fos = new FileOutputStream(file)) {
 			fos.write(cache, 0, cache.length);
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
+			getLogger().error(ex.getMessage());
 		}
 	}
 
@@ -65,7 +68,7 @@ public abstract class AbstractRepoImpl<T> implements IAbstractRepo<T> {
 			redisTemplate.delete(getKey());
 			redisTemplate.restore(getKey(), cache, 1, TimeUnit.HOURS);
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
+			getLogger().error(ex.getMessage());
 		}
 	}
 

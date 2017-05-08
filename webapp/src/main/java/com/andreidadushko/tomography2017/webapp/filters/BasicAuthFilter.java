@@ -25,7 +25,7 @@ import com.andreidadushko.tomography2017.services.IPersonService;
 import com.andreidadushko.tomography2017.services.IStaffService;
 import com.andreidadushko.tomography2017.webapp.cache.IPersonRepo;
 import com.andreidadushko.tomography2017.webapp.cache.IPositionsRepo;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 public class BasicAuthFilter implements Filter {
 
@@ -46,7 +46,6 @@ public class BasicAuthFilter implements Filter {
 		personRepo = context.getBean(IPersonRepo.class);
 		positionsRepo = context.getBean(IPositionsRepo.class);
 		appContext = context;
-
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class BasicAuthFilter implements Filter {
 			}
 
 			if (person != null && person.getPassword().equals(password)) {
-				UserAuthStorage userDataStorage = appContext.getBean(UserAuthStorage.class);
+				CurrentUserData userDataStorage = appContext.getBean(CurrentUserData.class);
 				List<String> positions = positionsRepo.find(login);
 				if (positions == null) {
 					positions = staffService.getPositionsByLogin(login);

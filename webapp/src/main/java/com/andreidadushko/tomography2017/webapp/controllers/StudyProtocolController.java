@@ -22,7 +22,7 @@ import com.andreidadushko.tomography2017.services.IStudyProtocolService;
 import com.andreidadushko.tomography2017.services.IStudyService;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyProtocolModel;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 @RestController
 @RequestMapping("/protocol")
@@ -45,7 +45,7 @@ public class StudyProtocolController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		Study study = studyService.get(id);
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
 				|| userAuthStorage.getId().equals(study.getPersonId())) {
@@ -62,7 +62,7 @@ public class StudyProtocolController {
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Integer result = studyProtocolService.getCount();
 			LOGGER.info("{} request count of study protocols", userAuthStorage);
@@ -73,7 +73,7 @@ public class StudyProtocolController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody StudyProtocolModel studyProtocolModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			StudyProtocol studyProtocol = conversionService.convert(studyProtocolModel, StudyProtocol.class);
 			try {
@@ -90,7 +90,7 @@ public class StudyProtocolController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody StudyProtocolModel studyProtocolModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			StudyProtocol studyProtocol = conversionService.convert(studyProtocolModel, StudyProtocol.class);
 			try {
@@ -107,7 +107,7 @@ public class StudyProtocolController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyProtocolService.delete(id);
@@ -119,7 +119,7 @@ public class StudyProtocolController {
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyProtocolService.massDelete(idArray);

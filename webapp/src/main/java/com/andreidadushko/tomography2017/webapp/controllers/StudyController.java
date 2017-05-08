@@ -27,7 +27,7 @@ import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyFilterModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyForListModel;
 import com.andreidadushko.tomography2017.webapp.models.StudyModel;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 @RestController
 @RequestMapping("/study")
@@ -46,7 +46,7 @@ public class StudyController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Study study = studyService.get(id);
@@ -62,7 +62,7 @@ public class StudyController {
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Integer result = studyService.getCount();
@@ -74,7 +74,7 @@ public class StudyController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody StudyModel studyModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Study study = conversionService.convert(studyModel, Study.class);
 			try {
@@ -91,7 +91,7 @@ public class StudyController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody StudyModel studyModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Study study = conversionService.convert(studyModel, Study.class);
 			try {
@@ -108,7 +108,7 @@ public class StudyController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyService.delete(id);
@@ -120,7 +120,7 @@ public class StudyController {
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyService.massDelete(idArray);
@@ -132,7 +132,7 @@ public class StudyController {
 
 	@RequestMapping(value = "/person/{personId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getStudyForListByPersonId(@PathVariable Integer personId) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
 				|| userAuthStorage.getId().equals(personId)) {
@@ -154,7 +154,7 @@ public class StudyController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPagination(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			try {
@@ -175,7 +175,7 @@ public class StudyController {
 	@RequestMapping(value = "/filter", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody StudyFilterModel studyFilterModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			try {

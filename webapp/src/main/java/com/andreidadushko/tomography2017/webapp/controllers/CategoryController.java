@@ -21,7 +21,7 @@ import com.andreidadushko.tomography2017.datamodel.Category;
 import com.andreidadushko.tomography2017.services.ICategoryService;
 import com.andreidadushko.tomography2017.webapp.models.CategoryModel;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 @RestController
 @RequestMapping("/category")
@@ -45,7 +45,7 @@ public class CategoryController {
 		if (category != null) {
 			convertedCategory = conversionService.convert(category, CategoryModel.class);
 		}
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request category with id = {}", userAuthStorage, id);
 		return new ResponseEntity<CategoryModel>(convertedCategory, HttpStatus.OK);
 	}
@@ -53,14 +53,14 @@ public class CategoryController {
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
 		Integer result = categoryService.getCount();
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request count of categories", userAuthStorage);
 		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody CategoryModel categoryModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Category category = conversionService.convert(categoryModel, Category.class);
 			try {
@@ -79,7 +79,7 @@ public class CategoryController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody CategoryModel categoryModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Category category = conversionService.convert(categoryModel, Category.class);
 			try {
@@ -98,7 +98,7 @@ public class CategoryController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			try {
 				categoryService.delete(id);
@@ -118,7 +118,7 @@ public class CategoryController {
 		for (Category category : list) {
 			convertedList.add(conversionService.convert(category, CategoryModel.class));
 		}
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request all root categories", userAuthStorage);
 		return new ResponseEntity<List<CategoryModel>>(convertedList, HttpStatus.OK);
 	}
@@ -130,7 +130,7 @@ public class CategoryController {
 		for (Category category : list) {
 			convertedList.add(conversionService.convert(category, CategoryModel.class));
 		}
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request categories with parent id = {}", userAuthStorage, parentId);
 		return new ResponseEntity<List<CategoryModel>>(convertedList, HttpStatus.OK);
 	}

@@ -24,7 +24,7 @@ import com.andreidadushko.tomography2017.services.IPersonService;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.PersonFilterModel;
 import com.andreidadushko.tomography2017.webapp.models.PersonModel;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 @RestController
 @RequestMapping("/person")
@@ -43,7 +43,7 @@ public class PersonController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог") || userAuthStorage.getId().equals(id)) {
 			Person person = personService.get(id);
@@ -74,7 +74,7 @@ public class PersonController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody PersonModel personModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getId().equals(personModel.getId())) {
 			Person person = conversionService.convert(personModel, Person.class);
@@ -92,7 +92,7 @@ public class PersonController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор") || userAuthStorage.getId().equals(id)) {
 			try {
 				personService.delete(id);
@@ -108,7 +108,7 @@ public class PersonController {
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			Integer result = personService.getCount();
@@ -121,7 +121,7 @@ public class PersonController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPagination(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			List<Person> allPersons = personService.getWithPagination(offset, limit);
@@ -138,7 +138,7 @@ public class PersonController {
 	@RequestMapping(value = "/filter", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody PersonFilterModel personFilterModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			PersonFilter personFilter = conversionService.convert(personFilterModel, PersonFilter.class);

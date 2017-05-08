@@ -21,7 +21,7 @@ import com.andreidadushko.tomography2017.datamodel.Offer;
 import com.andreidadushko.tomography2017.services.IOfferService;
 import com.andreidadushko.tomography2017.webapp.models.IntegerModel;
 import com.andreidadushko.tomography2017.webapp.models.OfferModel;
-import com.andreidadushko.tomography2017.webapp.storage.UserAuthStorage;
+import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 @RestController
 @RequestMapping("/offer")
@@ -45,7 +45,7 @@ public class OfferController {
 		if (offer != null) {
 			convertedOffer = conversionService.convert(offer, OfferModel.class);
 		}
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request offer with id = {}", userAuthStorage, id);
 		return new ResponseEntity<OfferModel>(convertedOffer, HttpStatus.OK);
 	}
@@ -53,14 +53,14 @@ public class OfferController {
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseEntity<?> getCount() {
 		Integer result = offerService.getCount();
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request count of offers", userAuthStorage);
 		return new ResponseEntity<IntegerModel>(new IntegerModel(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody OfferModel offerModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Offer offer = conversionService.convert(offerModel, Offer.class);
 			try {
@@ -79,7 +79,7 @@ public class OfferController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody OfferModel offerModel) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			Offer offer = conversionService.convert(offerModel, Offer.class);
 			try {
@@ -98,7 +98,7 @@ public class OfferController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")) {
 			try {
 				offerService.delete(id);
@@ -118,7 +118,7 @@ public class OfferController {
 		for (Offer offer : list) {
 			convertedOfferList.add(conversionService.convert(offer, OfferModel.class));
 		}
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request all offers", userAuthStorage);
 		return new ResponseEntity<List<OfferModel>>(convertedOfferList, HttpStatus.OK);
 	}
@@ -130,7 +130,7 @@ public class OfferController {
 		for (Offer offer : list) {
 			convertedOfferList.add(conversionService.convert(offer, OfferModel.class));
 		}
-		UserAuthStorage userAuthStorage = context.getBean(UserAuthStorage.class);
+		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		LOGGER.info("{} request all offers with category id = {}", userAuthStorage, categoryId);
 		return new ResponseEntity<List<OfferModel>>(convertedOfferList, HttpStatus.OK);
 	}
