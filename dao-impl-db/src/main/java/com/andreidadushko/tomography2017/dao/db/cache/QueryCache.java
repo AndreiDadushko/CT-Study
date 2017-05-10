@@ -1,11 +1,13 @@
 package com.andreidadushko.tomography2017.dao.db.cache;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
+import java.io.Serializable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -18,7 +20,7 @@ public class QueryCache {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueryCache.class);
 
-	private volatile HashMap<Key, Object> globalMap = new HashMap<Key, Object>();
+	private static volatile ConcurrentHashMap<Key, Object> globalMap = new ConcurrentHashMap<Key, Object>();
 
 	private static long timeout;
 
@@ -51,6 +53,7 @@ public class QueryCache {
 				}
 			}
 		}, 1, timeout / 5, TimeUnit.MILLISECONDS);
+
 	}
 
 	public void setDefaultTimeout(long time) throws Exception {
@@ -77,23 +80,26 @@ public class QueryCache {
 		globalMap.clear();
 	}
 
-	public void saveCache() {
-		try (FileOutputStream fos = new FileOutputStream(savePath);
+	public void saveCache() throws IOException {
+		File file = new File(savePath);
+		try (FileOutputStream fos = new FileOutputStream(file);
 				ObjectOutputStream outStream = new ObjectOutputStream(fos)) {
 			outStream.writeObject(globalMap);
 			outStream.flush();
 		} catch (IOException ex) {
-			LOGGER.error(ex.getMessage());
+			LOGGER.error(ex.toString());
+			throw ex;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loadCache() {
-		try (FileInputStream fis = new FileInputStream(savePath);
-				ObjectInputStream inStream = new ObjectInputStream(fis)) {
-			globalMap = (HashMap<Key, Object>) inStream.readObject();
+	public void loadCache() throws Exception {
+		File file = new File(savePath);
+		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream inStream = new ObjectInputStream(fis)) {
+			globalMap = (ConcurrentHashMap<Key, Object>) inStream.readObject();
 		} catch (IOException | ClassNotFoundException ex) {
-			LOGGER.error(ex.getMessage());
+			LOGGER.error(ex.toString());
+			throw ex;
 		}
 	}
 
@@ -101,8 +107,10 @@ public class QueryCache {
 		this.savePath = savePath;
 	}
 
-	private static class Key {
+	private static class Key implements Serializable {
 
+		private static final long serialVersionUID = 1L;
+		
 		private String key;
 		private long timeLife;
 

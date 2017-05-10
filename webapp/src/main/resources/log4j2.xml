@@ -53,7 +53,7 @@
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
-		<Logger level="warn"
+		<Logger level="fatal"
 			name="com.andreidadushko.tomography2017.webapp.controllers"
 			additivity="false">
 			<AppenderRef ref="Console" />

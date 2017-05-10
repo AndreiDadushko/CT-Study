@@ -23,7 +23,7 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 	protected JdbcTemplate jdbcTemplate;
 
 	@Inject
-	QueryCache queryCache;
+	protected QueryCache queryCache;
 
 	public abstract String getSelectQuery();
 
