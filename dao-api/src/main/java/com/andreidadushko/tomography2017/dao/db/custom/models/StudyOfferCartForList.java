@@ -1,8 +1,11 @@
 package com.andreidadushko.tomography2017.dao.db.custom.models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class StudyOfferCartForList {
+public class StudyOfferCartForList implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	private String category;

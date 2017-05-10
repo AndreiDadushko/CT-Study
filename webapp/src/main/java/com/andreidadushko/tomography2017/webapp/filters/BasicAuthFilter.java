@@ -68,9 +68,8 @@ public class BasicAuthFilter implements Filter {
 			Person person = personRepo.find(login);
 			if (person == null) {
 				person = personService.getByLogin(login);
-				if (person != null) {
+				if (person != null)
 					personRepo.save(login, person);
-				}
 			}
 
 			if (person != null && person.getPassword().equals(password)) {

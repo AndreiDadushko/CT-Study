@@ -72,11 +72,19 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<StudyForList> getStudyForListByPersonId(Integer personId) {
-
-		String sql = getQueryStudyForList();
-		List<StudyForList> rs = jdbcTemplate.query(sql + " WHERE sy.person_id = " + personId,
-				new BeanPropertyRowMapper<StudyForList>(StudyForList.class));
+		String sql = getQueryStudyForList() + " WHERE sy.person_id = " + personId;
+		List<StudyForList> rs = (List<StudyForList>) queryCache.get(sql);
+		if (rs != null)
+			System.out.println("БУГАГА ЮЗАЮ КЕШЬ!!! = " + rs);
+		if (rs == null) {
+			rs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<StudyForList>(StudyForList.class));
+			System.out.println("Begal v DB i USTAAAAAAL STUUUUUUUUUUUUUUDY");
+			if (rs != null)
+				queryCache.put(sql, rs);
+			System.out.println("значение в кеше = " + queryCache.get(sql));
+		}
 		return rs;
 	}
 

@@ -42,4 +42,9 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+	<bean id="queryCache"
+		class="com.andreidadushko.tomography2017.dao.db.cache.QueryCache">
+		<constructor-arg value="${cache.timeout}" />
+		<property name="savePath" value="${cache.path}" />
+	</bean>
 </beans>

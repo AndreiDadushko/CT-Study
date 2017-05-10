@@ -15,11 +15,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.andreidadushko.tomography2017.dao.db.IAbstractDao;
+import com.andreidadushko.tomography2017.dao.db.cache.QueryCache;
 
 public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 
 	@Inject
 	protected JdbcTemplate jdbcTemplate;
+
+	@Inject
+	QueryCache queryCache;
 
 	public abstract String getSelectQuery();
 
