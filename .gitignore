@@ -5,3 +5,4 @@ bin/
 .project
 *.log
 *.gz
+webapp/queryCache.txt

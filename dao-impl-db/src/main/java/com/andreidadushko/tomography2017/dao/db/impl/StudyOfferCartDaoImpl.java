@@ -74,15 +74,11 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 		String sql = getQueryStudyOfferCartForList();
 		String fullSql = getQueryStudyOfferCartForList().replace("?", studyId + "");
 		List<StudyOfferCartForList> rs = (List<StudyOfferCartForList>) queryCache.get(fullSql);
-		if (rs != null)
-		System.out.println("БУГАГА ЮЗАЮ КЕШЬ!!! = "+ rs);
 		if (rs == null) {
 			rs = jdbcTemplate.query(sql, new Object[] { studyId },
 					new BeanPropertyRowMapper<StudyOfferCartForList>(StudyOfferCartForList.class));
-			System.out.println("Begal v DB i USTAAAAAAL");
 			if (rs != null)
 				queryCache.put(fullSql, rs);
-			System.out.println("значение в кеше = "+ queryCache.get(fullSql));
 		}
 		return rs;
 	}

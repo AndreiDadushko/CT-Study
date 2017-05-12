@@ -135,7 +135,7 @@ public class PersonController {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	@RequestMapping(value = "/filter", method = RequestMethod.GET)
+	@RequestMapping(value = "/filter", method = RequestMethod.OPTIONS)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody PersonFilterModel personFilterModel) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);

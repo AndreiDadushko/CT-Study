@@ -14,6 +14,14 @@
 			<groupId>com.andreidadushko.tomography2017</groupId>
 			<artifactId>services</artifactId>
 		</dependency>
+
+
+		<dependency>
+			<groupId>org.xlightweb</groupId>
+			<artifactId>xlightweb</artifactId>
+		</dependency>
+
+
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
