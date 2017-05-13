@@ -1,9 +1,7 @@
 package com.andreidadushko.tomography2017.webapp;
 
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 
 import javax.management.MBeanServer;
 
@@ -25,28 +23,24 @@ public class StartJetty {
 	 * Main function, starts the jetty server.
 	 *
 	 * @param args
-	 * @throws UnknownHostException
+	 * @throws Exception
 	 */
-	public static void main(String[] args) throws UnknownHostException {
+	public static void main(String[] args) throws Exception {
 
 		startInstance(8081);
 		startInstance(8082);
 		startInstance(8083);
 		startInstance(8084);
+		
 		InetSocketAddress[] srvs = new InetSocketAddress[] { 
 				new InetSocketAddress("127.0.0.1", 8081),
 				new InetSocketAddress("127.0.0.1", 8082), 
 				new InetSocketAddress("127.0.0.1", 8083),
 				new InetSocketAddress("127.0.0.1", 8084) };
-
 		LoadBalancerHandler hdl = new LoadBalancerHandler(srvs);
-		HttpServer loadBalancer = null;
-		try {
-			loadBalancer = new HttpServer("127.0.0.1", 8080, hdl);
-		} catch (IOException e) {
-			e.printStackTrace();
+		try (HttpServer loadBalancer = new HttpServer("127.0.0.1", 8080, hdl);) {
+			loadBalancer.run();			
 		}
-		loadBalancer.run();
 	}
 
 	private static void startInstance(int port) {

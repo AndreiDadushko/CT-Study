@@ -97,7 +97,7 @@ public class StudyController {
 			try {
 				studyService.update(study);
 				LOGGER.info("{} update study with id = {}", userAuthStorage, study.getId());
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -113,19 +113,19 @@ public class StudyController {
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyService.delete(id);
 			LOGGER.info("{} delete study with id = {}", userAuthStorage, id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyService.massDelete(idArray);
 			LOGGER.info("{} delete studies with id = {}", userAuthStorage, Arrays.asList(idArray));
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
@@ -172,7 +172,7 @@ public class StudyController {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	@RequestMapping(value = "/filter", method = RequestMethod.GET)
+	@RequestMapping(value = "/filter", method = RequestMethod.PATCH)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody StudyFilterModel studyFilterModel) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);

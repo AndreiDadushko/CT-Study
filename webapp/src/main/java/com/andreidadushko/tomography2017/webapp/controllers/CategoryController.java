@@ -85,7 +85,7 @@ public class CategoryController {
 			try {
 				categoryService.update(category);
 				LOGGER.info("{} update category with id = {}", userAuthStorage, category.getId());
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -103,7 +103,7 @@ public class CategoryController {
 			try {
 				categoryService.delete(id);
 				LOGGER.info("{} delete category with id = {}", userAuthStorage, id);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 			}

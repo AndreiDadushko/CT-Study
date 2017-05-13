@@ -86,7 +86,7 @@ public class OfferController {
 			try {
 				offerService.update(offer);
 				LOGGER.info("{} update category with id = {}", userAuthStorage, offer.getId());
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -104,7 +104,7 @@ public class OfferController {
 			try {
 				offerService.delete(id);
 				LOGGER.info("{} delete offer with id = {}", userAuthStorage, id);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 			}

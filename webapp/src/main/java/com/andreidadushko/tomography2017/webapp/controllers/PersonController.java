@@ -81,7 +81,7 @@ public class PersonController {
 			try {
 				personService.update(person);
 				LOGGER.info("{} update person with id = {}", userAuthStorage, person.getId());
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -97,7 +97,7 @@ public class PersonController {
 			try {
 				personService.delete(id);
 				LOGGER.info("{} delete person with id = {}", userAuthStorage, id);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} catch (org.springframework.dao.DataIntegrityViolationException e) {
 				LOGGER.error("{} could not delete person with id = {}", userAuthStorage, id);
 				return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
@@ -135,7 +135,7 @@ public class PersonController {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	@RequestMapping(value = "/filter", method = RequestMethod.OPTIONS)
+	@RequestMapping(value = "/filter", method = RequestMethod.PATCH)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody PersonFilterModel personFilterModel) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);

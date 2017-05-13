@@ -78,7 +78,7 @@ public class StaffController {
 		try {
 			staffService.update(staff);
 			LOGGER.info("{} update staff with id = {}", userAuthStorage, staff.getId());
-			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (IllegalArgumentException e) {
 			LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 			return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -93,7 +93,7 @@ public class StaffController {
 			staffService.delete(id);
 			CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 			LOGGER.info("{} delete staff with id = {}", userAuthStorage, id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
 			return new ResponseEntity<IntegerModel>(HttpStatus.CONFLICT);
 		}
@@ -128,7 +128,7 @@ public class StaffController {
 		return new ResponseEntity<List<StaffForListModel>>(convertedStaffForList, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/filter", method = RequestMethod.GET)
+	@RequestMapping(value = "/filter", method = RequestMethod.PATCH)
 	public ResponseEntity<?> getWithPaginationAndFilter(@RequestParam(required = true) Integer offset,
 			@RequestParam(required = true) Integer limit, @RequestBody StaffFilterModel staffFilterModel) {
 		try {

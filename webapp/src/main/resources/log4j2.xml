@@ -67,6 +67,11 @@
 			<AppenderRef ref="RollingFile" />
 			<AppenderRef ref="Mailer" />
 		</Logger>
+		<Logger level="info" name="com.andreidadushko.tomography2017.webapp.LoadBalancerHandler"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		
 	</Loggers>
 
 

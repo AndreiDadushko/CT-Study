@@ -92,7 +92,7 @@ public class StudyOfferCartController {
 			try {
 				studyOfferCartService.update(studyOfferCart);
 				LOGGER.info("{} update cart with id = {}", userAuthStorage, studyOfferCart.getId());
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -110,19 +110,19 @@ public class StudyOfferCartController {
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyOfferCartService.delete(id);
 			LOGGER.info("{} delete cart with id = {}", userAuthStorage, id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyOfferCartService.massDelete(idArray);
 			LOGGER.info("{} delete carts with id = {}", userAuthStorage, Arrays.asList(idArray));
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}

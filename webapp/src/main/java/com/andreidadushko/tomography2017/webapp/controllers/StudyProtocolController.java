@@ -96,7 +96,7 @@ public class StudyProtocolController {
 			try {
 				studyProtocolService.update(studyProtocol);
 				LOGGER.info("{} update study protocol with id = {}", userAuthStorage, studyProtocol.getId());
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
 				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
@@ -112,19 +112,19 @@ public class StudyProtocolController {
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyProtocolService.delete(id);
 			LOGGER.info("{} delete study protocol with id = {}", userAuthStorage, id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<?> massDelete(@RequestBody Integer[] idArray) {
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
 				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
 			studyProtocolService.massDelete(idArray);
 			LOGGER.info("{} delete study protocols with id = {}", userAuthStorage, Arrays.asList(idArray));
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 	}

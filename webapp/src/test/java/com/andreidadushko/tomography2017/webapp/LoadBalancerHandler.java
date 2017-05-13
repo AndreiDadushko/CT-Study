@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xlightweb.IHttpExchange;
 import org.xlightweb.IHttpRequest;
 import org.xlightweb.IHttpRequestHandler;
@@ -17,6 +19,9 @@ import org.xsocket.Execution;
 import org.xsocket.ILifeCycle;
 
 public class LoadBalancerHandler implements IHttpRequestHandler, ILifeCycle {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoadBalancerHandler.class);
+
 	private final List<InetSocketAddress> servers = new ArrayList<InetSocketAddress>();
 	private int serverIdx = 0;
 	private HttpClient httpClient;
@@ -25,20 +30,22 @@ public class LoadBalancerHandler implements IHttpRequestHandler, ILifeCycle {
 		servers.addAll(Arrays.asList(realServers));
 	}
 
+	@Override
 	public void onInit() {
 		httpClient = new HttpClient();
 		httpClient.setAutoHandleCookies(false);
 	}
 
+	@Override
 	public void onDestroy() throws IOException {
 		httpClient.close();
 	}
 
+	@Override
 	public void onRequest(final IHttpExchange exchange) throws IOException {
-		
 		IHttpRequest request = exchange.getRequest();
 
-		InetSocketAddress serverAddr = servers.get(nextServerSlot());;
+		InetSocketAddress serverAddr = servers.get(nextServerSlot());
 		IHttpResponseHandler respHdl = new IHttpResponseHandler() {
 
 			@Execution(Execution.NONTHREADED)
@@ -50,26 +57,15 @@ public class LoadBalancerHandler implements IHttpRequestHandler, ILifeCycle {
 			public void onException(IOException ioe) throws IOException {
 				exchange.sendError(ioe);
 			}
-			
-		};		
 
-		// update the Request-URL of the request
+		};
 		URL url = request.getRequestUrl();
 		URL newUrl = new URL(url.getProtocol(), serverAddr.getHostName(), serverAddr.getPort(), url.getFile());
 		request.setRequestUrl(newUrl);
-		System.out.println("---------------");
-		System.out.println(newUrl);	
-		System.out.println(request.getMethod());
-		System.out.println(request.getNonBlockingBody());
-		System.out.println("---------------");
-		// proxy header handling (remove hop-by-hop headers, ...)
-		// ...
-		//
-		// forward the request
+		LOGGER.info("Load balancer send reqest to {}", newUrl);
 		httpClient.send(request, respHdl);
 	}
 
-	// get the next slot by using the using round-robin approach
 	private synchronized int nextServerSlot() {
 		serverIdx++;
 		if (serverIdx >= servers.size()) {
