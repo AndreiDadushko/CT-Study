@@ -24,15 +24,30 @@ public abstract class AbstractDaoImpl<T> implements IAbstractDao<T> {
 
 	@Inject
 	protected QueryCache queryCache;
-
+	
+	/**
+	 * @return "SELECT * FROM table"
+	 */
 	public abstract String getSelectQuery();
 
+	/**
+	 * @return INSERT INTO table (...) VALUES (?,?..)"
+	 */
 	public abstract String getInsertQuery();
 	
+	/**
+	 * @return "UPDATE table SET field = ?.... WHERE id = ?"
+	 */
 	public abstract String getUpdateQuery();
 
+	/**
+	 * @return "DELETE FROM table WHERE id="
+	 */
 	public abstract String getDeleteQuery();
 
+	/**
+	 * @return "SELECT COUNT(*) FROM table"
+	 */
 	public abstract String getCountQuery();
 
 	protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws SQLException;

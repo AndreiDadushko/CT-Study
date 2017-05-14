@@ -44,7 +44,6 @@
 			<Column name="LEVEL" pattern="%level" />
 			<Column name="LOGGER" pattern="%logger" />
 			<Column name="MESSAGE" pattern="%message" />
-			<Column name="THROWABLE" pattern="%ex{full}" />
 		</JDBC>
 
 	</Appenders>

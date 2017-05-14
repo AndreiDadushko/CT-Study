@@ -8,8 +8,6 @@ import com.andreidadushko.tomography2017.datamodel.Person;
 public interface IPersonDao extends IAbstractDao<Person> {
 
 	Person get(String login);
-	
-	Integer getCount();
 
 	List<Person> getWithPagination(int offset, int limit);
 

@@ -18,10 +18,10 @@ public class OfferEntityToModelConverter implements Converter<Offer, OfferModel>
 
 	@Override
 	public OfferModel convert(Offer offer) {
-		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
+		CurrentUserData currentUserData = context.getBean(CurrentUserData.class);
 		OfferModel offerModel = new OfferModel();
 		offerModel.setId(offer.getId());
-		Locale locale = userAuthStorage.getLocale();
+		Locale locale = currentUserData.getLocale();
 		if (locale.getLanguage().equals(new Locale("en").getLanguage()))
 			offerModel.setName(offer.getNameEn());
 		else
