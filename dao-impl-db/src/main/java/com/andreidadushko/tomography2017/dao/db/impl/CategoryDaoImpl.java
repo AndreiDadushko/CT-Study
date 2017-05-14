@@ -60,5 +60,19 @@ public class CategoryDaoImpl extends AbstractDaoImpl<Category> implements ICateg
 	protected void setIdAfterInsert(KeyHolder keyHolder, Category category) {
 		category.setId(keyHolder.getKey().intValue());
 	}
+	
+	/*@SuppressWarnings("unchecked")
+	@Override
+	public List<Category> getAll() {
+		String sql = getSelectQuery();
+		List<Category> rs = (List<Category>) queryCache.get(sql);
+		if(rs!=null)System.out.println("КЭШЬ В АТАКУ!!!");
+		if (rs == null) {
+			rs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Category>(Category.class));
+			if (rs != null)
+				queryCache.put(sql, rs);
+		}
+		return rs;
+	}*/
 
 }

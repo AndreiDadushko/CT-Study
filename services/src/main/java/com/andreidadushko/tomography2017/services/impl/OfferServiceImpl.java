@@ -80,7 +80,7 @@ public class OfferServiceImpl implements IOfferService {
 		LOGGER.info("Get list of all offers with category id = " + categoryId);
 		return result;
 	}
-
+	
 	private boolean isValid(Offer offer) {
 		if (offer == null)
 			throw new IllegalArgumentException("Could not insert/update null");

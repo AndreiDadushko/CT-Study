@@ -53,6 +53,8 @@ public class BasicAuthFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		if (isAuth(req, res))
+			return;
 		if (req.getRequestURI().matches("^/person.*") && req.getMethod().toUpperCase().equals("POST")) {
 			chain.doFilter(request, response);
 		} else {
@@ -65,22 +67,11 @@ public class BasicAuthFilter implements Filter {
 			String login = credentials[0];
 			String password = credentials[1];
 
-			Person person = personRepo.find(login);
-			if (person == null) {
-				person = personService.getByLogin(login);
-				if (person != null)
-					personRepo.save(login, person);
-			}
+			Person person = findPerson(login);
 
-			if (person != null && person.getPassword().equals(password)) {
+			if (isPersonValid(login, password)) {
 				CurrentUserData userDataStorage = appContext.getBean(CurrentUserData.class);
-				List<String> positions = positionsRepo.find(login);
-				if (positions == null) {
-					positions = staffService.getPositionsByLogin(login);
-					if (positions != null) {
-						positionsRepo.save(login, positions);
-					}
-				}
+				List<String> positions = findPositions(login);
 				if (req.getRequestURI().matches("^/staff.*") && !positions.contains("Администратор")) {
 					res.sendError(HttpStatus.METHOD_NOT_ALLOWED_405);
 				} else {
@@ -104,6 +95,53 @@ public class BasicAuthFilter implements Filter {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	private String makeCredentials(String login, String password) {
+		String logPas = login + ":" + password;
+		String encodedLogPas = new String(Base64.getEncoder().encode(logPas.getBytes()), Charset.forName("UTF-8"));
+		String header = "Basic " + encodedLogPas;
+		return header;
+	}
+
+	private Person findPerson(String login) {
+		Person person = personRepo.find(login);
+		if (person == null) {
+			person = personService.getByLogin(login);
+			if (person != null)
+				personRepo.save(login, person);
+		}
+		return person;
+	}
+
+	private List<String> findPositions(String login) {
+		List<String> positions = positionsRepo.find(login);
+		if (positions == null) {
+			positions = staffService.getPositionsByLogin(login);
+			if (positions != null) {
+				positionsRepo.save(login, positions);
+			}
+		}
+		return positions;
+	}
+
+	private Boolean isPersonValid(String login, String password) {
+		Person person = findPerson(login);
+		return person != null && person.getPassword().equals(password);
+	}
+
+	private Boolean isAuth(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		if (req.getRequestURI().matches("^/auth.*") && req.getMethod().toUpperCase().equals("GET")
+				&& req.getParameterMap().containsKey("login") && req.getParameterMap().containsKey("password")) {
+			String login = req.getParameter("login");
+			String password = req.getParameter("password");
+			if (!isPersonValid(login, password)) {
+				res.sendError(HttpStatus.UNAUTHORIZED_401);
+			} else
+				res.setHeader("Authorization", makeCredentials(login, password));
+			return true;
+		}
+		return false;
 	}
 
 	@Override

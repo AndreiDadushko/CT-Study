@@ -117,13 +117,13 @@ public class CategoryServiceTest extends AbstractTest {
 
 	@Test
 	public void getRootCategoriesTest() {
-		int numberBeforeInsert = categoryService.getByParentId(null).size();
+		int numberBeforeInsert = categoryService.getRootCategories().size();
 		categoryService.insert(testData.get(0));
-		int numberAfterInsert = categoryService.getByParentId(null).size();
+		int numberAfterInsert = categoryService.getRootCategories().size();
 		Assert.assertTrue("Returned after insert count of rows is not correct",
 				numberBeforeInsert + 1 == numberAfterInsert);
 		categoryService.delete(testData.get(0).getId());
-		int numberAfterDelete = categoryService.getByParentId(null).size();
+		int numberAfterDelete = categoryService.getRootCategories().size();
 		Assert.assertTrue("Returned after delete count of rows is not correct",
 				numberBeforeInsert == numberAfterDelete);
 	}
@@ -139,7 +139,7 @@ public class CategoryServiceTest extends AbstractTest {
 		List<Category> categoris = categoryService.getByParentId(testData.get(0).getId());
 		Assert.assertTrue("Could not get all subcategories", categoris.size() == 2);
 	}
-
+	
 	@After
 	public void destroyTestData() {
 		categoryService.delete(testData.get(2).getId());

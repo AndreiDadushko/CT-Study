@@ -36,7 +36,14 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 	}
 
 	public String getQueryStudyOfferCartForList() {
-		return "SELECT cart.id, c.name category, o.name offer, o.price, cart.paid, cart.pay_date FROM study_offer_cart cart LEFT JOIN offer o ON cart.offer_id = o.id LEFT JOIN category c ON o.categor_id = c.id LEFT JOIN study s ON cart.study_id = s.id WHERE s.id = ?";
+		return "SELECT cart.id, c.name category, o.name offer, o.price, cart.paid, cart.pay_date FROM study_offer_cart cart "
+				+ "LEFT JOIN offer o "
+				+ "ON cart.offer_id = o.id "
+				+ "LEFT JOIN category c "
+				+ "ON o.categor_id = c.id "
+				+ "LEFT JOIN study s "
+				+ "ON cart.study_id = s.id "
+				+ "WHERE s.id = ? ";
 	}
 
 	@Override

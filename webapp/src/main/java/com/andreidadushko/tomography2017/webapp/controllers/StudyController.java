@@ -83,7 +83,7 @@ public class StudyController {
 				return new ResponseEntity<IntegerModel>(new IntegerModel(study.getId()), HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
-				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -100,7 +100,7 @@ public class StudyController {
 				return new ResponseEntity<>(HttpStatus.CREATED);
 			} catch (IllegalArgumentException e) {
 				LOGGER.info("{} has entered incorrect data : {}", userAuthStorage, e.getMessage());
-				return new ResponseEntity<IntegerModel>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		} else
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
@@ -108,9 +108,13 @@ public class StudyController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
+		Study study = studyService.get(id);
+		if (study == null)
+			return new ResponseEntity<IntegerModel>(HttpStatus.NOT_FOUND);
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
-				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
+				|| userAuthStorage.getId().equals(study.getPersonId())) {
 			studyService.delete(id);
 			LOGGER.info("{} delete study with id = {}", userAuthStorage, id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

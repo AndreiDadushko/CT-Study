@@ -30,16 +30,23 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 
 	@Override
 	public String getUpdateQuery() {
-		return "UPDATE  study SET  appointment_date = ?, permitted= ?,person_id= ?,staff_id =? WHERE  id = ?";
+		return "UPDATE  study SET  appointment_date = ?, permitted= ?,person_id= ?,staff_id =? WHERE  id = ? ";
 	}
 
 	@Override
 	public String getDeleteQuery() {
-		return "DELETE FROM study WHERE id=";
+		return "DELETE FROM study WHERE id= ";
 	}
 
 	public String getQueryStudyForList() {
-		return "SELECT sy.id, sy.appointment_date, sy.permitted, p.last_name patient_last_name, p.first_name patient_first_name, p.middle_name patient_middle_name, pdoc.last_name doctor_last_name, pdoc.first_name doctor_first_name, pdoc.middle_name doctor_middle_name FROM study sy LEFT JOIN person p ON sy.person_id = p.id LEFT JOIN staff sa ON sy.staff_id = sa.id LEFT JOIN person pdoc ON sa.person_id = pdoc.id";
+		return "SELECT sy.id, sy.appointment_date, sy.permitted, p.last_name patient_last_name, p.first_name patient_first_name, p.middle_name patient_middle_name, pdoc.last_name doctor_last_name, pdoc.first_name doctor_first_name, pdoc.middle_name doctor_middle_name "
+				+ "FROM study sy "
+				+ "LEFT JOIN person p "
+				+ "ON sy.person_id = p.id "
+				+ "LEFT JOIN staff sa "
+				+ "ON sy.staff_id = sa.id "
+				+ "LEFT JOIN person pdoc "
+				+ "ON sa.person_id = pdoc.id";
 	}
 
 	@Override

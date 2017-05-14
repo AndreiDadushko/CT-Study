@@ -30,20 +30,29 @@ public class StaffDaoImpl extends AbstractDaoImpl<Staff> implements IStaffDao {
 
 	@Override
 	public String getUpdateQuery() {
-		return " UPDATE  staff SET department = ?, position = ?, start_date = ?, end_date = ?, person_id = ? WHERE id = ?";
+		return " UPDATE  staff SET department = ?, position = ?, start_date = ?, end_date = ?, person_id = ? "
+				+ "WHERE id = ?";
 	}
 
 	@Override
 	public String getDeleteQuery() {
-		return " DELETE FROM staff WHERE id=";
+		return " DELETE FROM staff "
+				+ "WHERE id= ";
 	}
 
 	public String getQueryStaffForList() {
-		return " SELECT s.id, p.last_name, p.first_name, p.middle_name, s.department, s.position, s.start_date, s.end_date FROM staff s LEFT JOIN person p ON s.person_id = p.id ";
+		return " SELECT s.id, p.last_name, p.first_name, p.middle_name, s.department, s.position, s.start_date, s.end_date "
+				+ "FROM staff s "
+				+ "LEFT JOIN person p "
+				+ "ON s.person_id = p.id ";
 	}
 
 	public String getQueryPositionsByLogin() {
-		return " SELECT s.position FROM staff s LEFT JOIN person p ON s.person_id = p.id WHERE p.login = ?";
+		return " SELECT s.position "
+				+ "FROM staff s "
+				+ "LEFT JOIN person p "
+				+ "ON s.person_id = p.id "
+				+ "WHERE p.login = ? ";
 	}
 
 	@Override

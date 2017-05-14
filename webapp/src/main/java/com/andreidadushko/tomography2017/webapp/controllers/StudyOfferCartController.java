@@ -50,6 +50,8 @@ public class StudyOfferCartController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		StudyOfferCart studyOfferCart = studyOfferCartService.get(id);
+		if (studyOfferCart == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		Study study = studyService.get(studyOfferCart.getStudyId());
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
@@ -105,9 +107,14 @@ public class StudyOfferCartController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
+		StudyOfferCart studyOfferCart = studyOfferCartService.get(id);
+		if (studyOfferCart == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Study study = studyService.get(studyOfferCart.getStudyId());
 		CurrentUserData userAuthStorage = context.getBean(CurrentUserData.class);
 		if (userAuthStorage.getPositions().contains("Администратор")
-				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")) {
+				|| userAuthStorage.getPositions().contains("Врач-рентгенолог")
+				|| userAuthStorage.getId().equals(study.getPersonId())) {
 			studyOfferCartService.delete(id);
 			LOGGER.info("{} delete cart with id = {}", userAuthStorage, id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
