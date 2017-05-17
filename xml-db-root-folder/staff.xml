@@ -1,4 +1,61 @@
 <com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
-  <rows/>
-  <lastId>10</lastId>
+  <rows>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>11</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>32</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>12</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>30</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>13</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>31</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>14</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>30</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>15</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>30</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>16</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>33</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+    <com.andreidadushko.tomography2017.datamodel.Staff>
+      <id>17</id>
+      <department>Реанимация</department>
+      <position>Администратор</position>
+      <startDate>2000-02-21 17:15:15.0</startDate>
+      <endDate>2000-02-21 17:15:15.0</endDate>
+      <personId>34</personId>
+    </com.andreidadushko.tomography2017.datamodel.Staff>
+  </rows>
+  <lastId>17</lastId>
 </com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>

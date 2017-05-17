@@ -1,5 +1,12 @@
 <com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
-  <rows/>
-
-  <lastId>1</lastId>
+  <rows>
+    <com.andreidadushko.tomography2017.datamodel.Study>
+      <id>2</id>
+      <appointmentDate>2011-02-21 14:37:51.0</appointmentDate>
+      <permitted>true</permitted>
+      <personId>32</personId>
+      <staffId>2</staffId>
+    </com.andreidadushko.tomography2017.datamodel.Study>
+  </rows>
+  <lastId>15</lastId>
 </com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>

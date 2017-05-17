@@ -1,4 +1,60 @@
 <com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
-  <rows/>
-  <lastId>29</lastId>
+  <rows>
+    <com.andreidadushko.tomography2017.datamodel.Person>
+      <id>30</id>
+      <firstName>Макс11541799411</firstName>
+      <middleName>Максимович</middleName>
+      <lastName>Максов</lastName>
+      <birthDate>2000-02-20 22:00:00.0</birthDate>
+      <phoneNumber>+45345534534</phoneNumber>
+      <adress>Маями</adress>
+      <login>login11541799411</login>
+      <password>pass</password>
+    </com.andreidadushko.tomography2017.datamodel.Person>
+    <com.andreidadushko.tomography2017.datamodel.Person>
+      <id>31</id>
+      <firstName>Макс16216498554</firstName>
+      <middleName>Максимович</middleName>
+      <lastName>Максов</lastName>
+      <birthDate>2000-02-20 22:00:00.0</birthDate>
+      <phoneNumber>+45345534534</phoneNumber>
+      <adress>Брест</adress>
+      <login>login16216498554</login>
+      <password>pass</password>
+    </com.andreidadushko.tomography2017.datamodel.Person>
+    <com.andreidadushko.tomography2017.datamodel.Person>
+      <id>32</id>
+      <firstName>Макс15193066475</firstName>
+      <middleName>Максимович</middleName>
+      <lastName>Максов</lastName>
+      <birthDate>2000-02-20 22:00:00.0</birthDate>
+      <phoneNumber>+45345534534</phoneNumber>
+      <adress>Брест</adress>
+      <login>login15193066475</login>
+      <password>pass</password>
+    </com.andreidadushko.tomography2017.datamodel.Person>
+    <com.andreidadushko.tomography2017.datamodel.Person>
+      <id>33</id>
+      <firstName>Макс605235306</firstName>
+      <middleName>Максимович</middleName>
+      <lastName>Максов</lastName>
+      <birthDate>2000-02-20 22:00:00.0</birthDate>
+      <phoneNumber>+45345534534</phoneNumber>
+      <adress>Брест</adress>
+      <login>login605235306</login>
+      <password>pass</password>
+    </com.andreidadushko.tomography2017.datamodel.Person>
+  </rows>
+  <lastId>33</lastId>
+</com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>199537</firstName>
+      <middleName>Максимович</middleName>
+      <lastName>Максов</lastName>
+      <birthDate>2000-02-20 22:00:00.0</birthDate>
+      <phoneNumber>+45345534534</phoneNumber>
+      <adress>Брест</adress>
+      <login>login21118199537</login>
+      <password>pass</password>
+    </com.andreidadushko.tomography2017.datamodel.Person>
+  </rows>
+  <lastId>34</lastId>
 </com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>

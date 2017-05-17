@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -28,6 +30,8 @@ import com.andreidadushko.tomography2017.webapp.cache.IPositionsRepo;
 import com.andreidadushko.tomography2017.webapp.storage.CurrentUserData;
 
 public class BasicAuthFilter implements Filter {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(BasicAuthFilter.class);
 
 	private IPersonService personService;
 	private IStaffService staffService;
@@ -69,7 +73,7 @@ public class BasicAuthFilter implements Filter {
 
 			Person person = findPerson(login);
 
-			if (isPersonValid(login, password)) {
+			if (person != null && person.getPassword().equals(password)) {
 				CurrentUserData userDataStorage = appContext.getBean(CurrentUserData.class);
 				List<String> positions = findPositions(login);
 				if (req.getRequestURI().matches("^/staff.*") && !positions.contains("Администратор")) {
@@ -106,8 +110,13 @@ public class BasicAuthFilter implements Filter {
 
 	private Person findPerson(String login) {
 		Person person = personRepo.find(login);
+		// personRepo.cleanCache();
+		if (person != null) {
+			LOGGER.debug("Get data from CACHE. Login: {}", login);
+		}
 		if (person == null) {
 			person = personService.getByLogin(login);
+			LOGGER.debug("Get data from DATA BASE. Login: {}", login);
 			if (person != null)
 				personRepo.save(login, person);
 		}
@@ -116,8 +125,13 @@ public class BasicAuthFilter implements Filter {
 
 	private List<String> findPositions(String login) {
 		List<String> positions = positionsRepo.find(login);
+		// positionsRepo.cleanCache();
+		if (positions != null) {
+			LOGGER.debug("Get data from CACHE. Positions: {}", positions);
+		}
 		if (positions == null) {
 			positions = staffService.getPositionsByLogin(login);
+			LOGGER.debug("Get data from DATA BASE. Positions: {}", positions);
 			if (positions != null) {
 				positionsRepo.save(login, positions);
 			}
@@ -125,20 +139,16 @@ public class BasicAuthFilter implements Filter {
 		return positions;
 	}
 
-	private Boolean isPersonValid(String login, String password) {
-		Person person = findPerson(login);
-		return person != null && person.getPassword().equals(password);
-	}
-
 	private Boolean isAuth(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		if (req.getRequestURI().matches("^/auth.*") && req.getMethod().toUpperCase().equals("GET")
 				&& req.getParameterMap().containsKey("login") && req.getParameterMap().containsKey("password")) {
 			String login = req.getParameter("login");
 			String password = req.getParameter("password");
-			if (!isPersonValid(login, password)) {
-				res.sendError(HttpStatus.UNAUTHORIZED_401);
-			} else
+			Person person = findPerson(login);
+			if (person != null && person.getPassword().equals(password)) {
 				res.setHeader("Authorization", makeCredentials(login, password));
+			} else
+				res.sendError(HttpStatus.UNAUTHORIZED_401);
 			return true;
 		}
 		return false;

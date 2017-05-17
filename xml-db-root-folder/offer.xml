@@ -1,5 +1,628 @@
 <com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
-  <rows/>
-
-  <lastId>1</lastId>
-</com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
+  <rows>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>2</id>
+      <name>15193066475 русское предложение</name>
+      <nameEn>15193066475 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>2</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>3</id>
+      <name>17116810973 русское предложение</name>
+      <nameEn>17116810973 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>3</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>4</id>
+      <name>18026742122 русское предложение</name>
+      <nameEn>18026742122 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>4</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>5</id>
+      <name>16216498554 русское предложение</name>
+      <nameEn>16216498554 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>5</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>6</id>
+      <name>11541799411 русское предложение</name>
+      <nameEn>11541799411 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>6</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>7</id>
+      <name>605235306 русское предложение</name>
+      <nameEn>605235306 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>7</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>8</id>
+      <name>21118199537 русское предложение</name>
+      <nameEn>21118199537 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>8</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>9</id>
+      <name>20215963368 русское предложение</name>
+      <nameEn>20215963368 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>9</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>10</id>
+      <name>19192531299 русское предложение</name>
+      <nameEn>19192531299 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>10</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>11</id>
+      <name>156067481610 русское предложение</name>
+      <nameEn>156067481610 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>11</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>12</id>
+      <name>146448759111 русское предложение</name>
+      <nameEn>146448759111 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>12</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>13</id>
+      <name>137445634812 русское предложение</name>
+      <nameEn>137445634812 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>13</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>14</id>
+      <name>127519113213 русское предложение</name>
+      <nameEn>127519113213 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>14</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>15</id>
+      <name>196081367214 русское предложение</name>
+      <nameEn>196081367214 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>15</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>16</id>
+      <name>186462644715 русское предложение</name>
+      <nameEn>186462644715 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>16</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>17</id>
+      <name>184788987016 русское предложение</name>
+      <nameEn>184788987016 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>17</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>18</id>
+      <name>174862465417 русское предложение</name>
+      <nameEn>174862465417 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>18</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>19</id>
+      <name>29311190318 русское предложение</name>
+      <nameEn>29311190318 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>19</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>20</id>
+      <name>19057632119 русское предложение</name>
+      <nameEn>19057632119 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>20</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>21</id>
+      <name>5745320120 русское предложение</name>
+      <nameEn>5745320120 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>21</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>22</id>
+      <name>211740647521 русское предложение</name>
+      <nameEn>211740647521 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>22</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>23</id>
+      <name>68998039322 русское предложение</name>
+      <nameEn>68998039322 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>23</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>24</id>
+      <name>54762330023 русское предложение</name>
+      <nameEn>54762330023 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>24</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>25</id>
+      <name>45759205725 русское предложение</name>
+      <nameEn>45759205725 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>25</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>26</id>
+      <name>53035201824 русское предложение</name>
+      <nameEn>53035201824 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>26</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>27</id>
+      <name>35524885026 русское предложение</name>
+      <nameEn>35524885026 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>27</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>28</id>
+      <name>1071387227 русское предложение</name>
+      <nameEn>1071387227 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>28</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>29</id>
+      <name>209413682828 русское предложение</name>
+      <nameEn>209413682828 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>29</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>30</id>
+      <name>200602933029 русское предложение</name>
+      <nameEn>200602933029 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>30</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>31</id>
+      <name>186963584530 русское предложение</name>
+      <nameEn>186963584530 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>31</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>32</id>
+      <name>44894286931 русское предложение</name>
+      <nameEn>44894286931 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>32</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>33</id>
+      <name>31774349432 русское предложение</name>
+      <nameEn>31774349432 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>33</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>34</id>
+      <name>46116535033 русское предложение</name>
+      <nameEn>46116535033 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>34</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>35</id>
+      <name>20732056034 русское предложение</name>
+      <nameEn>20732056034 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>35</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>36</id>
+      <name>26161647635 русское предложение</name>
+      <nameEn>26161647635 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>36</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>37</id>
+      <name>11017146337 русское предложение</name>
+      <nameEn>11017146337 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>37</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>38</id>
+      <name>206697008036 русское предложение</name>
+      <nameEn>206697008036 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>39</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>39</id>
+      <name>186855412338 русское предложение</name>
+      <nameEn>186855412338 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>38</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>40</id>
+      <name>23971407439 русское предложение</name>
+      <nameEn>23971407439 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>40</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>41</id>
+      <name>80906784040 русское предложение</name>
+      <nameEn>80906784040 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>41</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>42</id>
+      <name>134804923241 русское предложение</name>
+      <nameEn>134804923241 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>42</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>43</id>
+      <name>70672463244 русское предложение</name>
+      <nameEn>70672463244 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>44</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>44</id>
+      <name>172624264742 русское предложение</name>
+      <nameEn>172624264742 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>43</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>45</id>
+      <name>199497818843 русское предложение</name>
+      <nameEn>199497818843 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>45</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>46</id>
+      <name>61573151746 русское предложение</name>
+      <nameEn>61573151746 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>46</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>47</id>
+      <name>131357745945 русское предложение</name>
+      <nameEn>131357745945 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>47</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>48</id>
+      <name>51954429248 русское предложение</name>
+      <nameEn>51954429248 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>48</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>49</id>
+      <name>27442896947 русское предложение</name>
+      <nameEn>27442896947 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>49</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>50</id>
+      <name>7488009549 русское предложение</name>
+      <nameEn>7488009549 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>50</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>51</id>
+      <name>120516683250 русское предложение</name>
+      <nameEn>120516683250 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>51</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>52</id>
+      <name>183715726951 русское предложение</name>
+      <nameEn>183715726951 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>52</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>53</id>
+      <name>111513559052 русское предложение</name>
+      <nameEn>111513559052 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>53</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>54</id>
+      <name>101279238253 русское предложение</name>
+      <nameEn>101279238253 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>54</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>55</id>
+      <name>5297769354 русское предложение</name>
+      <nameEn>5297769354 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>55</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>56</id>
+      <name>116131285155 русское предложение</name>
+      <nameEn>116131285155 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>56</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>57</id>
+      <name>91660515756 русское предложение</name>
+      <nameEn>91660515756 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>57</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>58</id>
+      <name>56072008757 русское предложение</name>
+      <nameEn>56072008757 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>58</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>59</id>
+      <name>45856925459 русское предложение</name>
+      <nameEn>45856925459 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>60</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>60</id>
+      <name>203276800158 русское предложение</name>
+      <nameEn>203276800158 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>59</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>61</id>
+      <name>36853801160 русское предложение</name>
+      <nameEn>36853801160 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>61</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>62</id>
+      <name>164756152761 русское предложение</name>
+      <nameEn>164756152761 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>62</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>63</id>
+      <name>45106665062 русское предложение</name>
+      <nameEn>45106665062 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>63</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>64</id>
+      <name>12523928063 русское предложение</name>
+      <nameEn>12523928063 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>64</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>65</id>
+      <name>35391755364 русское предложение</name>
+      <nameEn>35391755364 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>65</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>66</id>
+      <name>97171710965 русское предложение</name>
+      <nameEn>97171710965 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>66</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>67</id>
+      <name>103146036667 русское предложение</name>
+      <nameEn>103146036667 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>67</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>68</id>
+      <name>133742186366 русское предложение</name>
+      <nameEn>133742186366 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>68</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>69</id>
+      <name>6967419068 русское предложение</name>
+      <nameEn>6967419068 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>69</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>70</id>
+      <name>94142912369 русское предложение</name>
+      <nameEn>94142912369 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>70</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>71</id>
+      <name>84524189870 русское предложение</name>
+      <nameEn>84524189870 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>71</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>72</id>
+      <name>9632381871 русское предложение</name>
+      <nameEn>9632381871 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>72</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>73</id>
+      <name>74289869172 русское предложение</name>
+      <nameEn>74289869172 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>74</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>74</id>
+      <name>144083319674 русское предложение</name>
+      <nameEn>144083319674 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>75</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>75</id>
+      <name>54193983876 русское предложение</name>
+      <nameEn>54193983876 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>76</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>76</id>
+      <name>7682209775 русское предложение</name>
+      <nameEn>7682209775 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>77</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>77</id>
+      <name>132367715677 русское предложение</name>
+      <nameEn>132367715677 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>78</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>78</id>
+      <name>34555763978 русское предложение</name>
+      <nameEn>34555763978 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>79</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>79</id>
+      <name>124230276379 русское предложение</name>
+      <nameEn>124230276379 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>80</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>80</id>
+      <name>43864284780 русское предложение</name>
+      <nameEn>43864284780 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>81</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>81</id>
+      <name>112418485182 русское предложение</name>
+      <nameEn>112418485182 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>82</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>82</id>
+      <name>170078007281 русское предложение</name>
+      <nameEn>170078007281 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>83</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>83</id>
+      <name>178864620284 русское предложение</name>
+      <nameEn>178864620284 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>85</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>84</id>
+      <name>1877561583 русское предложение</name>
+      <nameEn>1877561583 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>84</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>85</id>
+      <name>169861495986 русское предложение</name>
+      <nameEn>169861495986 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>86</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>86</id>
+      <name>161616467385 русское предложение</name>
+      <nameEn>161616467385 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>87</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>87</id>
+      <name>151432023689 русское предложение</name>
+      <nameEn>151432023689 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>88</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>88</id>
+      <name>119556343491 русское предложение</name>
+      <nameEn>119556343491 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>89</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>89</id>
+      <name>152034138292 русское предложение</name>
+      <nameEn>152034138292 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>90</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+    <com.andreidadushko.tomography2017.datamodel.Offer>
+      <id>90</id>
+      <name>11755665594 русское предложение</name>
+      <nameEn>11755665594 english offer</nameEn>
+      <price>9.99</price>
+      <categorId>91</categorId>
+    </com.andreidadushko.tomography2017.datamodel.Offer>
+  </rows>
+  <lastId>90</lastId>
+</com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>r>

@@ -52,7 +52,7 @@
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
-		<Logger level="fatal"
+		<Logger level="warn"
 			name="com.andreidadushko.tomography2017.webapp.controllers"
 			additivity="false">
 			<AppenderRef ref="Console" />
@@ -64,12 +64,19 @@
 			additivity="false">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFile" />
-			<AppenderRef ref="Mailer" />
 		</Logger>
 		<Logger level="warn" name="com.andreidadushko.tomography2017.webapp.LoadBalancerHandler"
 			additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>
+		<Logger level="warn" name="com.andreidadushko.tomography2017.dao.db.impl"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger level="debug" name="com.andreidadushko.tomography2017.webapp.filters"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>	
 		
 	</Loggers>
 

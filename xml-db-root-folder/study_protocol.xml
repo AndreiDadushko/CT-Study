@@ -1,5 +1,10 @@
 <com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>
-  <rows/>
-
-  <lastId>1</lastId>
+  <rows>
+    <com.andreidadushko.tomography2017.datamodel.StudyProtocol>
+      <id>2</id>
+      <protocol>Big protocol</protocol>
+      <creationDate>2017-05-15 07:35:03.395</creationDate>
+    </com.andreidadushko.tomography2017.datamodel.StudyProtocol>
+  </rows>
+  <lastId>8</lastId>
 </com.andreidadushko.tomography2017.dao.xml.impl.wrapper.XmlModelWrapper>

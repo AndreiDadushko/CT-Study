@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -17,6 +19,8 @@ import com.andreidadushko.tomography2017.datamodel.Study;
 
 @Repository
 public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudyDaoImpl.class);
 
 	@Override
 	public String getSelectQuery() {
@@ -40,13 +44,8 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 
 	public String getQueryStudyForList() {
 		return "SELECT sy.id, sy.appointment_date, sy.permitted, p.last_name patient_last_name, p.first_name patient_first_name, p.middle_name patient_middle_name, pdoc.last_name doctor_last_name, pdoc.first_name doctor_first_name, pdoc.middle_name doctor_middle_name "
-				+ "FROM study sy "
-				+ "LEFT JOIN person p "
-				+ "ON sy.person_id = p.id "
-				+ "LEFT JOIN staff sa "
-				+ "ON sy.staff_id = sa.id "
-				+ "LEFT JOIN person pdoc "
-				+ "ON sa.person_id = pdoc.id";
+				+ "FROM study sy " + "LEFT JOIN person p " + "ON sy.person_id = p.id " + "LEFT JOIN staff sa "
+				+ "ON sy.staff_id = sa.id " + "LEFT JOIN person pdoc " + "ON sa.person_id = pdoc.id";
 	}
 
 	@Override
@@ -82,9 +81,13 @@ public class StudyDaoImpl extends AbstractDaoImpl<Study> implements IStudyDao {
 	@SuppressWarnings("unchecked")
 	public List<StudyForList> getStudyForListByPersonId(Integer personId) {
 		String sql = getQueryStudyForList() + " WHERE sy.person_id = " + personId;
-		List<StudyForList> rs = (List<StudyForList>) queryCache.get(sql);
+		List<StudyForList> rs = (List<StudyForList>) queryCache.get(sql);		
+		if(rs!=null){
+			LOGGER.debug("Get data from CACHE. SQL: {}", sql);
+		}
 		if (rs == null) {
 			rs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<StudyForList>(StudyForList.class));
+			LOGGER.debug("Get data from DATA BASE. SQL: {}", sql);
 			if (rs != null)
 				queryCache.put(sql, rs);
 		}

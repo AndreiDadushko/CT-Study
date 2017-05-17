@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,8 @@ import com.andreidadushko.tomography2017.datamodel.StudyOfferCart;
 @Repository
 public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> implements IStudyOfferCartDao {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudyOfferCartDaoImpl.class);
+	
 	@Override
 	public String getSelectQuery() {
 		return "SELECT * FROM study_offer_cart";
@@ -81,9 +85,13 @@ public class StudyOfferCartDaoImpl extends AbstractDaoImpl<StudyOfferCart> imple
 		String sql = getQueryStudyOfferCartForList();
 		String fullSql = getQueryStudyOfferCartForList().replace("?", studyId + "");
 		List<StudyOfferCartForList> rs = (List<StudyOfferCartForList>) queryCache.get(fullSql);
+		if(rs!=null){
+			LOGGER.debug("Get data from CACHE. SQL: {}",fullSql);
+		}
 		if (rs == null) {
 			rs = jdbcTemplate.query(sql, new Object[] { studyId },
 					new BeanPropertyRowMapper<StudyOfferCartForList>(StudyOfferCartForList.class));
+			LOGGER.debug("Get data from DATA BASE. SQL: {}", fullSql);
 			if (rs != null)
 				queryCache.put(fullSql, rs);
 		}
